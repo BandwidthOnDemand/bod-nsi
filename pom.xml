@@ -12,7 +12,7 @@
     </properties>
 
     <scm>
-        <developerConnection>scm:git:gitolite@atlas.dlp.surfnet.nl:bod-nsi.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:BandwidthOnDemand/bod-nsi.git</developerConnection>
     </scm>
 
     <build>
