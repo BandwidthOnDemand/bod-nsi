@@ -13,10 +13,6 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
     <scm>
         <developerConnection>scm:git:git@github.com:BandwidthOnDemand/bod-nsi.git</developerConnection>
     </scm>
