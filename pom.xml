@@ -7,6 +7,12 @@
     <version>0.1.2-SNAPSHOT</version>
     <name>bod-nsi</name>
 
+    <parent>
+        <groupId>nl.surfnet.bod</groupId>
+        <artifactId>bod-parent-pom</artifactId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
@@ -29,14 +35,6 @@
         </resources>
 
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>2.5</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
@@ -64,17 +62,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>surfnet-releases</id>
-            <name>surfnet-releases</name>
-            <url>http://atlas.dlp.surfnet.nl/nexus/content/repositories/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>surfnet-snapshots</id>
-            <name>surfnet-snapshots</name>
-            <url>http://atlas.dlp.surfnet.nl/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
 </project>
