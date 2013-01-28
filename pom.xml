@@ -4,7 +4,7 @@
     <groupId>nl.surfnet.bod</groupId>
     <artifactId>bod-nsi</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.1.2</version>
     <name>bod-nsi</name>
 
     <parent>
@@ -17,7 +17,8 @@
         <connection>scm:git:git@github.com:BandwidthOnDemand/bod-nsi.git</connection>
         <developerConnection>scm:git:git@github.com:BandwidthOnDemand/bod-nsi.git</developerConnection>
         <url>https://github.com/BandwidthOnDemand/bod-nsi</url>
-    </scm>
+      <tag>bod-nsi-0.1.2</tag>
+  </scm>
 
     <build>
          <resources>
