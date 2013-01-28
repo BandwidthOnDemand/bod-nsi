@@ -10,11 +10,13 @@
     <parent>
         <groupId>nl.surfnet.bod</groupId>
         <artifactId>bod-parent-pom</artifactId>
-        <version>0.1.0-SNAPSHOT</version>
+        <version>0.1.1</version>
     </parent>
 
     <scm>
+        <connection>scm:git:git@github.com:BandwidthOnDemand/bod-nsi.git</connection>
         <developerConnection>scm:git:git@github.com:BandwidthOnDemand/bod-nsi.git</developerConnection>
+        <url>https://github.com/BandwidthOnDemand/bod-nsi</url>
     </scm>
 
     <build>
@@ -97,18 +99,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <repositories>
-          <repository>
-              <id>surfnet-public-releases</id>
-              <name>surfnet-public-releases</name>
-              <url>http://atlas.dlp.surfnet.nl/nexus/content/repositories/public-releases</url>
-          </repository>
-          <repository>
-              <id>surfnet-public-snapshots</id>
-              <name>surfnet-public-snapshots</name>
-              <url>http://atlas.dlp.surfnet.nl/nexus/content/repositories/public-snapshots</url>
-          </repository>
-    </repositories>
 
 </project>
