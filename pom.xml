@@ -4,7 +4,7 @@
     <groupId>nl.surfnet.bod</groupId>
     <artifactId>bod-nsi</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.3-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
     <name>bod-nsi</name>
 
     <parent>
@@ -37,8 +37,10 @@
                             <xnocompile>true</xnocompile>
                             <wsdlDirectory>${basedir}/src/main/resources/wsdl</wsdlDirectory>
                             <wsdlFiles>
-                                <wsdlFile>ogf_nsi_connection_provider_v1_0.wsdl</wsdlFile>
-                                <wsdlFile>ogf_nsi_connection_requester_v1_0.wsdl</wsdlFile>
+                                <wsdlFile>1.0_sc/ogf_nsi_connection_provider_v1_0.wsdl</wsdlFile>
+                                <wsdlFile>1.0_sc/ogf_nsi_connection_requester_v1_0.wsdl</wsdlFile>
+                                <wsdlFile>2.0/ogf_nsi_connection_requester_v2_0.wsdl</wsdlFile>
+                                <wsdlFile>2.0/ogf_nsi_connection_provider_v2_0.wsdl</wsdlFile>
                             </wsdlFiles>
                             <bindingFiles>
                                 <bindingFile>${basedir}/src/main/resources/wsdl/jaxb-bindings.xml</bindingFile>
