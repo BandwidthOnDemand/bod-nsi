@@ -7,18 +7,16 @@
     <version>0.2.0-SNAPSHOT</version>
     <name>bod-nsi</name>
 
-    <parent>
-        <groupId>nl.surfnet.bod</groupId>
-        <artifactId>bod-parent-pom</artifactId>
-        <version>0.1.1</version>
-    </parent>
-
     <scm>
         <connection>scm:git:git@github.com:BandwidthOnDemand/bod-nsi.git</connection>
         <developerConnection>scm:git:git@github.com:BandwidthOnDemand/bod-nsi.git</developerConnection>
         <url>https://github.com/BandwidthOnDemand/bod-nsi</url>
-      <tag>HEAD</tag>
-  </scm>
+    </scm>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+    </properties>
 
     <build>
         <plugins>
@@ -32,7 +30,7 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
-                            <verbose>true</verbose>
+                            <verbose>false</verbose>
                             <keep>true</keep>
                             <xnocompile>true</xnocompile>
                             <wsdlDirectory>${basedir}/src/main/resources/wsdl</wsdlDirectory>
@@ -50,11 +48,13 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.0</version>
                 <configuration>
-                    <compilerArguments>
-                        <endorseddirs>${project.build.directory}/endorsed</endorseddirs>
-                    </compilerArguments>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                 </configuration>
             </plugin>
             <plugin>
@@ -90,5 +90,18 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>surfnet-public-releases</id>
+            <name>surfnet-public-releases</name>
+            <url>http://atlas.dlp.surfnet.nl/nexus/content/repositories/public-releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>surfnet-public-snapshots</id>
+            <name>surfnet-snapshots</name>
+            <url>http://atlas.dlp.surfnet.nl/nexus/content/repositories/public-snapshots</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
