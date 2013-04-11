@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>nl.surfnet.bod</groupId>
     <artifactId>bod-nsi</artifactId>
@@ -24,12 +25,20 @@
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
                 <version>2.2</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jvnet.jaxb2_commons</groupId>
+                        <artifactId>jaxb2-fluent-api</artifactId>
+                        <version>3.0</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <goals>
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
+                            <quiet>true</quiet>
                             <verbose>false</verbose>
                             <keep>true</keep>
                             <xnocompile>true</xnocompile>
@@ -43,6 +52,9 @@
                             <bindingFiles>
                                 <bindingFile>${basedir}/src/main/resources/wsdl/jaxb-bindings.xml</bindingFile>
                             </bindingFiles>
+                            <xjcArgs>
+                                <xjcArg>-Xfluent-api</xjcArg>
+                            </xjcArgs>
                         </configuration>
                     </execution>
                 </executions>
