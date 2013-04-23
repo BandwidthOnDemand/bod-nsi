@@ -75,7 +75,7 @@ Description: This is a draft version of the WSDL common types and messages for t
         10. QuerySummarySync - Mechanism for either NSA to query the other
         NSA for a set of connection service instances between the RA-PA
         pair. The returned results will be a summary of the reservation
-        information.  This is a syncronous blocking operation and not
+        information.  This is a synchronous blocking operation and not
         asynchronous like QuerySummary and QueryRecursive.
         
         In addition, there are four notification primatives:
@@ -87,7 +87,7 @@ Description: This is a draft version of the WSDL common types and messages for t
         
         2. reserveTimeout -An autonomous message issued from a Provider NSA to
         a Requester NSA when a timeout on an existing reserve request occurs
-        and uncommited resources have been freed.
+        and uncommitted resources have been freed.
         
         3. dataPlaneStateChange - An autonomous message issued from a Provider
         NSA to a Requester NSA when a data plane state change event has occured
@@ -165,36 +165,6 @@ Description: This is a draft version of the WSDL common types and messages for t
             <!--  Import common NSI Connection Services types from protocol schema. -->
             <xsd:import namespace="http://schemas.ogf.org/nsi/2013/04/connection/types"
                     schemaLocation="ogf_nsi_connection_types_v2_0.xsd" />
-
-            <!-- ********** Acknowledgment message element ********** -->
-            <xsd:element name="acknowledgment" type="tns:GenericAcknowledgmentType" />
-            
-            <!-- ********** Fault message element ********** -->
-            <xsd:element name="serviceException" type="ftypes:ServiceExceptionType"/>
-            
-            <!-- ********** Acknowledgment type definition ********** -->
-            <xsd:complexType name="GenericAcknowledgmentType">
-                <xsd:annotation>
-                    <xsd:documentation  xml:lang="en">
-                        Common WSDL output message for acknowledgment of an NSI CS
-                        request (input) message.
-                        
-                        Elements:
-                        We have moved the correlationId to the header so this is
-                        now an empty response.
-                        
-                        Notes on acknowledgment:
-                        Depending on NSA implementation and thread timing an
-                        acknowledgment to a request operation may be returned
-                        after the confirm/fail for the request has been returned
-                        to the Requesting NSA.
-                                            
-                        For protocol robustness, Requesting NSA should be
-                        able to accept confirm/fail before acknowledgment.
-                    </xsd:documentation>
-                </xsd:annotation>
-                <xsd:sequence />
-            </xsd:complexType>
         </xsd:schema>
     </wsdl:types>
 
@@ -327,7 +297,7 @@ Description: This is a draft version of the WSDL common types and messages for t
     
     <!-- ********** Acknowledgment message set ********** -->
     <wsdl:message name="acknowledgment">
-        <wsdl:part name="acknowledgment" element="tns:acknowledgment" />
+        <wsdl:part name="acknowledgment" element="types:acknowledgment" />
     </wsdl:message>
     
     <!-- ********** MessageDeliveryFailure notification message set ********** -->
@@ -337,6 +307,6 @@ Description: This is a draft version of the WSDL common types and messages for t
     
     <!-- ********** Fault message set ********** -->
     <wsdl:message name="serviceException">
-        <wsdl:part name="serviceException" element="tns:serviceException"/>
+        <wsdl:part name="serviceException" element="types:serviceException"/>
     </wsdl:message>
 </wsdl:definitions>

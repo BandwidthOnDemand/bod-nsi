@@ -70,7 +70,7 @@
             10. QuerySummarySync - Mechanism for either NSA to query the other
             NSA for a set of connection service instances between the RA-PA
             pair. The returned results will be a summary of the reservation
-            information.  This is a syncronous blocking operation and not
+            information.  This is a synchronous blocking operation and not
             asynchronous like QuerySummary and QueryRecursive.
             
             In addition, there are four notification primatives:
@@ -82,7 +82,7 @@
             
             2. reserveTimeout -An autonomous message issued from a Provider NSA to
             a Requester NSA when a timeout on an existing reserve request occurs
-            and uncommited resources have been freed.
+            and uncommitted resources have been freed.
             
             3. dataPlaneStateChange - An autonomous message issued from a Provider
             NSA to a Requester NSA when a data plane state change event has occured
@@ -177,6 +177,12 @@
     <xsd:element name="reserveTimeout"         type="tns:ReserveTimeoutRequestType" />
     <xsd:element name="dataPlaneStateChange"   type="tns:DataPlaneStateChangeRequestType" />
     <xsd:element name="messageDeliveryTimeout" type="tns:messageDeliveryTimeoutRequestType" />
+
+    <!-- ********** Acknowledgment message element ********** -->
+    <xsd:element name="acknowledgment" type="tns:GenericAcknowledgmentType" />
+    
+    <!-- ********** Fault message element ********** -->
+    <xsd:element name="serviceException" type="ftypes:ServiceExceptionType"/>
     
     <!-- ******************************************************************
         *                   NSI message types                            *
@@ -280,7 +286,7 @@
 
                 connectionId - Return reservations containing this connectionId.
                 
-                globalReservationId - Return reservations containg this
+                globalReservationId - Return reservations containing this
                 globalReservationId.
             </xsd:documentation>
         </xsd:annotation>
@@ -438,7 +444,7 @@
                 
                 Elements:
                 
-                event - The type of evewnt that generated this notification.
+                event - The type of event that generated this notification.
                 
                 globalReservationId - An optional global reservation id that was
                 originally provided in the reserve request.
@@ -475,7 +481,7 @@
                 Type definition for the reserve timeout notification message.
                 This is an autonomous message issued from a Provider NSA to
                 a Requester NSA when a timeout on an existing reserve request
-                occurs and uncommited resources have been freed.
+                occurs and uncommitted resources have been freed.
                 
                 Elements:
 
@@ -544,6 +550,29 @@
             <xsd:element name="correlationId" type="ftypes:UuidType" />
             <xsd:element name="timeStamp"     type="ftypes:DateTimeType" />
         </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="GenericAcknowledgmentType">
+        <xsd:annotation>
+            <xsd:documentation  xml:lang="en">
+                Common WSDL output message for acknowledgment of an NSI CS
+                request (input) message.
+                
+                Elements:
+                We have moved the correlationId to the header so this is
+                now an empty response.
+                
+                Notes on acknowledgment:
+                Depending on NSA implementation and thread timing an
+                acknowledgment to a request operation may be returned
+                after the confirm/fail for the request has been returned
+                to the Requesting NSA.
+                
+                For protocol robustness, Requesting NSA should be
+                able to accept confirm/fail before acknowledgment.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence />
     </xsd:complexType>
     
     <!-- ******************************************************************
@@ -770,7 +799,7 @@
                 
                 Elements:
                 
-                child - Deatiled path information for a child NSA.  Each
+                child - Detailed path information for a child NSA.  Each
                 child element is ordered and contains a connection segment in
                 the overall path.
             </xsd:documentation>
@@ -880,7 +909,7 @@
                 intermediate NSA to forward the message to the target Network
                 without needing to know about the STPs within that domain.
                 
-                localId - a locally unique identifier for the STP withint he
+                localId - a locally unique identifier for the STP within the
                 associated network.
                 
                 labels - technology specific attributes associated with
@@ -947,7 +976,7 @@
                 provisionState - Models the current connection provisioning
                 state.
                 
-                lifecycleState - Modeles the current connection lifecycle state.
+                lifecycleState - Models the current connection lifecycle state.
                 
                 dataPlaneStatus - Models the current connection data plane
                 activation state.
@@ -1045,7 +1074,7 @@
                 participating children
                 
                 versionConsistent - Always true for uPA. For an aggregator,
-                if version numbers of all children are the same, This flag is
+                if version numbers of all children are the same. This flag is
                 true. This field is valid when Active is true.
             </xsd:documentation>
         </xsd:annotation>

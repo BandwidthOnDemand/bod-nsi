@@ -359,7 +359,7 @@
             </wsdl:input>
             <wsdl:output>
                 <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
+                <soap:body part="body" use="literal" />
             </wsdl:output>
             <wsdl:fault name="serviceException">
                 <soap:fault name="serviceException" use="literal" />
