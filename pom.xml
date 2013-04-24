@@ -42,6 +42,7 @@
                             <verbose>false</verbose>
                             <keep>true</keep>
                             <xnocompile>true</xnocompile>
+                            <xadditionalHeaders>true</xadditionalHeaders>
                             <wsdlDirectory>${basedir}/src/main/resources/wsdl</wsdlDirectory>
                             <wsdlFiles>
                                 <wsdlFile>1.0_sc/ogf_nsi_connection_provider_v1_0.wsdl</wsdlFile>
