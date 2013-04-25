@@ -19,6 +19,13 @@
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.jvnet.jaxb2_commons</groupId>
+            <artifactId>jaxb2-basics</artifactId>
+            <version>0.6.4</version>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
@@ -55,6 +62,8 @@
                             </bindingFiles>
                             <xjcArgs>
                                 <xjcArg>-Xfluent-api</xjcArg>
+                                <xjcArg>-Xequals</xjcArg>
+                                <xjcArg>-XhashCode</xjcArg>
                             </xjcArgs>
                         </configuration>
                     </execution>
