@@ -64,6 +64,7 @@
                                 <xjcArg>-Xfluent-api</xjcArg>
                                 <xjcArg>-Xequals</xjcArg>
                                 <xjcArg>-XhashCode</xjcArg>
+                                <xjcArg>-XtoString</xjcArg>
                             </xjcArgs>
                         </configuration>
                     </execution>
