@@ -57,9 +57,6 @@
                                 <wsdlFile>2.0/ogf_nsi_connection_requester_v2_0.wsdl</wsdlFile>
                                 <wsdlFile>2.0/ogf_nsi_connection_provider_v2_0.wsdl</wsdlFile>
                             </wsdlFiles>
-                            <bindingFiles>
-                                <bindingFile>${basedir}/src/main/resources/wsdl/jaxb-bindings.xml</bindingFile>
-                            </bindingFiles>
                             <xjcArgs>
                                 <xjcArg>-Xfluent-api</xjcArg>
                                 <xjcArg>-Xequals</xjcArg>
