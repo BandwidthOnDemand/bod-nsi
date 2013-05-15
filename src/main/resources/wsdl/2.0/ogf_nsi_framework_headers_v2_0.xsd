@@ -14,7 +14,7 @@ The limited permissions granted above are perpetual and will not be revoked by t
 
 Open Grid Forum NSI Connection Services Protocol v2.0
 
-Description: This is a draft version of the ftypes schema for the reference web services implementation of the OGF NSI Connection Services Protocol v2.0. Comments and questions can be directed to the mailing list group mailing list (nsi-wg@ogf.org).
+Description: This is the ftypes schema for the reference web services implementation of the OGF NSI Connection Services Protocol v2.0. Comments and questions can be directed to the mailing list group mailing list (nsi-wg@ogf.org).
 -->
 <xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/04/framework/headers"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -50,7 +50,7 @@ Description: This is a draft version of the ftypes schema for the reference web 
                                 
                 Mandatory Elements:
                 
-                protocolVersion - A URI identifying the specific protocol
+                protocolVersion - A string identifying the specific protocol
                 version carried in this NSI message.  The protocol version is
                 modeled separately from the namespace of the WSDL and XML
                 schema to capture behavioral changes that cannot be modeled in
@@ -112,7 +112,7 @@ Description: This is a draft version of the ftypes schema for the reference web 
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="protocolVersion"     type="xsd:anyURI" />
+            <xsd:element name="protocolVersion"     type="xsd:string" />
             <xsd:element name="correlationId"       type="ftypes:UuidType" />
             <xsd:element name="requesterNSA"        type="ftypes:NsaIdType" />
             <xsd:element name="providerNSA"         type="ftypes:NsaIdType" />

@@ -59,7 +59,7 @@
                 Provider NSA when a reservation or modification to an existing
                 reservation is being committed. The reserveCommitACK indicates
                 that the Provider NSA has accepted the modify request for
-                processing. A reserveCommitConfirmed or modifyFailed message
+                processing. A reserveCommitConfirmed or reserveCommitFailed message
                 will be sent asynchronously to the Requester NSA when reserve
                 or modify processing has completed.
             </wsdl:documentation>
@@ -93,9 +93,9 @@
                 NSA when an existing reservation is to be transitioned into a
                 provisioned state. The provisionACK indicates that the Provider
                 NSA has accepted the provision request for processing. A
-                provisionConfirmed or provisionFailed message will be sent
-                asynchronously to the Requester NSA when provision processing
-                has completed.
+                provisionConfirmed message will be sent asynchronously to the
+                Requester NSA when provision processing has completed.  There is
+                no associated Failed message for this operation.
             </wsdl:documentation>
             <wsdl:input  name="provision"           message="interface:provision" />
             <wsdl:output name="provisionACK"        message="interface:acknowledgment" />
@@ -106,12 +106,13 @@
         
         <wsdl:operation name="release">
             <wsdl:documentation>
-                The release message is sent from a Requester NSA to a Provider NSA
-                when an existing reservation is to be transitioned into a released
-                state. The releaseACK indicates that the Provider NSA has
-                accepted the release request for processing. A releaseConfirmed
-                or releaseFailed message will be sent asynchronously to the
-                Requester NSA when release processing has completed.
+                The release message is sent from a Requester NSA to a Provider
+                NSA when an existing reservation is to be transitioned into a
+                released state. The releaseACK indicates that the Provider NSA
+                has accepted the release request for processing. A
+                releaseConfirmed message will be sent asynchronously to the
+                Requester NSA when release processing has completed.  There is
+                no associated Failed message for this operation.
             </wsdl:documentation>
             <wsdl:input  name="release"             message="interface:release" />
             <wsdl:output name="releaseACK"          message="interface:acknowledgment" />
@@ -138,12 +139,13 @@
         
         <wsdl:operation name="querySummary">
             <wsdl:documentation>
-                The querySummary message can be sent from either a Provider or
-                Requester NSA to determine the status of existing reservations.
-                The querySummaryACK indicates that the target NSA has accepted
-                the querySummary request for processing. A querySummaryConfirmed
-                or querySummaryFailed message will be sent asynchronously to the
-                requesting NSA when querySummary processing has completed.
+                The querySummary message is sent from a Requester NSA to a
+                Provider NSA to determine the status of existing reservations.
+                The querySummaryACK indicates that the target NSA has
+                accepted the querySummary request for processing. A
+                querySummaryConfirmed or querySummaryFailed message will be
+                sent asynchronously to the requesting NSA when querySummary
+                processing has completed.
             </wsdl:documentation>
             <wsdl:input  name="querySummary"        message="interface:querySummary" />
             <wsdl:output name="querySummaryACK"     message="interface:acknowledgment" />
@@ -152,10 +154,10 @@
         
         <wsdl:operation name="querySummaryConfirmed">
             <wsdl:documentation>
-                This querySummaryConfirmed message is sent from the target NSA to
-                requesting NSA as an indication of a successful querySummary
-                operation. This is in response to an original querySummary request
-                from the associated Requester NSA.
+                This querySummaryConfirmed message is sent from the Provider
+                NSA to Requester NSA as an indication of a successful
+                querySummary operation. This is in response to an original
+                querySummary request from the associated Requester NSA.
             </wsdl:documentation>
             <wsdl:input  name="querySummaryConfirmed"     message="interface:querySummaryConfirmed" />
             <wsdl:output name="querySummaryConfirmedACK"  message="interface:acknowledgment" />
@@ -166,8 +168,12 @@
             <wsdl:documentation>
                 This querySummaryFailed message is sent from the target NSA to
                 requesting NSA as an indication of a querySummary operation
-                failure. This is in response to an original querySummary request
-                from the associated Requester NSA.
+                failure. This is in response to an original querySummary
+                request from the associated Requester NSA.  It is important to
+                note that a querySummary operation that results in no matching
+                reservations does not result in a querySummaryFailed message,
+                but instead a querySummaryConfirmed with an empty list of
+                reservations.
             </wsdl:documentation>
             <wsdl:input  name="querySummaryFailed"     message="interface:querySummaryFailed" />
             <wsdl:output name="querySummaryFailedACK"  message="interface:acknowledgment" />
