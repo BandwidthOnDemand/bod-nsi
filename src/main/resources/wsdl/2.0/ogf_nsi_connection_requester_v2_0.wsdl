@@ -142,21 +142,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         </wsdl:operation>
         
         <!-- ********** QuerySummary operation set *********** -->
-        
-        <wsdl:operation name="querySummary">
-            <wsdl:documentation>
-                The querySummary message can be sent from either a Provider or
-                Requester NSA to determine the status of existing reservations.
-                The querySummaryACK indicates that the target NSA has accepted
-                the querySummary request for processing. A querySummaryConfirmed
-                or querySummaryFailed message will be sent asynchronously to the
-                requesting NSA when querySummary processing has completed.
-            </wsdl:documentation>
-            <wsdl:input  name="querySummary"        message="interface:querySummary" />
-            <wsdl:output name="querySummaryACK"     message="interface:acknowledgment" />
-            <wsdl:fault  name="serviceException"    message="interface:serviceException" />
-        </wsdl:operation>
-        
+
         <wsdl:operation name="querySummaryConfirmed">
             <wsdl:documentation>
                 This querySummaryConfirmed message is sent from the target NSA to
@@ -182,21 +168,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         </wsdl:operation>
         
         <!-- ********** QueryRecursive operation set *********** -->
-        
-        <wsdl:operation name="queryRecursive">
-            <wsdl:documentation>
-                The queryRecursive message can be sent from either a Provider or
-                Requester NSA to determine the status of existing reservations.
-                The queryRecursiveACK indicates that the target NSA has accepted
-                the queryRecursive request for processing. A queryRecursiveConfirmed
-                or queryRecursiveFailed message will be sent asynchronously to the
-                requesting NSA when query processing has completed.
-            </wsdl:documentation>
-            <wsdl:input  name="queryRecursive"     message="interface:queryRecursive" />
-            <wsdl:output name="queryRecursiveACK"  message="interface:acknowledgment" />
-            <wsdl:fault  name="serviceException"   message="interface:serviceException" />
-        </wsdl:operation>
-        
+
         <wsdl:operation name="queryRecursiveConfirmed">
             <wsdl:documentation>
                 This queryRecursiveConfirmed message is sent from the target NSA to
@@ -219,21 +191,6 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
             <wsdl:input  name="queryRecursiveFailed"     message="interface:queryRecursiveFailed" />
             <wsdl:output name="queryRecursiveFailedACK"  message="interface:acknowledgment" />
             <wsdl:fault  name="serviceException"         message="interface:serviceException" />
-        </wsdl:operation>
-        
-        <!-- ********** Synchronous Query operation set *********** -->
-        
-        <wsdl:operation name="querySummarySync">
-            <wsdl:documentation>
-                The querySync message can be sent from either a Provider or
-                Requester NSA to determine the status of existing reservations.
-                The querySync is a synchronous operation that will block until
-                the results of the query operation have been collected.  These
-                results will be be returned in the SOAP response.
-            </wsdl:documentation>
-            <wsdl:input  name="querySummarySync"           message="interface:querySummarySync" />
-            <wsdl:output name="querySummarySyncConfirmed"  message="interface:querySummarySyncConfirmed" />
-            <wsdl:fault  name="querySummarySyncFailed"     message="interface:querySummarySyncFailed" />
         </wsdl:operation>
         
         <!-- ********** Notification message set ********** -->
@@ -439,24 +396,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         </wsdl:operation>
 
         <!-- ********** QuerySummary operation set ********** -->
-        
-        <wsdl:operation name="querySummary">
-            <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/querySummary"
-                style="document" />
-            <wsdl:input>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="serviceException">
-                <soap:fault name="serviceException" use="literal" />
-            </wsdl:fault>
-        </wsdl:operation>
-        
+
         <wsdl:operation name="querySummaryConfirmed">
             <soap:operation
                 soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/querySummaryConfirmed"
@@ -492,24 +432,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         </wsdl:operation>
         
         <!-- ********** QueryRecursive operation set ********** -->
-        
-        <wsdl:operation name="queryRecursive">
-            <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryRecursive"
-                style="document" />
-            <wsdl:input>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="serviceException">
-                <soap:fault name="serviceException" use="literal" />
-            </wsdl:fault>
-        </wsdl:operation>
-        
+
         <wsdl:operation name="queryRecursiveConfirmed">
             <soap:operation
                 soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryRecursiveConfirmed"
@@ -541,25 +464,6 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
             </wsdl:output>
             <wsdl:fault name="serviceException">
                 <soap:fault name="serviceException" use="literal" />
-            </wsdl:fault>
-        </wsdl:operation>
-        
-        <!-- ********** QuerySummarySync operation set ********** -->
-        
-        <wsdl:operation name="querySummarySync">
-            <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/querySummarySync"
-                style="document" />
-            <wsdl:input>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="querySummarySyncFailed">
-                <soap:fault name="querySummarySyncFailed" use="literal" />
             </wsdl:fault>
         </wsdl:operation>
 

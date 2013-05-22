@@ -151,34 +151,6 @@
             <wsdl:output name="querySummaryACK"     message="interface:acknowledgment" />
             <wsdl:fault  name="serviceException"    message="interface:serviceException" />
         </wsdl:operation>
-        
-        <wsdl:operation name="querySummaryConfirmed">
-            <wsdl:documentation>
-                This querySummaryConfirmed message is sent from the Provider
-                NSA to Requester NSA as an indication of a successful
-                querySummary operation. This is in response to an original
-                querySummary request from the associated Requester NSA.
-            </wsdl:documentation>
-            <wsdl:input  name="querySummaryConfirmed"     message="interface:querySummaryConfirmed" />
-            <wsdl:output name="querySummaryConfirmedACK"  message="interface:acknowledgment" />
-            <wsdl:fault  name="serviceException"          message="interface:serviceException" />
-        </wsdl:operation>
-        
-        <wsdl:operation name="querySummaryFailed">
-            <wsdl:documentation>
-                This querySummaryFailed message is sent from the target NSA to
-                requesting NSA as an indication of a querySummary operation
-                failure. This is in response to an original querySummary
-                request from the associated Requester NSA.  It is important to
-                note that a querySummary operation that results in no matching
-                reservations does not result in a querySummaryFailed message,
-                but instead a querySummaryConfirmed with an empty list of
-                reservations.
-            </wsdl:documentation>
-            <wsdl:input  name="querySummaryFailed"     message="interface:querySummaryFailed" />
-            <wsdl:output name="querySummaryFailedACK"  message="interface:acknowledgment" />
-            <wsdl:fault  name="serviceException"       message="interface:serviceException" />
-        </wsdl:operation>
 
         <!-- ********** QueryRecursive operation set *********** -->
         
@@ -194,30 +166,6 @@
             <wsdl:input  name="queryRecursive"     message="interface:queryRecursive" />
             <wsdl:output name="queryRecursiveACK"  message="interface:acknowledgment" />
             <wsdl:fault  name="serviceException"   message="interface:serviceException" />
-        </wsdl:operation>
-        
-        <wsdl:operation name="queryRecursiveConfirmed">
-            <wsdl:documentation>
-                This queryRecursiveConfirmed message is sent from the target NSA to
-                requesting NSA as an indication of a successful queryRecursive
-                operation. This is in response to an original queryRecursive request
-                from the associated Requester NSA.
-            </wsdl:documentation>
-            <wsdl:input  name="queryRecursiveConfirmed"     message="interface:queryRecursiveConfirmed" />
-            <wsdl:output name="queryRecursiveConfirmedACK"  message="interface:acknowledgment" />
-            <wsdl:fault  name="serviceException"            message="interface:serviceException" />
-        </wsdl:operation>
-        
-        <wsdl:operation name="queryRecursiveFailed">
-            <wsdl:documentation>
-                This queryRecursiveFailed message is sent from the target NSA
-                to requesting NSA as an indication of a queryRecursive operation
-                failure. This is in response to an original queryRecursive
-                request from the associated Requester NSA.
-            </wsdl:documentation>
-            <wsdl:input  name="queryRecursiveFailed"     message="interface:queryRecursiveFailed" />
-            <wsdl:output name="queryRecursiveFailedACK"  message="interface:acknowledgment" />
-            <wsdl:fault  name="serviceException"         message="interface:serviceException" />
         </wsdl:operation>
         
         <!-- ********** Synchronous Query operation set *********** -->
@@ -372,79 +320,11 @@
             </wsdl:fault>
         </wsdl:operation>
 
-        <wsdl:operation name="querySummaryConfirmed">
-            <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/querySummaryConfirmed"
-                style="document" />
-            <wsdl:input>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="serviceException">
-                <soap:fault name="serviceException" use="literal" />
-            </wsdl:fault>
-        </wsdl:operation>
-
-        <wsdl:operation name="querySummaryFailed">
-            <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/querySummaryFailed"
-                style="document" />
-            <wsdl:input>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="serviceException">
-                <soap:fault name="serviceException" use="literal" />
-            </wsdl:fault>
-        </wsdl:operation>
-
         <!-- ********** QueryRecursive operation set ********** -->
         
         <wsdl:operation name="queryRecursive">
             <soap:operation
                 soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryRecursive"
-                style="document" />
-            <wsdl:input>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="serviceException">
-                <soap:fault name="serviceException" use="literal" />
-            </wsdl:fault>
-        </wsdl:operation>
-        
-        <wsdl:operation name="queryRecursiveConfirmed">
-            <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryRecursiveConfirmed"
-                style="document" />
-            <wsdl:input>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="serviceException">
-                <soap:fault name="serviceException" use="literal" />
-            </wsdl:fault>
-        </wsdl:operation>
-        
-        <wsdl:operation name="queryRecursiveFailed">
-            <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryRecursiveFailed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>

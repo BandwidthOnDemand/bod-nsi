@@ -498,6 +498,10 @@
                 Type definition for the data plane state change notification
                 message.
                 
+                This notification message sent up from a PA when a data plane
+                status has changed. Possible data plane status changes are:
+                activation, deactivation and activation version change.
+                
                 Elements:
                 
                 connectionId - The reservation experiencing the data plane
@@ -520,10 +524,18 @@
         <xsd:annotation>
             <xsd:documentation  xml:lang="en">
                 Notification message for a message transport layer delivery
-                timeout of an NSI CS request message. In the event of an MTL
-                or Coordinator timeout, the Coordinator will generate this
-                message delivery failure notification and send it up the
-                workflow tree (towards the uRA).
+                timeout of an NSI CS request message. In the event of an
+                Message Transport Layer (MTL) timed out or Coordinator
+                timeout, the Coordinator will generate this message delivery
+                failure notification and send it up the workflow tree (towards
+                the uRA).
+                
+                An MTL timeout can be generated as the result of a timeout
+                on receiving an ACK message for a corresponding send request.
+                A Coordinator timeout can occur when no confirm or fail reply
+                has been received to a previous request issued by the
+                Coordinator.  In both cases the local timers for these timeout
+                conditions are locally defined.
                 
                 Elements:
                 
