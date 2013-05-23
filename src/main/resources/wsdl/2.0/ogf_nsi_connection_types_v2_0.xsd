@@ -1127,14 +1127,13 @@
             </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="Initial" />
-            <xsd:enumeration value="Reserved" />
+            <xsd:enumeration value="ReserveStart" />
             <xsd:enumeration value="ReserveChecking" />
             <xsd:enumeration value="ReserveFailed" />
             <xsd:enumeration value="ReserveAborting" />
             <xsd:enumeration value="ReserveHeld" />
-            <xsd:enumeration value="ReserveTimeout" />
             <xsd:enumeration value="ReserveCommitting" />
+            <xsd:enumeration value="ReserveTimeout" />
             <xsd:enumeration value="Unknown" />
         </xsd:restriction>
     </xsd:simpleType>
@@ -1163,7 +1162,7 @@
             </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="Initial" />
+            <xsd:enumeration value="Created" />
             <xsd:enumeration value="Failed" />
             <xsd:enumeration value="Terminating" />
             <xsd:enumeration value="Terminated" />
