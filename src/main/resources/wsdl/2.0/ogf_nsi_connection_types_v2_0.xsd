@@ -176,7 +176,7 @@
     <xsd:element name="errorEvent"             type="tns:ErrorEventType" />
     <xsd:element name="reserveTimeout"         type="tns:ReserveTimeoutRequestType" />
     <xsd:element name="dataPlaneStateChange"   type="tns:DataPlaneStateChangeRequestType" />
-    <xsd:element name="messageDeliveryTimeout" type="tns:messageDeliveryTimeoutRequestType" />
+    <xsd:element name="messageDeliveryTimeout" type="tns:MessageDeliveryTimeoutRequestType" />
 
     <!-- ********** Acknowledgment message element ********** -->
     <xsd:element name="acknowledgment" type="tns:GenericAcknowledgmentType" />
@@ -191,15 +191,14 @@
     <xsd:complexType name="ReserveType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                Type definition for the reserve message that allows a
+                A type definition modeling the reserve message that allows a
                 Requester NSA to reserve network resources for a connection
                 between two STP's constrained by a certain service parameters.
-                
-                Type definition for the reserve message that allows a
-                Requester NSA to check the feasibility of connection reservation
-                or modification to an existing.  Any resources associated
-                with the reservation or modification will be allocated and
-                held until commit is received or timeout occurs.
+                This operation allows a Requester NSA to check the feasibility
+                of connection reservation or a modification to an existing
+                reservation. Any resources associated with the reservation or
+                modification will be allocated and held until commit is received
+                or timeout occurs.
 
                 Elements:
                 
@@ -216,7 +215,7 @@
                 
                 description - An optional description for the service reservation.
                 
-                criteria - reservation request criteria including start and end
+                criteria - Reservation request criteria including start and end
                 time, service attributes, and requested path for the service.
             </xsd:documentation>
         </xsd:annotation>
@@ -276,11 +275,10 @@
                 pair. This message can also be used as a status polling mechanism.
                 
                 Elements compose a filter for specifying the reservations to return
-                in response to the queryRequest. Supports querying reservations
+                in response to the queryRequest. Supports the querying of reservations
                 based on connectionId or globalReservationId. Filter items specified
-                are OR'ed to build the match criteria. If no criteria is specified
-                then all reservations associated with the requesting NSA are
-                returned.
+                are OR'ed to build the match criteria. If no criteria are specified
+                then all reservations associated with the requesting NSA are returned.
 
                 Elements:
 
@@ -301,9 +299,12 @@
     <xsd:complexType name="QuerySummaryConfirmedType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                This is the type definition for the querySummaryConfirmed
-                message. An NSA sends this positive querySummaryRequest
-                response to the NSA that issued the original request message.
+                This is the type definition for the querySummaryConfirmed message
+                (both synchronous and asynchronous versions). An NSA sends this
+                positive querySummaryRequest response to the NSA that issued the
+                original request message.  There can be zero or more results
+                retuned in this confirmed message depending on the number of
+                matching reservation results.
 
                 Elements:
 
@@ -347,8 +348,8 @@
             <xsd:documentation xml:lang="en">
                 A query "Failed" message type sent as request in response to a
                 failure to process a queryRequest message.  This is message is
-                returned as a result of a processing error and not an empty
-                query result.
+                returned as a result of a processing error and not for the case
+                where a query returns an empty result set.
                 
                 Elements:
                 
@@ -520,15 +521,14 @@
         </xsd:sequence>
     </xsd:complexType>
     
-    <xsd:complexType name="messageDeliveryTimeoutRequestType">
+    <xsd:complexType name="MessageDeliveryTimeoutRequestType">
         <xsd:annotation>
             <xsd:documentation  xml:lang="en">
-                Notification message for a message transport layer delivery
-                timeout of an NSI CS request message. In the event of an
-                Message Transport Layer (MTL) timed out or Coordinator
-                timeout, the Coordinator will generate this message delivery
-                failure notification and send it up the workflow tree (towards
-                the uRA).
+                A notification message type definition for the Message Transport
+                Layer (MTL) delivery timeout of a request message. In the event
+                of an MTL timed out or Coordinator timeout, the Coordinator will
+                generate this message delivery failure notification and send it
+                up the workflow tree (towards the uRA).
                 
                 An MTL timeout can be generated as the result of a timeout
                 on receiving an ACK message for a corresponding send request.
@@ -555,8 +555,7 @@
     <xsd:complexType name="GenericAcknowledgmentType">
         <xsd:annotation>
             <xsd:documentation  xml:lang="en">
-                Common WSDL output message for acknowledgment of an NSI CS
-                request (input) message.
+                Common acknowledgment message type.
                 
                 Elements:
                 We have moved the correlationId to the header so this is
@@ -582,14 +581,19 @@
     <xsd:complexType name="ReservationRequestCriteriaType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                Type definition for a reservation and modification request criteria.
-                Only those values requiring change are specified in the modify request.
+                Type definition for a reservation and modification request
+                criteria.  Only those values requiring change are specified in
+                the modify request.  The version value specified in a
+                reservation or modify request must be a positive integer
+                larger than the previous version number.  A version value of
+                zero is a special number indicating an allocated but not yet
+                reserved reservation and cannot be specified by the RA.
                 
                 Elements:
                 
-                schedule - time parameters specifying the life of the service.
+                schedule - Time parameters specifying the life of the service.
                 
-                bandwidth - bandwidth of the service in Mb/s.
+                bandwidth - Bandwidth of the service in Mb/s.
                 
                 serviceAttributes - Technology specific attributes relating to
                 the service.
@@ -602,10 +606,10 @@
                 
                 version - The version number assigned by the RA to this
                 reservation instance.  If not specified in the initial
-                reservation request, the new reservation will default to zero
+                reservation request, the new reservation will default to one
                 for the first version, however, an initial request can specify
-                any positive integer.  Each further reservation request on an
-                exisitng reservation (a modify operation), will be assigned a
+                any positive integer except zero.  Each further reservation request
+                on an exisitng reservation (a modify operation), will be assigned a
                 linear increasing number, either specified by the RA, or
                 assigned by the PA if not specified.
             </xsd:documentation>
@@ -627,9 +631,9 @@
                 
                 Elements:
                 
-                schedule - time parameters specifying the life of the service.
+                schedule - Time parameters specifying the life of the service.
                 
-                bandwidth - bandwidth of the service in Mb/s.
+                bandwidth - Bandwidth of the service in Mb/s.
                 
                 serviceAttributes - Technology specific attributes relating to
                 the service.
@@ -640,7 +644,7 @@
                 
                 Attributes:
                 
-                version - version of the reservation instance.
+                version - Version of the reservation instance.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
@@ -714,8 +718,8 @@
     <xsd:complexType name="ChildSummaryListType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                A holder element providing an evelope which will contain the
-                list of child NSA and associated connection information.
+                A holder element containing a list of children NSA and their
+                associated connection information. 
                 
                 Elements:
                 
@@ -763,7 +767,7 @@
     <xsd:complexType name="QueryRecursiveResultType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                Type containing the common reservation elements and detailed
+                This type contains the common reservation elements and detailed
                 path data for "Recursive" query results.
                 
                 Elements:
@@ -793,7 +797,7 @@
     <xsd:complexType name="ChildRecursiveListType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                A holder element providing an evelope which will contain the
+                A holder element providing an envelope that will contain the
                 list of child NSA and associated detailed connection
                 information.
                 
@@ -853,7 +857,8 @@
     <xsd:complexType name="ScheduleType">
       <xsd:annotation>
          <xsd:documentation xml:lang="en">
-            Type modeling a reservation schedule.
+             A type definition modeling the reservation schedule start and end
+             time parameters.
 
             Elements:
 
@@ -877,19 +882,24 @@
                 
                 Elements:
                 
-                directionality - (uni or bi) directionality of the service.
+                directionality - The (uni or bi) directionality of the service.
+                
+                symmetricPath - An indication that both directions of a bidirectional
+                circuit must fallow the same path.  Only applicable when
+                directionality is "Bidirectional".  If not specified then value
+                is assumed to be false.
                 
                 sourceSTP - Source STP of the service.
                 
                 destSTP - Destination STP of the service.
                 
-                stpList - Hop-by-hop ordered list of STP from sourceSTP to
+                ero - Hop-by-hop ordered list of STP from sourceSTP to
                 destSTP. List does not include sourceSTP and destSTP.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="directionality"  type="tns:DirectionalityType" default="Bidirectional" />
-            <xsd:element name="symmetric"       type="xsd:boolean" minOccurs="0" />
+            <xsd:element name="symmetricPath"   type="xsd:boolean" minOccurs="0" />
             <xsd:element name="sourceSTP"       type="tns:StpType" />
             <xsd:element name="destSTP"         type="tns:StpType" />
             <xsd:element name="ero"             type="tns:StpListType" minOccurs="0" />
@@ -903,16 +913,16 @@
                  
                 Elements:
                 
-                networkId - a globally unique identifier (URN) that identifies the
+                networkId - A globally unique identifier (URN) that identifies the
                 Network.  Rather than forcing parsing of an STP to determine the
                 Network, a separate Network object is defined to allow an
                 intermediate NSA to forward the message to the target Network
                 without needing to know about the STPs within that domain.
                 
-                localId - a locally unique identifier for the STP within the
+                localId - A locally unique identifier for the STP within the
                 associated network.
                 
-                labels - technology specific attributes associated with
+                labels - Technology specific attributes associated with
                 the Service Termination Point.
             </xsd:documentation>
         </xsd:annotation>
@@ -926,13 +936,13 @@
     <xsd:complexType name="StpListType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                A simple ordered list if list of Service Termination Point (STP).
-                List order is determined by the interger order attribute in the
-                OrderedStpType.
+                A simple ordered list type of Service Termination Point (STP). List
+                order is determined by the integer order attribute in the orderedSTP
+                element.
     
                 Elements:
     
-                orderedSTP- A list of STP ordered 0..n by their integer order attribute.
+                orderedSTP - A list of STP ordered 0..n by their integer order attribute.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
@@ -943,7 +953,7 @@
     <xsd:complexType name="OrderedStpType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                A Service Termination Point (STP) which can be ordered in a list for
+                A Service Termination Point (STP) that can be ordered in a list for
                 use in PathObject definition.
     
                 Attributes:
@@ -953,7 +963,7 @@
     
                 Elements:
     
-                stp - the Service Termination Point (STP).
+                stp - The Service Termination Point (STP).
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
@@ -983,58 +993,10 @@
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="reservationState"   type="tns:ReservationStateType" />
-            <xsd:element name="provisionState"     type="tns:ProvisionStateType" />
-            <xsd:element name="lifecycleState"     type="tns:LifecycleStateType" />
+            <xsd:element name="reservationState"   type="tns:ReservationStateEnumType" />
+            <xsd:element name="provisionState"     type="tns:ProvisionStateEnumType" />
+            <xsd:element name="lifecycleState"     type="tns:LifecycleStateEnumType" />
             <xsd:element name="dataPlaneStatus"    type="tns:DataPlaneStatusType" />
-        </xsd:sequence>
-    </xsd:complexType>    
-
-    <xsd:complexType name="ReservationStateType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                Models the current connection reservation state.
-
-                Elements:
-                
-                state - The state of the connection reservation state machine.
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="state"   type="tns:ReservationStateEnumType" />
-        </xsd:sequence>
-    </xsd:complexType>
-    
-    <xsd:complexType name="ProvisionStateType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                Models the current connection lifecycle state.
-                
-                Elements:
-                
-                state - The state of the connection lifecycle state machine.                
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="state"   type="tns:ProvisionStateEnumType" />
-        </xsd:sequence>
-    </xsd:complexType>
-
-    <xsd:complexType name="LifecycleStateType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                A connection lifecycle is terminated when a terminate request 
-                is received.  The Lifecycle State Machine models the termination
-                state of the reservation, and therefore, if the the terminate
-                request has been received.
-                
-                Elements:
-                
-                state - The termination state of the connection state machine.                
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="state"   type="tns:LifecycleStateEnumType" />
         </xsd:sequence>
     </xsd:complexType>
     
@@ -1048,7 +1010,7 @@
                 
                 active - True if the dataplane is active.  For an aggregator,
                 this flag is true when data plane is activated in all
-                participating children
+                participating children.
                 
                 version - Version of the connection reservation this entry is
                 modeling.
@@ -1086,7 +1048,7 @@
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
                 A connectionId is a simple string value that uniquely identifies
-                a reservation segment witin the context of a Provider NSA.  This
+                a reservation segment within the context of a Provider NSA.  This
                 value is not globally unique.
             </xsd:documentation>
         </xsd:annotation>
@@ -1096,7 +1058,9 @@
     <xsd:simpleType name="DirectionalityType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                Directionality of the service.
+                The directionality of the requested data service.  Possible values
+                are "Bidirectional" for a bidirectional data service, and
+                "Unidirectional" for a unidirectional data service.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -1108,7 +1072,21 @@
     <xsd:simpleType name="EventEnumType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                Notification event message types.
+                Notification event message types.  Possible values are:
+                
+                activateFailed – Indicates that the data plane activation related
+                to a reservation has failed, and therefore, there is no data plane
+                connectivity for the reporting uPA.
+                
+                deactivateFailed – Indicates that deactivation of the data plane
+                has failed, and as a result, data plane connectivity may still be
+                in place.
+                
+                dataplaneError – Indicates that an error has occurred in the data
+                plane and a loss of connectivity may be the result.
+                
+                forcedEnd – Indicates that the reservation was administratively
+                terminated by a provider NSA within the network.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -1122,8 +1100,36 @@
     <xsd:simpleType name="ReservationStateEnumType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                Connection reservation state values for the connection 
-                services reservation state machine.
+                Connection reservation state values for the connection services
+                reservation state machine.  Possible state values are:
+                
+                ReserveStart – A steady state for the reservation state machine
+                in which a reservation is created and committed.  In the case
+                of the first reservation request this state represents the
+                initial reservation shell has been committed to database.
+                
+                ReserveChecking – A transient state modeling the act of checking
+                the feasibility of a new reservation request, or a request to
+                modify an existing reservation.
+                
+                ReserveFailed – A steady state for the reservation state machine
+                in which the initial reservation or a subsequent modification
+                request has failed.
+                
+                ReserveAborting - A transient state modeling the act of aborting a
+                pending reservation modify request.
+                
+                ReserveHeld - A steady state for the reservation state machine in
+                which the initial reservation or a subsequent modification request
+                has successfully had the request resources reserved, but has not
+                yet been committed.
+                
+                ReserveCommitting - A transient state modeling the act of committing
+                a held set of reservation resources.
+                
+                ReserveTimeout - A steady state for the reservation state machine in
+                which the held resources have been locally timed out on a uPA,
+                resulting in a transition from the ReserveHeld to ReserveTimeout state.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -1134,15 +1140,42 @@
             <xsd:enumeration value="ReserveHeld" />
             <xsd:enumeration value="ReserveCommitting" />
             <xsd:enumeration value="ReserveTimeout" />
-            <xsd:enumeration value="Unknown" />
         </xsd:restriction>
     </xsd:simpleType>
     
     <xsd:simpleType name="ProvisionStateEnumType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                Connection provisioning state values for the connection 
+                Connection provisioning state values for modeling the connection
                 services provision state machine.
+                
+                The Provision State Machine (PSM) is a simple state machine that
+                transits between the Provisioned and the Released state. An instance
+                of the PSM is created when an initial reservation is committed, and
+                at that time it remains in the Released state. The PSM transits
+                states independent of the state of the Reservation State Machine.
+                Note that staying at the Provisioned state is necessary but not
+                sufficient to activate the data plane. The data plane is active if
+                the PSM is in “Provisioned” state AND current_time is between
+                startTime and endTime.
+                
+                Possible state values are:
+                
+                Released – A steady state for the provision state machine in which data
+                plane resources for this reservation are in a released state, resulting
+                in an inactive data plane.
+                
+                Provisioning - A transient state modeling the act of provisioning the
+                reservation’s associated data plane resources.
+                
+                Provisioned - A steady state for the provision state machine in which
+                data plane resources for this reservation are in a provisioned state.
+                This state does not imply that data plane resources are active, but it
+                does indicate that a uPA can active the data plane resources if
+                current_time is between startTime and endTime.
+                
+                Releasing - A transient state modeling the act of releasing the
+                reservation’s associated data plane resources.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -1150,15 +1183,27 @@
             <xsd:enumeration value="Provisioning" />
             <xsd:enumeration value="Provisioned" />
             <xsd:enumeration value="Releasing" />
-            <xsd:enumeration value="Unknown" />
         </xsd:restriction>
     </xsd:simpleType>
 
     <xsd:simpleType name="LifecycleStateEnumType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                Connection lifecycle state values for the reservation 
-                lifecycle state machine.
+                Connection lifecycle state values for the reservation lifecycle
+                state machine.  The lifecycle state machine is instantiated when
+                a reservation is committed.  Possible state values are:
+                
+                Created – A steady state for the lifecycle state machine and the
+                initial state after a reservation has been committed.
+                
+                Failed – A steady state for the lifecycle state machine that is
+                reached if a forcedEnd error is received from a uPA.
+                
+                Terminating - A transient state modeling the act of terminating
+                the reservation.
+                
+                Terminated - A steady state for the lifecycle state machine that
+                is reached when the reservation is terminated by the uRA.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:string">
@@ -1166,7 +1211,6 @@
             <xsd:enumeration value="Failed" />
             <xsd:enumeration value="Terminating" />
             <xsd:enumeration value="Terminated" />
-            <xsd:enumeration value="Unknown" />
         </xsd:restriction>
     </xsd:simpleType>
 </xsd:schema>
