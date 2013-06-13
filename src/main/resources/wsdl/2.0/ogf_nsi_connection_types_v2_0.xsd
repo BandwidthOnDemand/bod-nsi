@@ -30,7 +30,7 @@
             a set of defined primitives that are intended to provide the control
             necessary to manage the lifecycle of a connection reservation.
             
-            There are nine primitives supported in this version of the
+            The following primitives are supported in this version of the NSI CS
             protocol:
             
             1. Reserve - Make a request to reserve network resources for a
@@ -61,17 +61,27 @@
             The returned results will be a summary of the reservation
             information.
             
-            9. QueryRecursive - Mechanism for either NSA to query the other
+            9. QuerySummarySync - Mechanism for a requester NSA to query the
+            provider NSA for a set of connection service instances between the
+            RA-PA pair. The returned results will be a summary of the
+            reservation information.  This is a synchronous blocking operation
+            and not asynchronous like QuerySummary and QueryRecursive.
+            
+            10. QueryRecursive - Mechanism for either NSA to query the other
             NSA for a set of connection service instances between the RA-PA
             pair. The returned results will be a detailed list of reservation
             information collected by recursively traversing the reservation
             tree.
-            
-            10. QuerySummarySync - Mechanism for either NSA to query the other
-            NSA for a set of connection service instances between the RA-PA
-            pair. The returned results will be a summary of the reservation
-            information.  This is a synchronous blocking operation and not
-            asynchronous like QuerySummary and QueryRecursive.
+
+            11. QueryNotification - Mechanism for a requester NSA to query the
+            provider NSA for a set of notifications against a connectionId.  The
+            returned results will be a list of notifications for the specified
+            connectionId.
+
+            12. QueryNotificationSync - Mechanism for a requester NSA to query the
+            provider NSA for a set of notifications against a connectionId.  The
+            returned results will be a list of notifications for the specified
+            connectionId.  This is a synchronous blocking operation.
             
             In addition, there are four notification primatives:
             
@@ -171,6 +181,16 @@
     <xsd:element name="querySummarySync"           type="tns:QueryType" />
     <xsd:element name="querySummarySyncConfirmed"  type="tns:QuerySummaryConfirmedType" />
     <xsd:element name="querySummarySyncFailed"     type="tns:QueryFailedType" />
+
+    <!-- ********** QuerySummary message elements ********** -->
+    <xsd:element name="queryNotification"           type="tns:QueryNotificationType" />
+    <xsd:element name="queryNotificationConfirmed"  type="tns:QueryNotificationConfirmedType" />
+    <xsd:element name="queryNotificationFailed"     type="tns:QueryFailedType" />
+    
+    <!-- ********** QuerySummarySync message elements ********** -->
+    <xsd:element name="queryNotificationSync"           type="tns:QueryNotificationType" />
+    <xsd:element name="queryNotificationSyncConfirmed"  type="tns:QueryNotificationConfirmedType" />
+    <xsd:element name="queryNotificationSyncFailed"     type="tns:QueryFailedType" />
     
     <!-- ********** Notification message elements ********** -->
     <xsd:element name="errorEvent"             type="tns:ErrorEventType" />
@@ -197,8 +217,8 @@
                 This operation allows a Requester NSA to check the feasibility
                 of connection reservation or a modification to an existing
                 reservation. Any resources associated with the reservation or
-                modification will be allocated and held until commit is received
-                or timeout occurs.
+                modification will be allocated and held until a reserveConfirmed 
+                is received or timeout occurs.
 
                 Elements:
                 
@@ -284,12 +304,12 @@
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
                 Type definition for the querySummary message providing a mechanism
-                for either Requester or Provider NSA to query the other NSA for a
-                set of connection service reservation instances between the RA-PA
-                pair. This message can also be used as a status polling mechanism.
+                for a Requester NSA to query a Provider NSA for a set of connection
+                service reservation instances between the RA-PA pair. This message
+                can also be used as a status polling mechanism.
                 
                 Elements compose a filter for specifying the reservations to return
-                in response to the queryRequest. Supports the querying of reservations
+                in response to the query operation. Supports the querying of reservations
                 based on connectionId or globalReservationId. Filter items specified
                 are OR'ed to build the match criteria. If no criteria are specified
                 then all reservations associated with the requesting NSA are returned.
@@ -374,6 +394,62 @@
         </xsd:sequence>
     </xsd:complexType>
     
+    <xsd:complexType name="QueryNotificationType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Type definition for the QueryNotification message providing a
+                mechanism for a Requester NSA to query a Provider NSA for a
+                set of notifications against a specific connectionId.
+                
+                Elements compose a filter for specifying the notifications to
+                return in response to the query operation.  The filter query
+                provides a inclusive range of notification identifiers based
+                on connectionId.
+                
+                Elements:
+                
+                connectionId - Notifications for this connectionId.
+                
+                startNotificationId - The start of the range of notificationIds
+                to return.  If not present then the query should start from
+                oldest notificationId available.
+                
+                endNotificationId - The end of the range of notificationIds
+                to return.  If not present then the query should end with
+                the newest notificationId available.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="connectionId" type="ftypes:ConnectionIdType" />
+            <xsd:element name="startNotificationId" type="xsd:int" minOccurs="0" />
+            <xsd:element name="endNotificationId" type="xsd:int" minOccurs="0" />     
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="QueryNotificationConfirmedType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                A query notification confirmation containing a list of notification
+                messages matching the specified query criteria.
+                
+                Elements:
+                
+                errorEvent - Error event notification.
+                
+                reserveTimeout - Reserve timeout notification.
+                
+                messageDeliveryTimeout - Message delivery timeout notification.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:choice minOccurs="0" maxOccurs="unbounded">
+                <xsd:element ref="tns:errorEvent" />
+                <xsd:element ref="tns:reserveTimeout" />
+                <xsd:element ref="tns:messageDeliveryTimeout" />
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+    
     <xsd:complexType name="GenericRequestType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
@@ -438,6 +514,32 @@
         </xsd:sequence>
     </xsd:complexType>
 
+    <xsd:complexType name="NotificationBaseType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                A base type definition for an autonomous message issued from a
+                Provider NSA to a Requester NSA.
+                
+                Elements:
+                
+                connectionId - The Provider NSA assigned connectionId that this
+                notification is against.
+
+                notificationId - A notification identifier that is unique in the
+                context of a connectionId.  This is a linearly increasing
+                identifier that can be used for ordering notifications in the
+                context of the connectionId.
+                
+                timeStamp - Time the event was generated on the originating NSA.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="connectionId"     type="ftypes:ConnectionIdType" />
+            <xsd:element name="notificationId"   type="tns:NotificationIdType" />
+            <xsd:element name="timeStamp"        type="ftypes:DateTimeType" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
     <xsd:complexType name="ErrorEventType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
@@ -449,13 +551,7 @@
                 
                 Elements:
                 
-                connectionId - The Provider NSA assigned connectionId for this
-                reservation. This value will be unique within the context
-                of the Provider NSA.
-                
                 event - The type of event that generated this notification.
-                
-                timeStamp - Time the event was generated on the originating NSA.
                 
                 additionalInfo - Type/value pairs that can provide additional
                 error context as needed.
@@ -464,13 +560,15 @@
                 generation of the error event.
             </xsd:documentation>
         </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="connectionId"        type="ftypes:ConnectionIdType" />
-            <xsd:element name="event"               type="tns:EventEnumType" />
-            <xsd:element name="timeStamp"           type="ftypes:DateTimeType" />
-            <xsd:element name="additionalInfo"      type="ftypes:TypeValuePairListType" minOccurs="0" />
-            <xsd:element name="serviceException"    type="ftypes:ServiceExceptionType" minOccurs="0" />
-        </xsd:sequence>
+        <xsd:complexContent>
+            <xsd:extension  base="tns:NotificationBaseType">
+                <xsd:sequence>
+                    <xsd:element name="event"               type="tns:EventEnumType" />
+                    <xsd:element name="additionalInfo"      type="ftypes:TypeValuePairListType" minOccurs="0" />
+                    <xsd:element name="serviceException"    type="ftypes:ServiceExceptionType" minOccurs="0" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>                
     </xsd:complexType>
 
     <xsd:complexType name="ReserveTimeoutRequestType">
@@ -491,12 +589,8 @@
                 
                 Elements:
 
-                connectionId - The reservation experiencing the timeout.
-
                 timeoutValue - The timeout value in seconds that expired this
                 reservation.
-                
-                timeStamp - Time the event was generated.
                 
                 originatingConnectionId - The connectionId that triggered the
                 reverve timeout.
@@ -504,13 +598,15 @@
                 originatingNSA - The NSA originating the timeout event.
             </xsd:documentation>
         </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="connectionId"            type="ftypes:ConnectionIdType" />
-            <xsd:element name="timeoutValue"            type="xsd:int" />
-            <xsd:element name="timeStamp"               type="ftypes:DateTimeType" />
-            <xsd:element name="originatingConnectionId" type="ftypes:ConnectionIdType" />
-            <xsd:element name="originatingNSA"          type="ftypes:NsaIdType" />
-        </xsd:sequence>
+        <xsd:complexContent>
+            <xsd:extension  base="tns:NotificationBaseType">
+                <xsd:sequence>
+                    <xsd:element name="timeoutValue"            type="xsd:int" />
+                    <xsd:element name="originatingConnectionId" type="ftypes:ConnectionIdType" />
+                    <xsd:element name="originatingNSA"          type="ftypes:NsaIdType" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>                
     </xsd:complexType>
     
     <xsd:complexType name="DataPlaneStateChangeRequestType">
@@ -525,20 +621,17 @@
                 
                 Elements:
                 
-                connectionId - The reservation experiencing the data plane
-                state change.
-                
                 dataPlaneStatus - Current data plane activation state for the
                 reservation identified by connectionId.
-                
-                timeStamp - Time the event was generated.
             </xsd:documentation>
         </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="connectionId"     type="ftypes:ConnectionIdType" />
-            <xsd:element name="dataPlaneStatus"  type="tns:DataPlaneStatusType" />
-            <xsd:element name="timeStamp"        type="ftypes:DateTimeType" />
-        </xsd:sequence>
+        <xsd:complexContent>
+            <xsd:extension  base="tns:NotificationBaseType">
+                <xsd:sequence>
+                    <xsd:element name="dataPlaneStatus"  type="tns:DataPlaneStatusType" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>                
     </xsd:complexType>
     
     <xsd:complexType name="MessageDeliveryTimeoutRequestType">
@@ -562,14 +655,15 @@
                 correlationId - This value indicates the correlationId of
                 the original message that the transport layer failed to
                 send.
-                
-                timeStamp - Time the event was generated.
             </xsd:documentation>
         </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="correlationId" type="ftypes:UuidType" />
-            <xsd:element name="timeStamp"     type="ftypes:DateTimeType" />
-        </xsd:sequence>
+        <xsd:complexContent>
+            <xsd:extension  base="tns:NotificationBaseType">
+                <xsd:sequence>
+                    <xsd:element name="correlationId"   type="ftypes:UuidType" />
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>                
     </xsd:complexType>
 
     <xsd:complexType name="GenericAcknowledgmentType">
@@ -701,6 +795,11 @@
             requesterNSA - The requester NSA associated with the reservation.
 
             connectionStates - The reservation's overall connection states.
+            
+            notificationId - If present represents the notification identifier
+            of the most recent error notification against this reservation.
+            The notificationId can be used in the queryNotification operation
+            to retrieve the associated notification.
          </xsd:documentation>
       </xsd:annotation>
         <xsd:sequence>
@@ -708,8 +807,9 @@
             <xsd:element name="globalReservationId" type="tns:GlobalReservationIdType" minOccurs="0" />
             <xsd:element name="description"         type="xsd:string" minOccurs="0" />
             <xsd:element name="criteria"            type="tns:QuerySummaryResultCriteriaType" minOccurs="0" maxOccurs="unbounded" />
-            <xsd:element name="requesterNSA"       type="ftypes:NsaIdType" />
-            <xsd:element name="connectionStates"   type="tns:ConnectionStatesType" />
+            <xsd:element name="requesterNSA"        type="ftypes:NsaIdType" />
+            <xsd:element name="connectionStates"    type="tns:ConnectionStatesType" />
+            <xsd:element name="notificationId"      type="tns:NotificationIdType" minOccurs="0" />
         </xsd:sequence>
     </xsd:complexType>
   
@@ -826,6 +926,11 @@
                 requesterNSA - The requester NSA associated with the reservation.
 
                 connectionStates - The reservation's overall connection states.
+                
+                notificationId - If present represents the notification identifier
+                of the most recent error notification against this reservation.
+                The notificationId can be used in the queryNotification operation
+                to retrieve the associated notification.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
@@ -835,6 +940,7 @@
             <xsd:element name="criteria"            type="tns:QueryRecursiveResultCriteriaType" minOccurs="0" maxOccurs="unbounded" />
             <xsd:element name="requesterNSA"        type="ftypes:NsaIdType" />
             <xsd:element name="connectionStates"    type="tns:ConnectionStatesType" />
+            <xsd:element name="notificationId"      type="tns:NotificationIdType" minOccurs="0" />
         </xsd:sequence>
     </xsd:complexType>
 
@@ -1064,7 +1170,8 @@
                 state.
                 
                 provisionState - Models the current connection provisioning
-                state.
+                state.  The provisionState is created for a reservation once
+                the reservation is commited.
                 
                 lifecycleState - Models the current connection lifecycle state.
                 
@@ -1074,7 +1181,7 @@
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="reservationState"   type="tns:ReservationStateEnumType" />
-            <xsd:element name="provisionState"     type="tns:ProvisionStateEnumType" />
+            <xsd:element name="provisionState"     type="tns:ProvisionStateEnumType" minOccurs="0" />
             <xsd:element name="lifecycleState"     type="tns:LifecycleStateEnumType" />
             <xsd:element name="dataPlaneStatus"    type="tns:DataPlaneStatusType" />
         </xsd:sequence>
@@ -1124,6 +1231,16 @@
         <xsd:restriction base="xsd:anyURI" />
     </xsd:simpleType>
 
+    <xsd:simpleType name="NotificationIdType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                A specific type for a notificationId that is unique in the context
+                of a connectionId.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:int" />
+    </xsd:simpleType>
+    
     <xsd:simpleType name="DirectionalityType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
@@ -1278,6 +1395,7 @@
         <xsd:restriction base="xsd:string">
             <xsd:enumeration value="Created" />
             <xsd:enumeration value="Failed" />
+            <xsd:enumeration value="PassedEndTime" />
             <xsd:enumeration value="Terminating" />
             <xsd:enumeration value="Terminated" />
         </xsd:restriction>

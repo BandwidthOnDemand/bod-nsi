@@ -28,105 +28,10 @@ Description: This is a draft version of the WSDL common types and messages for t
 
     <!-- OGF NSI Connection Services Protocol 2.0 description -->
     <wsdl:documentation>
-        This is an XML schema document describing the OGF NSI Connection
-        Services protocol version 2.0. The Connection Service is message
-        based command protocol that operates between a Requester
-        Network Service Agent (NSA) and a Provider NSA. The protocol includes
-        a set of defined primitives that are intended to provide the control
-        necessary to manage the lifecycle of a connection reservation.
+        This is an WSDL schema document describing the OGF NSI Connection
+        Services protocol version 2.0 interface messages.  A description
+        of each message is availble in the Connection types definition.
         
-        There are nine primitives supported in this version of the
-        protocol:
-        
-        1. Reserve - Make a request to reserve network resources for a
-        connection between two STP's constrained by a certain service
-        parameters or request a modification of an existing reservation.
-        Any required resources will be pre-allocated and held until
-        the commit of this reserve is received.
-        
-        3. ReserveCommit - Commit a previously allocated reservation
-        or modification on a reservation.
-        
-        4. ReserveAbort - Cancel a pending reservation or modification
-        and release any associated resources.
-        
-        5. Provision - Provider NSA has been given permission to setup a
-        reservation (associated with a previous reserve message) on
-        the Requester NSA's behalf but subject to the constraints of
-        the requested service.
-        
-        6. Release - Provider NSA should release the provisioned resources
-        without removing the reservation.
-        
-        7. Terminate - Provider NSA should release the provisioned resources
-        and terminate the reservation.
-        
-        8. QuerySummary - Mechanism for either NSA to query the other NSA
-        for a set of connection service instances between the RA-PA pair.
-        The returned results will be a summary of the reservation
-        information.
-        
-        9. QueryRecursive - Mechanism for either NSA to query the other
-        NSA for a set of connection service instances between the RA-PA
-        pair. The returned results will be a detailed list of reservation
-        information collected by recursively traversing the reservation
-        tree.
-        
-        10. QuerySummarySync - Mechanism for either NSA to query the other
-        NSA for a set of connection service instances between the RA-PA
-        pair. The returned results will be a summary of the reservation
-        information.  This is a synchronous blocking operation and not
-        asynchronous like QuerySummary and QueryRecursive.
-        
-        In addition, there are four notification primatives:
-        
-        1. errorEvent - An autonomous message issued from a Provider NSA to
-        a Requester NSA when an existing reservation encounters an
-        autonomous error condition such as being administratively terminated
-        before the reservation's scheduled end-time.
-        
-        2. reserveTimeout -An autonomous message issued from a Provider NSA to
-        a Requester NSA when a timeout on an existing reserve request occurs
-        and uncommitted resources have been freed.
-        
-        3. dataPlaneStateChange - An autonomous message issued from a Provider
-        NSA to a Requester NSA when a data plane state change event has occured
-        within the network.
-
-        4. messageDeliveryTimeout - Notification message for a message
-        transport layer delivery timeout of an NSI CS request message.
-        In the event of an MTL or Coordinator timeout, the Coordinator
-        will generate this message delivery failure notification and
-        send it up the workflow tree (towards the uRA).
-        
-        If the uRA wants to request a resend of the the original message
-        it must issue the original operation again with the same
-        correlationId. Aggregators receiving the request SHOULD only
-        attempt redelivery of the message to children that it did not
-        receive an acknowledgement for (i.e. MTL timeout) or reply to
-        (i.e. Coordinator timeout) the original message.
-
-        The Connection Service protocol is an asynchronous protocol where
-        each primitive may consist of four operations:
-        
-        1. Request - A Requester NSA issues an operation request message
-        such as "reserve" to the Provider NSA. The Requester NSA can
-        expect an response to the request at some point in the future.
-        
-        2. Response - A Provider NSA may issue an immediate response
-        to the Requester NSA providing needed progress information.
-        For example, a requester NSA issuing a "reserve" request can
-        expect a "reserveResponse" message providing the connectionId
-        needed for querying reservation progress.
-        
-        3. Confirmed - A Provider NSA sends this positive operation
-        response message (such as "reserveConfirmed") to the Requester
-        NSA that issued the original request message ("reserveRequest").
-        
-        4. Failed - A Provider NSA sends this negative operation response
-        message (such as "reserveFailed") to the Requester NSA that
-        issued the original request message ("reserveRequest").
-    
         Transport Bindings
         ------------------
         To fit this asynchronous NSI protocol into a synchronous SOAP
@@ -256,6 +161,19 @@ Description: This is a draft version of the WSDL common types and messages for t
         <wsdl:part name="querySummaryFailed" element="types:querySummaryFailed" />
     </wsdl:message>
 
+    <!-- ********** QuerySummarySync message set ********** -->
+    <wsdl:message name="querySummarySync">
+        <wsdl:part name="querySummarySync" element="types:querySummarySync" />
+    </wsdl:message>
+    
+    <wsdl:message name="querySummarySyncConfirmed">
+        <wsdl:part name="querySummarySyncConfirmed" element="types:querySummarySyncConfirmed" />
+    </wsdl:message>
+    
+    <wsdl:message name="querySummarySyncFailed">
+        <wsdl:part name="querySummarySyncFailed" element="types:querySummarySyncFailed" />
+    </wsdl:message>
+    
     <!-- ********** QueryRecursive message set ********** -->
     <wsdl:message name="queryRecursive">
         <wsdl:part name="queryRecursive" element="types:queryRecursive" />
@@ -269,19 +187,32 @@ Description: This is a draft version of the WSDL common types and messages for t
         <wsdl:part name="queryRecursiveFailed" element="types:queryRecursiveFailed" />
     </wsdl:message>
 
-    <!-- ********** QuerySummarySync message set ********** -->
-    <wsdl:message name="querySummarySync">
-        <wsdl:part name="querySummarySync" element="types:querySummarySync" />
+    <!-- ********** QueryNotification message set ********** -->
+    <wsdl:message name="queryNotification">
+        <wsdl:part name="queryNotification" element="types:queryNotification" />
     </wsdl:message>
     
-    <wsdl:message name="querySummarySyncConfirmed">
-        <wsdl:part name="querySummarySyncConfirmed" element="types:querySummarySyncConfirmed" />
+    <wsdl:message name="queryNotificationConfirmed">
+        <wsdl:part name="queryNotificationConfirmed" element="types:queryNotificationConfirmed" />
     </wsdl:message>
-
-    <wsdl:message name="querySummarySyncFailed">
-        <wsdl:part name="querySummarySyncFailed" element="types:querySummarySyncFailed" />
+    
+    <wsdl:message name="queryNotificationFailed">
+        <wsdl:part name="queryNotificationFailed" element="types:queryNotificationFailed" />
     </wsdl:message>
-
+    
+    <!-- ********** QueryNotificationSync message set ********** -->
+    <wsdl:message name="queryNotificationSync">
+        <wsdl:part name="queryNotificationSync" element="types:queryNotificationSync" />
+    </wsdl:message>
+    
+    <wsdl:message name="queryNotificationSyncConfirmed">
+        <wsdl:part name="queryNotificationSyncConfirmed" element="types:queryNotificationSyncConfirmed" />
+    </wsdl:message>
+    
+    <wsdl:message name="queryNotificationSyncFailed">
+        <wsdl:part name="queryNotificationSyncFailed" element="types:queryNotificationSyncFailed" />
+    </wsdl:message>
+    
     <!-- ********** Notification message set ********** -->
     <wsdl:message name="errorEvent">
         <wsdl:part name="errorEvent" element="types:errorEvent" />

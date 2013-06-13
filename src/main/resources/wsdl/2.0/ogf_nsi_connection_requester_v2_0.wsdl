@@ -171,8 +171,8 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="queryRecursiveConfirmed">
             <wsdl:documentation>
-                This queryRecursiveConfirmed message is sent from the target NSA to
-                requesting NSA as an indication of a successful queryRecursive
+                This queryRecursiveConfirmed message is sent from the Provider NSA to
+                Requester NSA as an indication of a successful queryRecursive
                 operation. This is in response to an original queryRecursive request
                 from the associated Requester NSA.
             </wsdl:documentation>
@@ -183,14 +183,40 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         
         <wsdl:operation name="queryRecursiveFailed">
             <wsdl:documentation>
-                This queryRecursiveFailed message is sent from the target NSA
-                to requesting NSA as an indication of a queryRecursive operation
+                This queryRecursiveFailed message is sent from the Provider NSA
+                to Requester NSA as an indication of a queryRecursive operation
                 failure. This is in response to an original queryRecursive
                 request from the associated Requester NSA.
             </wsdl:documentation>
             <wsdl:input  name="queryRecursiveFailed"     message="interface:queryRecursiveFailed" />
             <wsdl:output name="queryRecursiveFailedACK"  message="interface:acknowledgment" />
             <wsdl:fault  name="serviceException"         message="interface:serviceException" />
+        </wsdl:operation>
+        
+        <!-- ********** QueryNotification operation set *********** -->
+        
+        <wsdl:operation name="queryNotificationConfirmed">
+            <wsdl:documentation>
+                This queryNotificationConfirmed message is sent from the Provider NSA to
+                Requester NSA as an indication of a successful queryNotification
+                operation. This is in response to an original queryNotification request
+                from the associated Requester NSA.
+            </wsdl:documentation>
+            <wsdl:input  name="queryNotificationConfirmed"     message="interface:queryNotificationConfirmed" />
+            <wsdl:output name="queryNotificationConfirmedACK"  message="interface:acknowledgment" />
+            <wsdl:fault  name="serviceException"               message="interface:serviceException" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="queryNotificationFailed">
+            <wsdl:documentation>
+                This queryNotificationFailed message is sent from the Provider NSA to
+                Requester NSA as an indication of a queryNotification operation
+                failure. This is in response to an original queryNotification request
+                from the associated Requester NSA.
+            </wsdl:documentation>
+            <wsdl:input  name="queryNotificationFailed"     message="interface:queryNotificationFailed" />
+            <wsdl:output name="queryNotificationFailedACK"  message="interface:acknowledgment" />
+            <wsdl:fault  name="serviceException"            message="interface:serviceException" />
         </wsdl:operation>
         
         <!-- ********** Notification message set ********** -->
@@ -467,6 +493,42 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
             </wsdl:fault>
         </wsdl:operation>
 
+        <!-- ********** QueryNotification operation set ********** -->
+        
+        <wsdl:operation name="queryNotificationConfirmed">
+            <soap:operation
+                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryNotificationConfirmed"
+                style="document" />
+            <wsdl:input>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="serviceException">
+                <soap:fault name="serviceException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="queryNotificationFailed">
+            <soap:operation
+                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryNotificationFailed"
+                style="document" />
+            <wsdl:input>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="serviceException">
+                <soap:fault name="serviceException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
         <!-- ********** Requester NSA notification operation set ********** -->
 
         <wsdl:operation name="errorEvent">

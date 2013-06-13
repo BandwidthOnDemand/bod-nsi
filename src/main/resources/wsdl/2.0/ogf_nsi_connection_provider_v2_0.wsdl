@@ -135,7 +135,7 @@
             <wsdl:fault  name="serviceException"    message="interface:serviceException" />
         </wsdl:operation>
         
-        <!-- ********** QuerySummary operation set *********** -->
+        <!-- ********** Asynchronous QuerySummary operation set *********** -->
         
         <wsdl:operation name="querySummary">
             <wsdl:documentation>
@@ -150,6 +150,22 @@
             <wsdl:input  name="querySummary"        message="interface:querySummary" />
             <wsdl:output name="querySummaryACK"     message="interface:acknowledgment" />
             <wsdl:fault  name="serviceException"    message="interface:serviceException" />
+        </wsdl:operation>
+        
+        <!-- ********** Synchronous Query operation set *********** -->
+        
+        <wsdl:operation name="querySummarySync">
+            <wsdl:documentation>
+                The querySummarySync message can be sent from a Requester NSA
+                to determine the status of existing reservations on the Provider
+                NSA. The querySummarySync is a synchronous operation that will
+                block until the results of the query operation have been
+                collected.  These results will be returned in the SOAP
+                response.
+            </wsdl:documentation>
+            <wsdl:input  name="querySummarySync"           message="interface:querySummarySync" />
+            <wsdl:output name="querySummarySyncConfirmed"  message="interface:querySummarySyncConfirmed" />
+            <wsdl:fault  name="querySummarySyncFailed"     message="interface:querySummarySyncFailed" />
         </wsdl:operation>
 
         <!-- ********** QueryRecursive operation set *********** -->
@@ -168,20 +184,36 @@
             <wsdl:fault  name="serviceException"   message="interface:serviceException" />
         </wsdl:operation>
         
-        <!-- ********** Synchronous Query operation set *********** -->
+        <!-- ********** Asynchronous Query Notification operation set *********** -->
         
-        <wsdl:operation name="querySummarySync">
+        <wsdl:operation name="queryNotification">
             <wsdl:documentation>
-                The querySync message can be sent from either a Provider or
-                Requester NSA to determine the status of existing reservations.
-                The querySync is a synchronous operation that will block until
-                the results of the query operation have been collected.  These
-                results will be be returned in the SOAP response.
+                The queryNotification message is sent from a Requester NSA
+                to a Provider NSA to retreive notifications against an existing
+                reservation residing on the Provider NSA. QueryNotification is an
+                asynchronous operation that will return results of the operation
+                to the Requester NSA's SOAP endpoint specified in the NSI header
+                replyTo field.
             </wsdl:documentation>
-            <wsdl:input  name="querySummarySync"           message="interface:querySummarySync" />
-            <wsdl:output name="querySummarySyncConfirmed"  message="interface:querySummarySyncConfirmed" />
-            <wsdl:fault  name="querySummarySyncFailed"     message="interface:querySummarySyncFailed" />
-        </wsdl:operation>    
+            <wsdl:input  name="queryNotification"      message="interface:queryNotification" />
+            <wsdl:output name="queryNotificationACK"   message="interface:acknowledgment" />
+            <wsdl:fault  name="serviceException"       message="interface:serviceException" />
+        </wsdl:operation>
+        
+        <!-- ********** Synchronous Query Notification operation set *********** -->
+        
+        <wsdl:operation name="queryNotificationSync">
+            <wsdl:documentation>
+                The queryNotificationSync message can be sent from a Requester NSA
+                to notifications against an existing reservations on the Provider
+                NSA. The queryNotificationSync is a synchronous operation that
+                will block until the results of the query operation have been
+                collected.  These results will be returned in the SOAP response.
+            </wsdl:documentation>
+            <wsdl:input  name="queryNotificationSync"           message="interface:queryNotificationSync" />
+            <wsdl:output name="queryNotificationSyncConfirmed"  message="interface:queryNotificationSyncConfirmed" />
+            <wsdl:fault  name="queryNotificationSyncFailed"     message="interface:queryNotificationSyncFailed" />
+        </wsdl:operation>
     </wsdl:portType>
     
     <wsdl:binding name="ConnectionServiceProviderSoapBinding" type="tns:ConnectionProviderPort">
@@ -313,25 +345,6 @@
             </wsdl:input>
             <wsdl:output>
                 <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body part="body" use="literal" />
-            </wsdl:output>
-            <wsdl:fault name="serviceException">
-                <soap:fault name="serviceException" use="literal" />
-            </wsdl:fault>
-        </wsdl:operation>
-
-        <!-- ********** QueryRecursive operation set ********** -->
-        
-        <wsdl:operation name="queryRecursive">
-            <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryRecursive"
-                style="document" />
-            <wsdl:input>
-                <soap:header message="interface:header" part="header" use="literal"/>
-                <soap:body use="literal" />
-            </wsdl:input>
-            <wsdl:output>
-                <soap:header message="interface:header" part="header" use="literal"/>
                 <soap:body use="literal" />
             </wsdl:output>
             <wsdl:fault name="serviceException">
@@ -357,6 +370,63 @@
                 <soap:fault name="querySummarySyncFailed" use="literal" />
             </wsdl:fault>
         </wsdl:operation>
+        
+        <!-- ********** QueryRecursive operation set ********** -->
+        
+        <wsdl:operation name="queryRecursive">
+            <soap:operation
+                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryRecursive"
+                style="document" />
+            <wsdl:input>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="serviceException">
+                <soap:fault name="serviceException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <!-- ********** QueryNotification operation set ********** -->
+        
+        <wsdl:operation name="queryNotification">
+            <soap:operation
+                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryNotification"
+                style="document" />
+            <wsdl:input>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="serviceException">
+                <soap:fault name="serviceException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <!-- ********** queryNotificationSync operation set ********** -->
+
+        <wsdl:operation name="queryNotificationSync">
+            <soap:operation
+                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryNotificationSync"
+                style="document" />
+            <wsdl:input>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="queryNotificationSyncFailed">
+                <soap:fault name="queryNotificationSyncFailed" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>        
     </wsdl:binding>
     
     <wsdl:service name="ConnectionServiceProvider">
