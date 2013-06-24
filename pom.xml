@@ -4,7 +4,7 @@
     <groupId>nl.surfnet.bod</groupId>
     <artifactId>bod-nsi</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.1-SNAPSHOT</version>
+    <version>0.2.1</version>
     <name>bod-nsi</name>
 
     <scm>
