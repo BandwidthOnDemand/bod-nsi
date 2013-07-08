@@ -296,7 +296,7 @@
             <xsd:element name="connectionId"        type="ftypes:ConnectionIdType" />
             <xsd:element name="globalReservationId" type="tns:GlobalReservationIdType" minOccurs="0" />
             <xsd:element name="description"         type="xsd:string" minOccurs="0" />
-            <xsd:element name="criteria"            type="tns:ReservationConfirmCriteriaType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="criteria"            type="tns:ReservationConfirmCriteriaType" />
         </xsd:sequence>
     </xsd:complexType>
     
@@ -403,7 +403,7 @@
                 
                 Elements compose a filter for specifying the notifications to
                 return in response to the query operation.  The filter query
-                provides a inclusive range of notification identifiers based
+                provides an inclusive range of notification identifiers based
                 on connectionId.
                 
                 Elements:
@@ -438,6 +438,8 @@
                 
                 reserveTimeout - Reserve timeout notification.
                 
+                dataPlaneStateChange - A data plane state change notification.
+                
                 messageDeliveryTimeout - Message delivery timeout notification.
             </xsd:documentation>
         </xsd:annotation>
@@ -445,6 +447,7 @@
             <xsd:choice minOccurs="0" maxOccurs="unbounded">
                 <xsd:element ref="tns:errorEvent" />
                 <xsd:element ref="tns:reserveTimeout" />
+                <xsd:element ref="tns:dataPlaneStateChange" />
                 <xsd:element ref="tns:messageDeliveryTimeout" />
             </xsd:choice>
         </xsd:sequence>
@@ -593,7 +596,7 @@
                 reservation.
                 
                 originatingConnectionId - The connectionId that triggered the
-                reverve timeout.
+                reserve timeout.
                 
                 originatingNSA - The NSA originating the timeout event.
             </xsd:documentation>
@@ -707,6 +710,13 @@
                 
                 schedule - Time parameters specifying the life of the service.
                 
+                serviceType - The specific service type of this reservation. 
+                This service type string maps into the list of supported
+                service descriptions defined by the network providers, and in
+                turn, to the specific service elements carried in the
+                serviceAttributes element required to specify the requested
+                service.
+                
                 bandwidth - Bandwidth of the service in Mb/s.
                 
                 serviceAttributes - Technology specific attributes relating to
@@ -730,8 +740,9 @@
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="schedule"            type="tns:ScheduleType" minOccurs="0" />
+            <xsd:element name="serviceType"         type="xsd:string" minOccurs="0" />
             <xsd:element name="bandwidth"           type="xsd:int" minOccurs="0" />
-            <xsd:element name="serviceAttributes"   type="ftypes:TypeValuePairListType" minOccurs="0" />
+            <xsd:element name="serviceAttributes"   type="tns:ServiceAttributesType" minOccurs="0" />
             <xsd:element name="path"                type="tns:PathType" minOccurs="0" />
         </xsd:sequence>
         <xsd:attribute   name="version"             type="xsd:int" use="optional" />
@@ -746,6 +757,13 @@
                 Elements:
                 
                 schedule - Time parameters specifying the life of the service.
+                
+                serviceType - The specific service type of this reservation. 
+                This service type string maps into the list of supported
+                service descriptions defined by the network providers, and in
+                turn, to the specific service elements carried in the
+                serviceAttributes element required to specify the requested
+                service.  
                 
                 bandwidth - Bandwidth of the service in Mb/s.
                 
@@ -763,8 +781,9 @@
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="schedule"            type="tns:ScheduleType" />
+            <xsd:element name="serviceType"         type="xsd:string" minOccurs="0" />
             <xsd:element name="bandwidth"           type="xsd:int" />
-            <xsd:element name="serviceAttributes"   type="ftypes:TypeValuePairListType" />
+            <xsd:element name="serviceAttributes"   type="tns:ServiceAttributesType" minOccurs="0" />
             <xsd:element name="path"                type="tns:PathType" />
         </xsd:sequence>
         <xsd:attribute   name="version"             type="xsd:int" use="required" />
@@ -824,6 +843,13 @@
                 
                 schedule - Time parameters specifying the life of the service.
                 
+                serviceType - The specific service type of this reservation. 
+                This service type string maps into the list of supported
+                service descriptions defined by the network providers, and in
+                turn, to the specific service elements carried in the
+                serviceAttributes element required to specify the requested
+                service.  
+                
                 bandwidth - Bandwidth of the service in Mb/s.
                 
                 serviceAttributes - Technology specific attributes relating to
@@ -844,10 +870,11 @@
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="schedule"            type="tns:ScheduleType" />
+            <xsd:element name="serviceType"         type="xsd:string" minOccurs="0" />
             <xsd:element name="bandwidth"           type="xsd:int" />
-            <xsd:element name="serviceAttributes"   type="ftypes:TypeValuePairListType" />
+            <xsd:element name="serviceAttributes"   type="tns:ServiceAttributesType" minOccurs="0" />
             <xsd:element name="path"                type="tns:PathType" />
-            <xsd:element name="children"           type="tns:ChildSummaryListType" minOccurs="0" />
+            <xsd:element name="children"            type="tns:ChildSummaryListType" minOccurs="0" />
         </xsd:sequence>
         <xsd:attribute   name="version"             type="xsd:int" use="required" />
     </xsd:complexType>
@@ -955,6 +982,13 @@
                 
                 schedule - Time parameters specifying the life of the service.
                 
+                serviceType - The specific service type of this reservation. 
+                This service type string maps into the list of supported
+                service descriptions defined by the network providers, and in
+                turn, to the specific service elements carried in the
+                serviceAttributes element required to specify the requested
+                service.
+                
                 bandwidth - Bandwidth of the service in Mb/s.
                 
                 serviceAttributes - Technology specific attributes relating to
@@ -977,8 +1011,9 @@
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="schedule"            type="tns:ScheduleType" />
+            <xsd:element name="serviceType"         type="xsd:string" minOccurs="0" />
             <xsd:element name="bandwidth"           type="xsd:int" />
-            <xsd:element name="serviceAttributes"   type="ftypes:TypeValuePairListType" />
+            <xsd:element name="serviceAttributes"   type="tns:ServiceAttributesType" minOccurs="0" />
             <xsd:element name="path"                type="tns:PathType" />
             <xsd:element name="children"           type="tns:ChildRecursiveListType" minOccurs="0" />
         </xsd:sequence>
@@ -1061,6 +1096,36 @@
         </xsd:sequence>
     </xsd:complexType>
 
+    <xsd:complexType name="ServiceAttributesType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                A holder type for externally specified service elements.  Element
+                included in this type are based on the individual service definitions
+                not defined in the NSI CS core specification.
+                
+                Elements:
+                
+                any - Provides a flexible mechanism allowing additional service
+                elements to be provided relating to the requested service type.
+                Use of this element field is beyond the current scope of this
+                NSI CS specification, but will be specified in individual service
+                definitions.
+                
+                Attributes:
+                
+                anyAttribute - Provides a flexible mechanism allowing additional
+                attributes to be provided as needed for service specification.
+                Use of this attribute field is beyond the current scope of this
+                NSI CS specification, but will be specified in individual service
+                definitions.            
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:anyAttribute namespace="##other" processContents="lax" />
+    </xsd:complexType>
+    
     <xsd:complexType name="PathType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
@@ -1171,7 +1236,7 @@
                 
                 provisionState - Models the current connection provisioning
                 state.  The provisionState is created for a reservation once
-                the reservation is commited.
+                the reservation is committed.
                 
                 lifecycleState - Models the current connection lifecycle state.
                 
@@ -1384,6 +1449,8 @@
                 
                 Failed – A steady state for the lifecycle state machine that is
                 reached if a forcedEnd error is received from a uPA.
+                
+                PassedEndTime - The reservation has exceeded scheduled end time.
                 
                 Terminating - A transient state modeling the act of terminating
                 the reservation.

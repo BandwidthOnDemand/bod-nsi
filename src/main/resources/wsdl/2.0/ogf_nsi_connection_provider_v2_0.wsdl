@@ -189,7 +189,7 @@
         <wsdl:operation name="queryNotification">
             <wsdl:documentation>
                 The queryNotification message is sent from a Requester NSA
-                to a Provider NSA to retreive notifications against an existing
+                to a Provider NSA to retrieve notifications against an existing
                 reservation residing on the Provider NSA. QueryNotification is an
                 asynchronous operation that will return results of the operation
                 to the Requester NSA's SOAP endpoint specified in the NSI header

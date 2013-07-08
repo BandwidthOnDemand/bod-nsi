@@ -41,6 +41,9 @@ Description: This is the NSI framework common types schema for the reference web
                 
                 nsaId - NSA that generated the service exception.
                 
+                connectionId - The connectionId associated with the reservation
+                impacted by this error.
+                
                 errorId - Error identifier uniquely identifying each known
                 fault within the protocol.
                 
@@ -130,7 +133,7 @@ Description: This is the NSI framework common types schema for the reference web
             <xsd:element name="value" type="xsd:string" nillable="true" minOccurs="0" maxOccurs="unbounded" />
             <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
-        <xsd:attribute name="type" type="xsd:string" use="required" />
+        <xsd:attribute name="type" type="xsd:string" use="optional" />
         <xsd:attribute name="targetNamespace" type="xsd:anyURI" use="optional" />
         <xsd:anyAttribute namespace="##other" processContents="lax" />
     </xsd:complexType>
@@ -138,21 +141,7 @@ Description: This is the NSI framework common types schema for the reference web
    <!-- ******************************************************************
         *                       XML base types                           *
         ****************************************************************** -->
-
-    <xsd:simpleType name="NsaIdType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                A specific type for a Network Services Agent (NSA) identifier
-                just in case we need to change it in the future.  This type
-                will be populated with a OGF URN (reference artifact 6478
-                "Procedure for Registration of Subnamespace Identifiers in
-                the URN:OGF Hierarchy") to be used for compatibility with
-                other external systems.
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:anyURI" />
-    </xsd:simpleType>
-
+    
     <xsd:simpleType name="ConnectionIdType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
@@ -164,18 +153,6 @@ Description: This is the NSI framework common types schema for the reference web
         <xsd:restriction base="xsd:string" />
     </xsd:simpleType>
     
-    <xsd:simpleType name="UuidType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                Universally Unique Identifier (UUID) URN as per ITU-T Rec.
-                X.667 | ISO/IEC 9834-8:2005 and IETF RFC 4122.
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:anyURI">
-            <xsd:pattern value="urn:uuid:[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"/>
-        </xsd:restriction>
-    </xsd:simpleType>
-
     <xsd:simpleType name="DateTimeType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
@@ -190,6 +167,32 @@ Description: This is the NSI framework common types schema for the reference web
         </xsd:annotation>
         <xsd:restriction base="xsd:dateTime">
             <xsd:pattern value=".+T.+(Z|[+-].+)"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="NsaIdType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                A specific type for a Network Services Agent (NSA) identifier
+                just in case we need to change it in the future.  This type
+                will be populated with a OGF URN (reference artifact 6478
+                "Procedure for Registration of Subnamespace Identifiers in
+                the URN:OGF Hierarchy") to be used for compatibility with
+                other external systems.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:anyURI" />
+    </xsd:simpleType>
+    
+    <xsd:simpleType name="UuidType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Universally Unique Identifier (UUID) URN as per ITU-T Rec.
+                X.667 | ISO/IEC 9834-8:2005 and IETF RFC 4122.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:restriction base="xsd:anyURI">
+            <xsd:pattern value="urn:uuid:[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}"/>
         </xsd:restriction>
     </xsd:simpleType>
 </xsd:schema>
