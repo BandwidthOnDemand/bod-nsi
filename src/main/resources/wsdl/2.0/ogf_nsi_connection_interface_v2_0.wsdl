@@ -17,14 +17,14 @@ Open Grid Forum NSI Connection Services Protocol v2.0
 Description: This is a draft version of the WSDL common types and messages for the reference web services implementation of the OGF NSI Connection Services Protocol v2.0. Comments and questions can be directed to the mailing list group mailing list (nsi-wg@ogf.org).
 -->
 <wsdl:definitions name="ogf_nsi_connection_interface_v2_0"
-    targetNamespace="http://schemas.ogf.org/nsi/2013/04/connection/interface"
+    targetNamespace="http://schemas.ogf.org/nsi/2013/07/connection/interface"
     xmlns="http://schemas.xmlsoap.org/wsdl/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:ftypes="http://schemas.ogf.org/nsi/2013/04/framework/types"
-    xmlns:headers="http://schemas.ogf.org/nsi/2013/04/framework/headers"
-    xmlns:types="http://schemas.ogf.org/nsi/2013/04/connection/types"
-    xmlns:tns="http://schemas.ogf.org/nsi/2013/04/connection/interface">
+    xmlns:ftypes="http://schemas.ogf.org/nsi/2013/07/framework/types"
+    xmlns:headers="http://schemas.ogf.org/nsi/2013/07/framework/headers"
+    xmlns:types="http://schemas.ogf.org/nsi/2013/07/connection/types"
+    xmlns:tns="http://schemas.ogf.org/nsi/2013/07/connection/interface">
 
     <!-- OGF NSI Connection Services Protocol 2.0 description -->
     <wsdl:documentation>
@@ -56,19 +56,19 @@ Description: This is a draft version of the WSDL common types and messages for t
     </wsdl:documentation>
 
     <wsdl:types>
-        <xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/04/connection/interface"
+        <xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/07/connection/interface"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
             <!-- Import the common NSI framework types. -->
-            <xsd:import namespace="http://schemas.ogf.org/nsi/2013/04/framework/types"
+            <xsd:import namespace="http://schemas.ogf.org/nsi/2013/07/framework/types"
                 schemaLocation="ogf_nsi_framework_types_v2_0.xsd"/>
             
             <!--  Import common NSI framework header types. -->
-            <xsd:import namespace="http://schemas.ogf.org/nsi/2013/04/framework/headers"
+            <xsd:import namespace="http://schemas.ogf.org/nsi/2013/07/framework/headers"
                 schemaLocation="ogf_nsi_framework_headers_v2_0.xsd" />
             
             <!--  Import common NSI Connection Services types from protocol schema. -->
-            <xsd:import namespace="http://schemas.ogf.org/nsi/2013/04/connection/types"
+            <xsd:import namespace="http://schemas.ogf.org/nsi/2013/07/connection/types"
                     schemaLocation="ogf_nsi_connection_types_v2_0.xsd" />
         </xsd:schema>
     </wsdl:types>
@@ -211,6 +211,11 @@ Description: This is a draft version of the WSDL common types and messages for t
     
     <wsdl:message name="queryNotificationSyncFailed">
         <wsdl:part name="queryNotificationSyncFailed" element="types:queryNotificationSyncFailed" />
+    </wsdl:message>
+    
+    <!-- ********** Error message set ********** -->
+    <wsdl:message name="error">
+        <wsdl:part name="error" element="types:error" />
     </wsdl:message>
     
     <!-- ********** Notification message set ********** -->

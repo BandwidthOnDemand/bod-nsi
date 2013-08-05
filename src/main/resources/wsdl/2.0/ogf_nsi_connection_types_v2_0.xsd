@@ -16,10 +16,10 @@
 
     Description: This is the types schema for the reference web services implementation of the OGF NSI Connection Services Protocol v2.0. This can be considered the transport independent protocol representation.  Comments and questions can be directed to the mailing list group mailing list (nsi-wg@ogf.org).
 -->
-<xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/04/connection/types"
+<xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/07/connection/types"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:ftypes="http://schemas.ogf.org/nsi/2013/04/framework/types"
-    xmlns:tns="http://schemas.ogf.org/nsi/2013/04/connection/types">
+    xmlns:ftypes="http://schemas.ogf.org/nsi/2013/07/framework/types"
+    xmlns:tns="http://schemas.ogf.org/nsi/2013/07/connection/types">
 
     <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -135,7 +135,7 @@
     </xsd:annotation>
     
     <!-- Import the common NSI framework types. -->
-    <xsd:import namespace="http://schemas.ogf.org/nsi/2013/04/framework/types"
+    <xsd:import namespace="http://schemas.ogf.org/nsi/2013/07/framework/types"
         schemaLocation="ogf_nsi_framework_types_v2_0.xsd"/>
     
     <!-- ******************************************************************
@@ -191,6 +191,9 @@
     <xsd:element name="queryNotificationSync"           type="tns:QueryNotificationType" />
     <xsd:element name="queryNotificationSyncConfirmed"  type="tns:QueryNotificationConfirmedType" />
     <xsd:element name="queryNotificationSyncFailed"     type="tns:QueryFailedType" />
+
+    <!-- ********** Error message elements ********** -->
+    <xsd:element name="error" type="tns:GenericErrorType" />
     
     <!-- ********** Notification message elements ********** -->
     <xsd:element name="errorEvent"             type="tns:ErrorEventType" />
@@ -516,6 +519,29 @@
             <xsd:element name="serviceException"    type="ftypes:ServiceExceptionType" />
         </xsd:sequence>
     </xsd:complexType>
+    
+    <xsd:complexType name="GenericErrorType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                A generic "Error" message type sent in response to a previous
+                protocol "Request" message.  An error message is generated when
+                an error condition occurs that does not result in a state
+                machine transition.  This type is used in response to all
+                request types that can return an error.
+                
+                The correlationId carried in the NSI header will identify the
+                original request associated with this error message.
+                
+                Elements:
+                
+                serviceException - Specific error condition - the reason for the
+                failure.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="serviceException"    type="ftypes:ServiceExceptionType" />
+        </xsd:sequence>
+    </xsd:complexType>
 
     <xsd:complexType name="NotificationBaseType">
         <xsd:annotation>
@@ -710,21 +736,19 @@
                 
                 schedule - Time parameters specifying the life of the service.
                 
-                serviceType - The specific service type of this reservation. 
-                This service type string maps into the list of supported
-                service descriptions defined by the network providers, and in
-                turn, to the specific service elements carried in the
-                serviceAttributes element required to specify the requested
-                service.
+                serviceType - Specific service type being requested in the
+                reservation.  This service type string maps into the list
+                of supported service descriptions defined by the network
+                providers, and in turn, to the specific service elements
+                carried in this element (through the ANY definition) required
+                to specify the requested service.  
                 
-                bandwidth - Bandwidth of the service in Mb/s.
-                
-                serviceAttributes - Technology specific attributes relating to
-                the service.
-                
-                path - The source and destination end points of the service.
-                Can optionally provide additional path segments to guide path
-                computation.
+                any - Provides a flexible mechanism allowing additional elements
+                to be provided such as the service specific attributes specified
+                by serviceType.  Additional use of this element field is beyond
+                the current scope of this NSI specification, but may be used in
+                the future to extend the existing protocol without requiring a
+                schema change.
                 
                 Attributes:
                 
@@ -736,16 +760,21 @@
                 on an exisitng reservation (a modify operation), will be assigned a
                 linear increasing number, either specified by the RA, or
                 assigned by the PA if not specified.
+                
+                anyAttribute - Provides a flexible mechanism allowing additional
+                attributes to be provided as needed.  Use of this attribute field
+                is beyond the current scope of this NSI specification, but may be
+                used in the future to extend the existing protocol without
+                requiring a schema change.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="schedule"            type="tns:ScheduleType" minOccurs="0" />
-            <xsd:element name="serviceType"         type="xsd:string" minOccurs="0" />
-            <xsd:element name="bandwidth"           type="xsd:int" minOccurs="0" />
-            <xsd:element name="serviceAttributes"   type="tns:ServiceAttributesType" minOccurs="0" />
-            <xsd:element name="path"                type="tns:PathType" minOccurs="0" />
+            <xsd:element name="schedule"      type="tns:ScheduleType" minOccurs="0" />
+            <xsd:element name="serviceType"   type="xsd:string" minOccurs="0" />
+            <xsd:any     namespace="##other"  processContents="lax" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
-        <xsd:attribute   name="version"             type="xsd:int" use="optional" />
+        <xsd:attribute    name="version"      type="xsd:int" use="optional" />
+        <xsd:anyAttribute namespace="##other" processContents="lax" />
     </xsd:complexType>
     
     <xsd:complexType name="ReservationConfirmCriteriaType">
@@ -759,34 +788,38 @@
                 schedule - Time parameters specifying the life of the service.
                 
                 serviceType - The specific service type of this reservation. 
-                This service type string maps into the list of supported
-                service descriptions defined by the network providers, and in
-                turn, to the specific service elements carried in the
-                serviceAttributes element required to specify the requested
-                service.  
+                This service type string maps into the list of supported service
+                descriptions defined by the network providers, and in turn, to
+                the specific service elements carried in the serviceAttributes
+                element required to specify the requested service.  This element
+                is mandatory in the reservation request but not required in the
+                modify request.
                 
-                bandwidth - Bandwidth of the service in Mb/s.
-                
-                serviceAttributes - Technology specific attributes relating to
-                the service.
-                
-                path - The source and destination end points of the service.
-                Can optionally provide additional path segments to guide path
-                computation.
+                any - Provides a flexible mechanism allowing additional elements 
+                to be provided such as the service specific attributes specified 
+                by serviceType.  Additional use of this element field is beyond 
+                the current scope of this NSI specification, but may be used in 
+                the future to extend the existing protocol without requiring a 
+                schema change. 
                 
                 Attributes:
                 
                 version - Version of the reservation instance.
+                
+                anyAttribute - Provides a flexible mechanism allowing additional 
+                attributes to be provided as needed.  Use of this attribute field 
+                is beyond the current scope of this NSI specification, but may be
+                used in the future to extend the existing protocol without 
+                requiring a schema change.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="schedule"            type="tns:ScheduleType" />
-            <xsd:element name="serviceType"         type="xsd:string" minOccurs="0" />
-            <xsd:element name="bandwidth"           type="xsd:int" />
-            <xsd:element name="serviceAttributes"   type="tns:ServiceAttributesType" minOccurs="0" />
-            <xsd:element name="path"                type="tns:PathType" />
+            <xsd:element name="schedule"      type="tns:ScheduleType" />
+            <xsd:element name="serviceType"   type="xsd:string" minOccurs="0" />
+            <xsd:any     namespace="##other"  processContents="lax" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
-        <xsd:attribute   name="version"             type="xsd:int" use="required" />
+        <xsd:attribute    name="version"      type="xsd:int" use="required" />
+        <xsd:anyAttribute namespace="##other" processContents="lax" />
     </xsd:complexType>
     
     <xsd:complexType name="QuerySummaryResultType">
@@ -844,39 +877,41 @@
                 schedule - Time parameters specifying the life of the service.
                 
                 serviceType - The specific service type of this reservation. 
-                This service type string maps into the list of supported
-                service descriptions defined by the network providers, and in
-                turn, to the specific service elements carried in the
-                serviceAttributes element required to specify the requested
-                service.  
-                
-                bandwidth - Bandwidth of the service in Mb/s.
-                
-                serviceAttributes - Technology specific attributes relating to
-                the service.
-                
-                path - The source and destination end points of the service.
-                Can optionally provide additional path segments to guide path
-                computation.
+                This service type string maps into the list of supported service
+                descriptions defined by the network providers, and in turn, to
+                the specific service elements carried in the serviceAttributes
+                element required to specify the requested service.  
 
                 children - If this connection reservation is aggregating child
                 connections then this element contains basic summary
                 information about the child connection segment.
 
+                any - Provides a flexible mechanism allowing additional elements 
+                to be provided such as the service specific attributes specified 
+                by serviceType.  Additional use of this element field is beyond 
+                the current scope of this NSI specification, but may be used in 
+                the future to extend the existing protocol without requiring a 
+                schema change. 
+
                 Attributes:
                 
                 version - Version of the reservation instance.
+                
+                anyAttribute - Provides a flexible mechanism allowing additional 
+                attributes to be provided as needed.  Use of this attribute field 
+                is beyond the current scope of this NSI specification, but may be
+                used in the future to extend the existing protocol without 
+                requiring a schema change.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="schedule"            type="tns:ScheduleType" />
-            <xsd:element name="serviceType"         type="xsd:string" minOccurs="0" />
-            <xsd:element name="bandwidth"           type="xsd:int" />
-            <xsd:element name="serviceAttributes"   type="tns:ServiceAttributesType" minOccurs="0" />
-            <xsd:element name="path"                type="tns:PathType" />
-            <xsd:element name="children"            type="tns:ChildSummaryListType" minOccurs="0" />
+            <xsd:element name="schedule"      type="tns:ScheduleType" />
+            <xsd:element name="serviceType"   type="xsd:string" minOccurs="0" />
+            <xsd:element name="children"      type="tns:ChildSummaryListType" minOccurs="0" />
+            <xsd:any     namespace="##other"  processContents="lax" minOccurs="0" maxOccurs="unbounded" />            
         </xsd:sequence>
-        <xsd:attribute   name="version"             type="xsd:int" use="required" />
+        <xsd:attribute    name="version"      type="xsd:int" use="required" />
+        <xsd:anyAttribute namespace="##other" processContents="lax" />
     </xsd:complexType>
     
     <xsd:complexType name="ChildSummaryListType">
@@ -893,21 +928,17 @@
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="child" type="tns:SummaryPathType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="child" type="tns:ChildSummaryType" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
     </xsd:complexType>
     
-    <xsd:complexType name="SummaryPathType">
+    <xsd:complexType name="ChildSummaryType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
                 This type is used to model a connection reservation's summary
                 path information.  The structure provides the next level of
                 connection information but not state.
 
-                Attributes:
-                
-                order - Specification of ordered path elements.
-                
                 Elements:
 
                 connectionId - The connection identifier associated with the
@@ -916,16 +947,38 @@
                 providerNSA - The provider NSA holding the connection
                 information associated with this instance of data.
                 
-                path - The summary path information associated with the
-                connection reservation.
+                serviceType - The specific service type of this reservation. 
+                This service type string maps into the list of supported service
+                descriptions defined by the network providers, and in turn, to
+                the specific service elements carried in the serviceAttributes
+                element required to specify the requested service.  
+
+                any - Provides a flexible mechanism allowing additional elements 
+                to be provided such as the service specific attributes specified 
+                by serviceType.  Additional use of this element field is beyond 
+                the current scope of this NSI specification, but may be used in 
+                the future to extend the existing protocol without requiring a 
+                schema change. 
+                
+                Attributes:
+                
+                order - Specification of ordered path elements.
+                
+                anyAttribute - Provides a flexible mechanism allowing additional 
+                attributes to be provided as needed.  Use of this attribute field 
+                is beyond the current scope of this NSI specification, but may be
+                used in the future to extend the existing protocol without 
+                requiring a schema change.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="connectionId"    type="ftypes:ConnectionIdType" />
-            <xsd:element name="providerNSA"     type="ftypes:NsaIdType" />
-            <xsd:element name="path"            type="tns:PathType" minOccurs="0" />
+            <xsd:element  name="connectionId" type="ftypes:ConnectionIdType" />
+            <xsd:element  name="providerNSA"  type="ftypes:NsaIdType" />
+            <xsd:element  name="serviceType"  type="xsd:string" minOccurs="0" />
+            <xsd:any      namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
-        <xsd:attribute name="order" type="xsd:int" use="required" />
+        <xsd:attribute    name="order"        type="xsd:int" use="required" />
+        <xsd:anyAttribute namespace="##other" processContents="lax" />
     </xsd:complexType>
     
     <xsd:complexType name="QueryRecursiveResultType">
@@ -987,37 +1040,46 @@
                 service descriptions defined by the network providers, and in
                 turn, to the specific service elements carried in the
                 serviceAttributes element required to specify the requested
-                service.
+                service.  
                 
-                bandwidth - Bandwidth of the service in Mb/s.
-                
-                serviceAttributes - Technology specific attributes relating to
-                the service.
-                
-                path - The source and destination end points of the service.
-                Can optionally provide additional path segments to guide path
-                computation.
+                serviceType - The specific service type of this reservation. 
+                This service type string maps into the list of supported service
+                descriptions defined by the network providers, and in turn, to
+                the specific service elements carried in the serviceAttributes
+                element required to specify the requested service.  
                 
                 children - If this connection reservation is aggregating child
                 connections then this element contains detailed information
                 about the child connection segment.  The level of detail
                 include is left up to the individual NSA and their
                 authorization policies.
-                
+
+                any - Provides a flexible mechanism allowing additional elements 
+                to be provided such as the service specific attributes specified 
+                by serviceType.  Additional use of this element field is beyond 
+                the current scope of this NSI specification, but may be used in 
+                the future to extend the existing protocol without requiring a 
+                schema change. 
+
                 Attributes:
                 
                 version - Version of the reservation instance.
+                
+                anyAttribute - Provides a flexible mechanism allowing additional 
+                attributes to be provided as needed.  Use of this attribute field 
+                is beyond the current scope of this NSI specification, but may be
+                used in the future to extend the existing protocol without 
+                requiring a schema change.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="schedule"            type="tns:ScheduleType" />
-            <xsd:element name="serviceType"         type="xsd:string" minOccurs="0" />
-            <xsd:element name="bandwidth"           type="xsd:int" />
-            <xsd:element name="serviceAttributes"   type="tns:ServiceAttributesType" minOccurs="0" />
-            <xsd:element name="path"                type="tns:PathType" />
-            <xsd:element name="children"           type="tns:ChildRecursiveListType" minOccurs="0" />
+            <xsd:element  name="schedule"     type="tns:ScheduleType" />
+            <xsd:element  name="serviceType"  type="xsd:string" minOccurs="0" />
+            <xsd:element  name="children"     type="tns:ChildRecursiveListType" minOccurs="0" />
+            <xsd:any      namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
-        <xsd:attribute   name="version"             type="xsd:int" use="required" />
+        <xsd:attribute    name="version"      type="xsd:int" use="required" />
+        <xsd:anyAttribute namespace="##other" processContents="lax" />
     </xsd:complexType>
     
     <xsd:complexType name="ChildRecursiveListType">
@@ -1035,11 +1097,11 @@
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="child" type="tns:RecursivePathType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="child" type="tns:ChildRecursiveType" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
     </xsd:complexType>
 
-    <xsd:complexType name="RecursivePathType">
+    <xsd:complexType name="ChildRecursiveType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
                 This type is used to model a connection reservation's detailed 
@@ -1094,133 +1156,6 @@
             <xsd:element name="startTime" type="ftypes:DateTimeType" minOccurs="0" />
             <xsd:element name="endTime"   type="ftypes:DateTimeType" minOccurs="0" />
         </xsd:sequence>
-    </xsd:complexType>
-
-    <xsd:complexType name="ServiceAttributesType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                A holder type for externally specified service elements.  Element
-                included in this type are based on the individual service definitions
-                not defined in the NSI CS core specification.
-                
-                Elements:
-                
-                any - Provides a flexible mechanism allowing additional service
-                elements to be provided relating to the requested service type.
-                Use of this element field is beyond the current scope of this
-                NSI CS specification, but will be specified in individual service
-                definitions.
-                
-                Attributes:
-                
-                anyAttribute - Provides a flexible mechanism allowing additional
-                attributes to be provided as needed for service specification.
-                Use of this attribute field is beyond the current scope of this
-                NSI CS specification, but will be specified in individual service
-                definitions.            
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:sequence>
-            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
-        </xsd:sequence>
-        <xsd:anyAttribute namespace="##other" processContents="lax" />
-    </xsd:complexType>
-    
-    <xsd:complexType name="PathType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                Path of the service represented by a list of STP.
-                
-                Elements:
-                
-                directionality - The (uni or bi) directionality of the service.
-                
-                symmetricPath - An indication that both directions of a bidirectional
-                circuit must fallow the same path.  Only applicable when
-                directionality is "Bidirectional".  If not specified then value
-                is assumed to be false.
-                
-                sourceSTP - Source STP of the service.
-                
-                destSTP - Destination STP of the service.
-                
-                ero - Hop-by-hop ordered list of STP from sourceSTP to
-                destSTP. List does not include sourceSTP and destSTP.
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="directionality"  type="tns:DirectionalityType" default="Bidirectional" />
-            <xsd:element name="symmetricPath"   type="xsd:boolean" minOccurs="0" />
-            <xsd:element name="sourceSTP"       type="tns:StpType" />
-            <xsd:element name="destSTP"         type="tns:StpType" />
-            <xsd:element name="ero"             type="tns:StpListType" minOccurs="0" />
-        </xsd:sequence>
-    </xsd:complexType>
-    
-    <xsd:complexType name="StpType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                The Service Termination Point (STP) type used for path selection.
-                 
-                Elements:
-                
-                networkId - A globally unique identifier (URN) that identifies the
-                Network.  Rather than forcing parsing of an STP to determine the
-                Network, a separate Network object is defined to allow an
-                intermediate NSA to forward the message to the target Network
-                without needing to know about the STPs within that domain.
-                
-                localId - A locally unique identifier for the STP within the
-                associated network.
-                
-                labels - Technology specific attributes associated with
-                the Service Termination Point.
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="networkId"       type="xsd:string" />
-            <xsd:element name="localId"         type="xsd:string" />
-            <xsd:element name="labels"          type="ftypes:TypeValuePairListType" minOccurs="0" />
-        </xsd:sequence>
-    </xsd:complexType>
-    
-    <xsd:complexType name="StpListType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                A simple ordered list type of Service Termination Point (STP). List
-                order is determined by the integer order attribute in the orderedSTP
-                element.
-    
-                Elements:
-    
-                orderedSTP - A list of STP ordered 0..n by their integer order attribute.
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="orderedSTP" type="tns:OrderedStpType" minOccurs="0" maxOccurs="unbounded" />
-        </xsd:sequence>
-    </xsd:complexType>
-
-    <xsd:complexType name="OrderedStpType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                A Service Termination Point (STP) that can be ordered in a list for
-                use in PathObject definition.
-    
-                Attributes:
-    
-                order - Order attribute is provided only when the STP is part of an
-                orderedStpList.
-    
-                Elements:
-    
-                stp - The Service Termination Point (STP).
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:sequence>
-            <xsd:element name="stp" type="tns:StpType" />
-        </xsd:sequence>
-        <xsd:attribute   name="order" type="xsd:int" use="required" />
     </xsd:complexType>
     
     <xsd:complexType name="ConnectionStatesType">
@@ -1304,20 +1239,6 @@
             </xsd:documentation>
         </xsd:annotation>
         <xsd:restriction base="xsd:int" />
-    </xsd:simpleType>
-    
-    <xsd:simpleType name="DirectionalityType">
-        <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-                The directionality of the requested data service.  Possible values
-                are "Bidirectional" for a bidirectional data service, and
-                "Unidirectional" for a unidirectional data service.
-            </xsd:documentation>
-        </xsd:annotation>
-        <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="Bidirectional" />
-            <xsd:enumeration value="Unidirectional" />
-        </xsd:restriction>
     </xsd:simpleType>
 
     <xsd:simpleType name="EventEnumType">

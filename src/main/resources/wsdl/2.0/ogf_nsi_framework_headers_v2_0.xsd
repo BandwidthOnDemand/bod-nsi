@@ -16,11 +16,11 @@ Open Grid Forum NSI Connection Services Protocol v2.0
 
 Description: This is the ftypes schema for the reference web services implementation of the OGF NSI Connection Services Protocol v2.0. Comments and questions can be directed to the mailing list group mailing list (nsi-wg@ogf.org).
 -->
-<xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/04/framework/headers"
+<xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/07/framework/headers"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-    xmlns:ftypes="http://schemas.ogf.org/nsi/2013/04/framework/types"
-    xmlns:tns="http://schemas.ogf.org/nsi/2013/04/framework/headers">
+    xmlns:ftypes="http://schemas.ogf.org/nsi/2013/07/framework/types"
+    xmlns:tns="http://schemas.ogf.org/nsi/2013/07/framework/headers">
 
     <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -34,7 +34,7 @@ Description: This is the ftypes schema for the reference web services implementa
                             schemaLocation="saml-schema-assertion-2.0.xsd"/>
     
     <!-- Import the common NSI framework ftypes. -->
-    <xsd:import namespace="http://schemas.ogf.org/nsi/2013/04/framework/types"
+    <xsd:import namespace="http://schemas.ogf.org/nsi/2013/07/framework/types"
         schemaLocation="ogf_nsi_framework_types_v2_0.xsd"/>
 
     <!-- ******************************************************************

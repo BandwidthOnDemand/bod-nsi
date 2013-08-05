@@ -4,7 +4,7 @@
     <groupId>nl.surfnet.bod</groupId>
     <artifactId>bod-nsi</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.2-SNAPSHOT</version>
+    <version>0.2.3-SNAPSHOT</version>
     <name>bod-nsi</name>
 
     <scm>
@@ -16,6 +16,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+        <jaxb.generated.sources>${project.build.directory}/generated-sources/wsdl</jaxb.generated.sources>
     </properties>
 
     <dependencies>
@@ -28,10 +29,57 @@
     <build>
         <plugins>
             <plugin>
+                <groupId>org.jvnet.jaxb2.maven2</groupId>
+                <artifactId>maven-jaxb2-plugin</artifactId>
+                <version>0.8.3</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Same as wsimport below to avoid duplicate class errors -->
+                            <generateDirectory>${jaxb.generated.sources}</generateDirectory>
+                            <schemaExcludes>
+                                <exlude>wsdl/2.0/ogf_nsi_framework_types_v2_0.xsd</exlude>
+                            </schemaExcludes>
+                            <schemaIncludes>
+                                <include>wsdl/2.0/ogf_nsi_services_p2p_v2_0.xsd</include>
+                                <include>wsdl/2.0/ogf_nsi_services_types_v2_0.xsd</include>
+                            </schemaIncludes>
+                            <args>
+                                <arg>-Xfluent-api</arg>
+                                <arg>-Xequals</arg>
+                                <arg>-XhashCode</arg>
+                                <arg>-XtoString</arg>
+                            </args>
+                            <markGenerated>true</markGenerated>
+                            <plugins>
+                                <plugin>
+                                    <groupId>org.jvnet.jaxb2_commons</groupId>
+                                    <artifactId>jaxb2-basics</artifactId>
+                                    <version>0.6.4</version>
+                                </plugin>
+                                <plugin>
+                                    <groupId>org.jvnet.jaxb2_commons</groupId>
+                                    <artifactId>jaxb2-fluent-api</artifactId>
+                                    <version>3.0</version>
+                                </plugin>
+                            </plugins>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
-                <version>2.2</version>
+                <version>2.3</version>
                 <dependencies>
+                    <dependency>
+                        <groupId>org.jvnet.jaxb2_commons</groupId>
+                        <artifactId>jaxb2-basics</artifactId>
+                        <version>0.6.4</version>
+                    </dependency>
                     <dependency>
                         <groupId>org.jvnet.jaxb2_commons</groupId>
                         <artifactId>jaxb2-fluent-api</artifactId>
@@ -44,6 +92,8 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
+                            <!-- Same as XJC above to avoid duplicate class errors -->
+                            <sourceDestDir>${jaxb.generated.sources}</sourceDestDir>
                             <quiet>true</quiet>
                             <verbose>false</verbose>
                             <keep>true</keep>
@@ -57,6 +107,7 @@
                                 <wsdlFile>2.0/ogf_nsi_connection_provider_v2_0.wsdl</wsdlFile>
                             </wsdlFiles>
                             <xjcArgs>
+                                <xjcArg>-mark-generated</xjcArg>
                                 <xjcArg>-Xfluent-api</xjcArg>
                                 <xjcArg>-Xequals</xjcArg>
                                 <xjcArg>-XhashCode</xjcArg>

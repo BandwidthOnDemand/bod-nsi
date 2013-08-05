@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- A service description must have a unique identifier within the network
+    sourcing the description. -->
+<sd:serviceDescription id="urn:ogf:network:netherlight.net:2012:service:EVTS.A-GOLE"
+    xmlns:sd="http://schemas.ogf.org/nsi/2013/07/services/description"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://schemas.ogf.org/nsi/2013/07/services/description file:ogf_nsi_services_description_v2_0.xsd">
+    
+    <!-- A comment describes the basic service offered in this service
+        description.  Any differences from the global service description
+        should be identified here. -->
+    <comment>
+        This is the Common Service Definition file that defines all parameters
+        associated with the Ethernet Framed Transport Service as defined for
+        the Automated GOLE network.
+    </comment>
+
+    <!-- This is the standard service type as defined in the associated global
+        service description. We allocate a standard namespace for each template
+        so they are globally unique. -->
+    <serviceType>http://services.ogf.org/nsi/2013/07/descriptions/EVTS.A-GOLE</serviceType>
+    
+    <!-- This is the schema elements specified in a reservation.  There can be
+         multiple schema entries here for services if they require multiple
+         schema in a reserve request. 
+    
+         name - The name of the element carried in the reserve criteria.
+         
+         required - Is this element required in the reserve criteria or is it
+         optional.
+         
+         namespace - The qualified namesapce of the XML schema defining the
+         element.
+         
+         type - The XML schema type of the element.
+    -->
+    <schema name="evts" required="true"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://schemas.ogf.org/nsi/2013/07/services/point2point}EthernetVlanType"/>
+
+    <!-- Parameter definitions for the service and their values. These reflect
+         the XML schema definitions and any local range restrictions.  The
+         associated service XML schema is the definitive source for and type
+         and range definitions. If a parameter of the service is not contained
+         in this service descrption then it is not supported for this profile.
+    
+         Attributes:
+         
+         name - The name of the parameter within the XML schema for the
+         service.
+         
+         units - (Optinal) The unit of measurement for this parameter.
+         
+         required - Indicates if the parameter is mandatory or optional.
+         
+         modifiable - Can this parameter be modified after the initial
+         reservation has been created.  There are four values for modifiable:
+            false - parameter cannot be modified.
+            true - parameter can be modified and there are no restrictions.
+            pre - parameter can only be modified before schedule start time.
+            post - parameter can only be modified after schedule start time.
+            
+         namespace - The qualified namesapce of the XML schema defining the
+         parameter.
+         
+         type - The fully qualified XML schema type of the parameter.
+         
+         Elements:
+         
+         comment - Descriptive text describing the parameter.
+         
+         minInclusive, maxInclusive - Allows the specification of parameter
+         ranges.
+         
+         increment - Allows for the specification of parameter value increments.
+         
+         default - The default for the parameter if a value is not specified.
+         This must not conflict with any default specified in the XML schema
+         definition for the parameter.
+    -->
+    <parameter name="capacity" units="Mbps" required="true" modifiable="true"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://www.w3.org/2001/XMLSchema}int">
+        <comment>
+            Capacity is defined to be the average quantity of data that will be
+            guaranteed to be transported per unit time from ingress to egress,
+            normalized to 1 second. The "capacity" for the EVTS instance
+            includes the ethernet frame header(s) but does not include sync
+            bits or any inter-frame gap considerations. Further, the EVTS
+            "capacity" attribute does not include any additional headers that
+            may be applied in transit.
+        </comment>
+        <minInclusive>0</minInclusive>
+        <maxInclusive>100000</maxInclusive>
+        <increment>1</increment>
+    </parameter>
+
+    <!-- The service XML schema should fully define enumerated types, their
+         defaults, and optionality. This is here for informational purposes. -->
+    <parameter name="directionality" required="false" modifiable="false"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://schemas.ogf.org/nsi/2013/07/services/types}DirectionalityType">
+        <comment>
+            Directionality specifies whether the Connect requested is to be a
+            "unidirectional" or "bidirectional" circuit. The implications for
+            unidirectional are fairly obvious. However for bidirectional
+            connections the STPs must be defined as bi-directional. Note:
+            there may be ambiguity in certain topological scenarios where the
+            routing of the connection may not be clear.
+        </comment>
+        <default>Bidirectional</default>
+    </parameter>
+
+    <!-- The service XML schema should fully define boolean types, their
+         defaults, and optionality. The only value for this being here is
+         informational and to indicate if the parameter can be modified. -->
+    <parameter name="symmetricPath" required="false" modifiable="false"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://www.w3.org/2001/XMLSchema}boolean">
+        <comment>
+            An indication that both directions of a bidirectional circuit must
+            follow the same path. Only applicable when directionality is
+            "Bidirectional". If not specified then value is assumed to be false.
+        </comment>
+        <default>false</default>
+    </parameter>
+
+    <!-- This is here for informational purposes. The only value for this being
+         here is informational and to indicate if the parameter can be modified.
+    -->
+    <parameter name="sourceSTP" required="true" modifiable="false"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://schemas.ogf.org/nsi/2013/07/services/types}StpType">
+        <comment>
+            Source STP of the service.
+        </comment>
+    </parameter>
+
+    <parameter name="destSTP" required="true" modifiable="false"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://schemas.ogf.org/nsi/2013/07/services/types}StpType">
+        <comment>
+            Destination STP of the service.
+        </comment>
+    </parameter>
+
+    <parameter name="ero" required="false" modifiable="false"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://schemas.ogf.org/nsi/2013/07/services/types}StpListType">
+        <comment>
+            Hop-by-hop ordered list of STP from sourceSTP to destSTP. List does not include
+            sourceSTP and destSTP.
+        </comment>
+    </parameter>
+
+    <parameter name="mtu" units="bytes" required="false" modifiable="false"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://www.w3.org/2001/XMLSchema}int">
+        <comment> Specifies the maximum transmission unit size in bytes. </comment>
+        <minInclusive>1500</minInclusive>
+        <maxInclusive>9000</maxInclusive>
+        <increment>1</increment>
+        <default>9000</default>
+    </parameter>
+
+    <parameter name="burstsize" units="bytes" required="false" modifiable="false"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://www.w3.org/2001/XMLSchema}int">
+        <comment>
+            Burstsize describes the maximum amount of data that the ingress STP
+            will accept in a single sequence of packets at line rate of that
+            STP. Bursts must be separated by a long enough quiescent period for
+            the average long term rate of data transfer is within the capacity
+            limits. Packets exceeding this burst profile are policed and will
+            be immediately dropped when detected.
+        </comment>
+        <minInclusive>0</minInclusive>
+        <maxInclusive>100000000000</maxInclusive>
+        <increment>1</increment>
+    </parameter>
+    
+    <parameter name="sourceVLAN" required="true" modifiable="false"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://www.w3.org/2001/XMLSchema}int">
+        <comment>
+            The VLAN identifier must be in the range 1780 - 1783.
+        </comment>
+        <minInclusive>1780</minInclusive>
+        <maxInclusive>1783</maxInclusive>
+        <increment>1</increment>
+    </parameter>
+
+    <parameter name="destVLAN" required="true" modifiable="false"
+        namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
+        type="{http://www.w3.org/2001/XMLSchema}int">
+        <comment>
+            The VLAN identifier must be in the range 1780 - 1783.
+        </comment>
+        <minInclusive>1780</minInclusive>
+        <maxInclusive>1783</maxInclusive>
+        <increment>1</increment>
+    </parameter>
+       
+    <!-- Errors defined for this service. -->
+    <error id="00700" text="SERVICE_ERROR">
+        <comment>
+            Parent error classification for a service specific error. This
+            generic service error is generated for any errors that have not
+            been specifically enumerated.
+        </comment>
+    </error>
+    <error id="00701" text="UNKNOWN_STP">
+        <comment>
+            Could not find the specified STP within the topology database.
+            Variables will contain the unknown STP.
+        </comment>
+    </error>
+    <error id="00702" text="STP_RESOLUTION_ERROR">
+        <comment>
+            Could not resolve STP to a managing NSA. This would indicate that
+            the networkId component of the STP does not have a managing NSA
+            within the topology database. Variables will contain the unresolved
+            STP.
+        </comment>
+    </error>
+    <error id="00703" text="VLANID_INTERCANGE_NOT_SUPPORTED">
+        <comment>
+            VLAN interchange not supported for requested path. Variables will
+            contain the networkId of the network unable to support VLAN
+            interchange.
+        </comment>
+    </error>
+    <error id="00704" text="STP_UNAVALABLE">
+        <comment>
+            Specified STP already in use during the requested period. Variables
+            will contain the STP already in use.
+        </comment>
+    </error>
+    <error id="00705" text="BANDWIDTH_UNAVAILABLE">
+        <comment>
+            Insufficient bandwidth available for reservation. Variable will
+            contain requested capacity.
+        </comment>
+    </error>
+    <error id="00706" text="DIRECTIONALITY_NOT_SUPPORTED">
+        <comment>
+            Requested directionality is not supported. Variable will contain
+            requested directionality.
+        </comment>
+    </error>
+</sd:serviceDescription>

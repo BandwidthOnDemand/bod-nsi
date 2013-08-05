@@ -19,14 +19,14 @@
     This document is the SOAP endpoint definition for a provider NSA.  It holds definitions for messages the provider NSA will receive.  For the reserve, provision, release, and terminate message sets the provider will receive request messages only.  For the query operation a provider NSA must support request, confirmed, and failed messages due to the possibility that a provider NSA may query the requester for a list of connection reservations.
 -->
 <wsdl:definitions name="ogf_nsi_connection_provider_v2_0"
-    targetNamespace="http://schemas.ogf.org/nsi/2013/04/connection/provider"
+    targetNamespace="http://schemas.ogf.org/nsi/2013/07/connection/provider"
     xmlns="http://schemas.xmlsoap.org/wsdl/"
     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
-    xmlns:tns="http://schemas.ogf.org/nsi/2013/04/connection/provider"
-    xmlns:interface="http://schemas.ogf.org/nsi/2013/04/connection/interface">
+    xmlns:tns="http://schemas.ogf.org/nsi/2013/07/connection/provider"
+    xmlns:interface="http://schemas.ogf.org/nsi/2013/07/connection/interface">
 
-    <wsdl:import namespace="http://schemas.ogf.org/nsi/2013/04/connection/interface"
+    <wsdl:import namespace="http://schemas.ogf.org/nsi/2013/07/connection/interface"
         location="ogf_nsi_connection_interface_v2_0.wsdl" />
 
     <!-- WSDL operation definitions with associated input (request), output
