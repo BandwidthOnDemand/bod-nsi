@@ -291,7 +291,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="reserveConfirmed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/reserveConfirmed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/reserveConfirmed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -308,7 +308,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="reserveFailed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/reserveFailed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/reserveFailed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -327,7 +327,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         
         <wsdl:operation name="reserveCommitConfirmed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/reserveCommitConfirmed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/reserveCommitConfirmed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -344,7 +344,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         
         <wsdl:operation name="reserveCommitFailed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/reserveCommitFailed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/reserveCommitFailed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -363,7 +363,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         
         <wsdl:operation name="reserveAbortConfirmed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/reserveAbortConfirmed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/reserveAbortConfirmed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -382,7 +382,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="provisionConfirmed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/provisionConfirmed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/provisionConfirmed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -401,7 +401,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="releaseConfirmed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/releaseConfirmed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/releaseConfirmed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -420,7 +420,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="terminateConfirmed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/terminateConfirmed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/terminateConfirmed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -439,7 +439,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="querySummaryConfirmed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/querySummaryConfirmed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/querySummaryConfirmed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -456,7 +456,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         
         <wsdl:operation name="querySummaryFailed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/querySummaryFailed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/querySummaryFailed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -475,7 +475,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="queryRecursiveConfirmed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryRecursiveConfirmed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/queryRecursiveConfirmed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -492,7 +492,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         
         <wsdl:operation name="queryRecursiveFailed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryRecursiveFailed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/queryRecursiveFailed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -511,7 +511,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         
         <wsdl:operation name="queryNotificationConfirmed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryNotificationConfirmed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/queryNotificationConfirmed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -528,7 +528,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         
         <wsdl:operation name="queryNotificationFailed">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/queryNotificationFailed"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/queryNotificationFailed"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -547,7 +547,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="error">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/error"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/error"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -566,7 +566,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="errorEvent">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/errorEvent"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/errorEvent"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -583,7 +583,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         
         <wsdl:operation name="dataPlaneStateChange">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/dataPlaneStateChange"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/dataPlaneStateChange"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -600,7 +600,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
 
         <wsdl:operation name="reserveTimeout">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/reserveTimeout"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/reserveTimeout"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
@@ -617,7 +617,7 @@ This document is the SOAP endpoint definition for a requester NSA and holds defi
         
         <wsdl:operation name="messageDeliveryTimeout">
             <soap:operation
-                soapAction="http://schemas.ogf.org/nsi/2013/04/connection/service/messageDeliveryTimeout"
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/messageDeliveryTimeout"
                 style="document" />
             <wsdl:input>
                 <soap:header message="interface:header" part="header" use="literal"/>
