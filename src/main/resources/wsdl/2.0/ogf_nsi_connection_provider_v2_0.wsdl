@@ -165,7 +165,7 @@
             </wsdl:documentation>
             <wsdl:input  name="querySummarySync"           message="interface:querySummarySync" />
             <wsdl:output name="querySummarySyncConfirmed"  message="interface:querySummarySyncConfirmed" />
-            <wsdl:fault  name="querySummarySyncFailed"     message="interface:querySummarySyncFailed" />
+            <wsdl:fault  name="error"                      message="interface:error" />
         </wsdl:operation>
 
         <!-- ********** QueryRecursive operation set *********** -->
@@ -212,7 +212,21 @@
             </wsdl:documentation>
             <wsdl:input  name="queryNotificationSync"           message="interface:queryNotificationSync" />
             <wsdl:output name="queryNotificationSyncConfirmed"  message="interface:queryNotificationSyncConfirmed" />
-            <wsdl:fault  name="queryNotificationSyncFailed"     message="interface:queryNotificationSyncFailed" />
+            <wsdl:fault  name="error"                           message="interface:error" />
+        </wsdl:operation>
+        
+        <!-- ********** Error message set ********** -->
+        
+        <wsdl:operation name="error">
+            <wsdl:documentation>
+                The error message is sent from a Requester NSA to Provider
+                NSA as an indication of the occurence of an error condition.
+                This  is in response to an original request from the associated
+                Provider NSA (currently only querySummary operations).
+            </wsdl:documentation>
+            <wsdl:input  name="error"             message="interface:error" />
+            <wsdl:output name="errorACK"          message="interface:acknowledgment" />
+            <wsdl:fault  name="serviceException"  message="interface:serviceException" />
         </wsdl:operation>
     </wsdl:portType>
     
@@ -366,8 +380,8 @@
                 <soap:header message="interface:header" part="header" use="literal"/>
                 <soap:body use="literal" />
             </wsdl:output>
-            <wsdl:fault name="querySummarySyncFailed">
-                <soap:fault name="querySummarySyncFailed" use="literal" />
+            <wsdl:fault name="error">
+                <soap:fault name="error" use="literal" />
             </wsdl:fault>
         </wsdl:operation>
         
@@ -423,10 +437,29 @@
                 <soap:header message="interface:header" part="header" use="literal"/>
                 <soap:body use="literal" />
             </wsdl:output>
-            <wsdl:fault name="queryNotificationSyncFailed">
-                <soap:fault name="queryNotificationSyncFailed" use="literal" />
+            <wsdl:fault name="error">
+                <soap:fault name="error" use="literal" />
             </wsdl:fault>
-        </wsdl:operation>        
+        </wsdl:operation>
+        
+        <!-- ********** Error operation set ********** -->
+        
+        <wsdl:operation name="error">
+            <soap:operation
+                soapAction="http://schemas.ogf.org/nsi/2013/07/connection/service/error"
+                style="document" />
+            <wsdl:input>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:header message="interface:header" part="header" use="literal"/>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="serviceException">
+                <soap:fault name="serviceException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
     </wsdl:binding>
     
     <wsdl:service name="ConnectionServiceProvider">

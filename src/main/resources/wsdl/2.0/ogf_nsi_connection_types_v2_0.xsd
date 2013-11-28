@@ -214,14 +214,14 @@
     <xsd:complexType name="ReserveType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                A type definition modeling the reserve message that allows a
-                Requester NSA to reserve network resources for a connection
-                between two STP's constrained by a certain service parameters.
-                This operation allows a Requester NSA to check the feasibility
-                of connection reservation or a modification to an existing
-                reservation. Any resources associated with the reservation or
-                modification will be allocated and held until a reserveConfirmed 
-                is received or timeout occurs.
+                The NSI CS reserve message allows a RA to reserve network
+                resources associated with a service within the Network
+                constrained by the provided service parameters.  This operation
+                allows a Requester NSA to check the feasibility of connection
+                reservation or a modification to an existing reservation. Any
+                resources associated with the reservation or modification will
+                be allocated and held until a reserveConfirmed is received or
+                timeout occurs.
 
                 Elements:
                 
@@ -238,8 +238,9 @@
                 
                 description - An optional description for the service reservation.
                 
-                criteria - Reservation request criteria including start and end
-                time, service attributes, and requested path for the service.
+                criteria - Reservation request criteria including version,
+                start and end time, service type, and service specific schema
+                elements.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
@@ -534,8 +535,8 @@
                 
                 Elements:
                 
-                serviceException - Specific error condition - the reason for the
-                failure.
+                serviceException - Specific error condition indicating the
+                reason for the failure.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
@@ -579,8 +580,23 @@
                 end-time.
                 
                 Elements:
+
+                connectionId - The Provider NSA assigned connectionId that this
+                notification is against.
                 
+                notificationId - A notification identifier that is unique in the
+                context of a connectionId.  This is a linearly increasing
+                identifier that can be used for ordering notifications in the
+                context of the connectionId.
+                
+                timeStamp - Time the event was generated on the originating NSA.
+
                 event - The type of event that generated this notification.
+                
+                originatingConnectionId - The connectionId that triggered the
+                error event.
+                
+                originatingNSA - The NSA originating the error event.
                 
                 additionalInfo - Type/value pairs that can provide additional
                 error context as needed.
@@ -592,9 +608,11 @@
         <xsd:complexContent>
             <xsd:extension  base="tns:NotificationBaseType">
                 <xsd:sequence>
-                    <xsd:element name="event"               type="tns:EventEnumType" />
-                    <xsd:element name="additionalInfo"      type="ftypes:TypeValuePairListType" minOccurs="0" />
-                    <xsd:element name="serviceException"    type="ftypes:ServiceExceptionType" minOccurs="0" />
+                    <xsd:element name="event"                   type="tns:EventEnumType" />
+                    <xsd:element name="originatingConnectionId" type="ftypes:ConnectionIdType" />
+                    <xsd:element name="originatingNSA"          type="ftypes:NsaIdType" />
+                    <xsd:element name="additionalInfo"          type="ftypes:TypeValuePairListType" minOccurs="0" />
+                    <xsd:element name="serviceException"        type="ftypes:ServiceExceptionType" minOccurs="0" />
                 </xsd:sequence>
             </xsd:extension>
         </xsd:complexContent>                
@@ -603,21 +621,33 @@
     <xsd:complexType name="ReserveTimeoutRequestType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                Type definition for the reserve timeout notification message.
-                This is an autonomous message issued from a Provider NSA to
-                a Requester NSA when a timeout on an existing reserve request
-                occurs and uncommitted resources have been freed. The type of
-                event is orignaated from a uPA, and propagated up the request
-                tree to the originating uRA.  Aggregator NSA will map the
-                received connectionId into a context understood by the next
-                parent NSA in the reuqest tree, then propagate the event
-                upwards.  The originating connectionId and NSA are provided in
-                separate elements to maintin the original context generating
-                the timeout.  The timeoutValue and timeStamp are populated
-                by the originating NSA and propagated up the tree untouched.
+                The reserveTimeout message is an autonomous message issued from
+                a PA to an RA when a timeout on an existing reserve request
+                occurs, and the PA has freed any uncommitted resources
+                associated with the reservation. This type of event is
+                originated from an uPA managing network resources associated
+                with the reservation, and propagated up the request tree to the
+                originating uRA.  An aggregator NSA (performing both a PA and
+                RA role) will map the received connectionId into a context
+                understood by its direct parent RA in the request tree, then
+                propagate the event upwards.  The originating connectionId and
+                uPA are provided in separate elements to maintain the original
+                context generating the timeout.  The timeoutValue and
+                timeStamp are populated by the originating uPA and propagated
+                up the tree untouched by intermediate NSA.
                 
                 Elements:
-
+                
+                connectionId - The Provider NSA assigned connectionId that this
+                notification is against.
+                
+                notificationId - A notification identifier that is unique in the
+                context of a connectionId.  This is a linearly increasing
+                identifier that can be used for ordering notifications in the
+                context of the connectionId.
+                
+                timeStamp - Time the event was generated on the originating NSA.
+                
                 timeoutValue - The timeout value in seconds that expired this
                 reservation.
                 
@@ -735,13 +765,17 @@
                 Elements:
                 
                 schedule - Time parameters specifying the life of the service.
+                If not present then the service to start immediately and run
+                for an infinite time.
                 
                 serviceType - Specific service type being requested in the
                 reservation.  This service type string maps into the list
                 of supported service descriptions defined by the network
                 providers, and in turn, to the specific service elements
                 carried in this element (through the ANY definition) required
-                to specify the requested service.  
+                to specify the requested service.  The service type is
+                mandatory in the original reserve request, and optional in a
+                reserve issued to modify an existing reservation.
                 
                 any - Provides a flexible mechanism allowing additional elements
                 to be provided such as the service specific attributes specified
@@ -780,8 +814,10 @@
     <xsd:complexType name="ReservationConfirmCriteriaType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                Type definition for reservation confirmation information.
-                Includes the reservation version id.
+                A type definition for the reservation confirmation information
+                used by PA to return reservation information to an RA.
+                Includes the reservation version id to track version of the
+                reservation criteria.
                 
                 Elements:
                 
@@ -789,11 +825,10 @@
                 
                 serviceType - The specific service type of this reservation. 
                 This service type string maps into the list of supported service
-                descriptions defined by the network providers, and in turn, to
-                the specific service elements carried in the serviceAttributes
-                element required to specify the requested service.  This element
-                is mandatory in the reservation request but not required in the
-                modify request.
+                definitions defined by the network providers.  In turn, the
+                service type specifies the specific service elements carried in
+                an instance of this type (through the ANY definition) that
+                are associated with the requested service.
                 
                 any - Provides a flexible mechanism allowing additional elements 
                 to be provided such as the service specific attributes specified 
@@ -815,7 +850,7 @@
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="schedule"      type="tns:ScheduleType" />
-            <xsd:element name="serviceType"   type="xsd:string" minOccurs="0" />
+            <xsd:element name="serviceType"   type="xsd:string" />
             <xsd:any     namespace="##other"  processContents="lax" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
         <xsd:attribute    name="version"      type="xsd:int" use="required" />
@@ -878,9 +913,11 @@
                 
                 serviceType - The specific service type of this reservation. 
                 This service type string maps into the list of supported service
-                descriptions defined by the network providers, and in turn, to
-                the specific service elements carried in the serviceAttributes
-                element required to specify the requested service.  
+                definitions defined by the network providers.  In turn, the
+                service type specifies the specific service elements carried in
+                an instance of this type (through the ANY definition) that
+                are associated with the requested service.  This element is
+                mandatory.
 
                 children - If this connection reservation is aggregating child
                 connections then this element contains basic summary
@@ -906,7 +943,7 @@
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="schedule"      type="tns:ScheduleType" />
-            <xsd:element name="serviceType"   type="xsd:string" minOccurs="0" />
+            <xsd:element name="serviceType"   type="xsd:string" />
             <xsd:element name="children"      type="tns:ChildSummaryListType" minOccurs="0" />
             <xsd:any     namespace="##other"  processContents="lax" minOccurs="0" maxOccurs="unbounded" />            
         </xsd:sequence>
@@ -917,7 +954,7 @@
     <xsd:complexType name="ChildSummaryListType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
-                A holder element containing a list of children NSA and their
+                A holder element containing a list of child NSA and their
                 associated connection information. 
                 
                 Elements:
@@ -949,9 +986,11 @@
                 
                 serviceType - The specific service type of this reservation. 
                 This service type string maps into the list of supported service
-                descriptions defined by the network providers, and in turn, to
-                the specific service elements carried in the serviceAttributes
-                element required to specify the requested service.  
+                definitions defined by the network providers.  In turn, the
+                service type specifies the specific service elements carried in
+                in an instance of this type (through the ANY definition) that
+                are associated with the requested service.  This element is
+                mandatory.
 
                 any - Provides a flexible mechanism allowing additional elements 
                 to be provided such as the service specific attributes specified 
@@ -1036,17 +1075,11 @@
                 schedule - Time parameters specifying the life of the service.
                 
                 serviceType - The specific service type of this reservation. 
-                This service type string maps into the list of supported
-                service descriptions defined by the network providers, and in
-                turn, to the specific service elements carried in the
-                serviceAttributes element required to specify the requested
-                service.  
-                
-                serviceType - The specific service type of this reservation. 
                 This service type string maps into the list of supported service
-                descriptions defined by the network providers, and in turn, to
-                the specific service elements carried in the serviceAttributes
-                element required to specify the requested service.  
+                definitions defined by the network providers.  In turn, the
+                service type specifies the specific service elements carried in
+                an instance of this type (through the ANY definition) that
+                are associated with the requested service.
                 
                 children - If this connection reservation is aggregating child
                 connections then this element contains detailed information
@@ -1074,7 +1107,7 @@
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element  name="schedule"     type="tns:ScheduleType" />
-            <xsd:element  name="serviceType"  type="xsd:string" minOccurs="0" />
+            <xsd:element  name="serviceType"  type="xsd:string" />
             <xsd:element  name="children"     type="tns:ChildRecursiveListType" minOccurs="0" />
             <xsd:any      namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>

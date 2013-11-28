@@ -157,10 +157,6 @@ Description: This is a draft version of the WSDL common types and messages for t
         <wsdl:part name="querySummaryConfirmed" element="types:querySummaryConfirmed" />
     </wsdl:message>
 
-    <wsdl:message name="querySummaryFailed">
-        <wsdl:part name="querySummaryFailed" element="types:querySummaryFailed" />
-    </wsdl:message>
-
     <!-- ********** QuerySummarySync message set ********** -->
     <wsdl:message name="querySummarySync">
         <wsdl:part name="querySummarySync" element="types:querySummarySync" />
@@ -170,10 +166,6 @@ Description: This is a draft version of the WSDL common types and messages for t
         <wsdl:part name="querySummarySyncConfirmed" element="types:querySummarySyncConfirmed" />
     </wsdl:message>
     
-    <wsdl:message name="querySummarySyncFailed">
-        <wsdl:part name="querySummarySyncFailed" element="types:querySummarySyncFailed" />
-    </wsdl:message>
-    
     <!-- ********** QueryRecursive message set ********** -->
     <wsdl:message name="queryRecursive">
         <wsdl:part name="queryRecursive" element="types:queryRecursive" />
@@ -181,10 +173,6 @@ Description: This is a draft version of the WSDL common types and messages for t
     
     <wsdl:message name="queryRecursiveConfirmed">
         <wsdl:part name="queryRecursiveConfirmed" element="types:queryRecursiveConfirmed" />
-    </wsdl:message>
-    
-    <wsdl:message name="queryRecursiveFailed">
-        <wsdl:part name="queryRecursiveFailed" element="types:queryRecursiveFailed" />
     </wsdl:message>
 
     <!-- ********** QueryNotification message set ********** -->
@@ -196,10 +184,6 @@ Description: This is a draft version of the WSDL common types and messages for t
         <wsdl:part name="queryNotificationConfirmed" element="types:queryNotificationConfirmed" />
     </wsdl:message>
     
-    <wsdl:message name="queryNotificationFailed">
-        <wsdl:part name="queryNotificationFailed" element="types:queryNotificationFailed" />
-    </wsdl:message>
-    
     <!-- ********** QueryNotificationSync message set ********** -->
     <wsdl:message name="queryNotificationSync">
         <wsdl:part name="queryNotificationSync" element="types:queryNotificationSync" />
@@ -207,10 +191,6 @@ Description: This is a draft version of the WSDL common types and messages for t
     
     <wsdl:message name="queryNotificationSyncConfirmed">
         <wsdl:part name="queryNotificationSyncConfirmed" element="types:queryNotificationSyncConfirmed" />
-    </wsdl:message>
-    
-    <wsdl:message name="queryNotificationSyncFailed">
-        <wsdl:part name="queryNotificationSyncFailed" element="types:queryNotificationSyncFailed" />
     </wsdl:message>
     
     <!-- ********** Error message set ********** -->

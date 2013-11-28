@@ -78,13 +78,13 @@
          minInclusive, maxInclusive - Allows the specification of parameter
          ranges.
          
-         increment - Allows for the specification of parameter value increments.
+         spacing - Allows for the specification of parameter value increments.
          
          default - The default for the parameter if a value is not specified.
          This must not conflict with any default specified in the XML schema
          definition for the parameter.
     -->
-    <parameter name="capacity" units="Mbps" required="true" modifiable="true"
+    <parameter name="capacity" units="bps" required="true" modifiable="true"
         namespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
         type="{http://www.w3.org/2001/XMLSchema}int">
         <comment>
@@ -97,8 +97,9 @@
             may be applied in transit.
         </comment>
         <minInclusive>0</minInclusive>
-        <maxInclusive>100000</maxInclusive>
+        <maxInclusive>100000000000</maxInclusive>
         <increment>1</increment>
+        <default>0</default>
     </parameter>
 
     <!-- The service XML schema should fully define enumerated types, their
@@ -206,12 +207,39 @@
         <maxInclusive>1783</maxInclusive>
         <increment>1</increment>
     </parameter>
-
+    
+    <!-- Attributes are aspects of the service that are not specified in the
+         XML schema for the service. -->
+    
     <!-- Framing describes the transport characteristics on the edge ports
          supporting the service. -->
     <attribute name="framing" type="IEEE 802.1Q Trunk">
         <comment>IEEE 802.1Q is a standard for tagging Ethernet frames on a trunk link between Ethernet switches.</comment>
     </attribute>
+    
+    <!-- This is an example of something that is not requested, but may be
+         interesting to someone looking for additional support. Perhaps
+         annotating support hours would be useful as well.
+     -->  
+    <attribute name="monitored"
+        namespace="http://services.ogf.org/nsi/2013/07/definitions/EVTS.A-GOLE">
+        <comment> Indicates this service is monitored. </comment>
+    </attribute>
+    
+    <!-- This is an example of a restriction on schedule duration that is
+        calcualted by (endTime - startTime).  Would this be considered policy?
+    -->
+    <attribute name="duration" units="seconds"
+        namespace="http://services.ogf.org/nsi/2013/07/definitions/ETS.A-GOLE">
+        <comment>
+            Indicates this service must not be shorter than 300 seconds nor
+            longer that 18000 seconds.
+        </comment>
+        <minInclusive>300</minInclusive>
+        <maxInclusive>18000</maxInclusive>
+    </attribute>
+    
+    <!-- Could we also bound times and days of week for schedule? -->
     
     <!-- Errors defined for this service. -->
     <error id="00700" text="SERVICE_ERROR">

@@ -16,7 +16,6 @@ Open Grid Forum NSI Connection Services Protocol v2.0 - Service specific type sc
 -->
 <xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/07/services/types"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:ftypes="http://schemas.ogf.org/nsi/2013/07/framework/types"
     xmlns:tns="http://schemas.ogf.org/nsi/2013/07/services/types">
 
     <xsd:annotation>
@@ -25,10 +24,6 @@ Open Grid Forum NSI Connection Services Protocol v2.0 - Service specific type sc
             specific types.
         </xsd:documentation>
     </xsd:annotation>
-    
-    <!-- Import the common NSI framework types. -->
-    <xsd:import namespace="http://schemas.ogf.org/nsi/2013/07/framework/types"
-        schemaLocation="ogf_nsi_framework_types_v2_0.xsd"/>
     
     <!-- Element definitions for services types. -->
     <xsd:element name="stp" type="tns:StpType">
@@ -73,7 +68,7 @@ Open Grid Forum NSI Connection Services Protocol v2.0 - Service specific type sc
         <xsd:sequence>
             <xsd:element name="networkId"       type="xsd:string" />
             <xsd:element name="localId"         type="xsd:string" />
-            <xsd:element name="labels"          type="ftypes:TypeValuePairListType" minOccurs="0" />
+            <xsd:element name="label"          type="tns:LabelType" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
     </xsd:complexType>
     
@@ -116,6 +111,45 @@ Open Grid Forum NSI Connection Services Protocol v2.0 - Service specific type sc
         <xsd:attribute   name="order" type="xsd:int" use="required" />
     </xsd:complexType>
     
+    <xsd:complexType name="LabelType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Definition for a simple type and multi-value tuple.  Includes
+                simple string type and value, as well as more advanced
+                extensions if needed.  A namespace attribute is included to
+                provide context where needed.
+                
+                Elements:
+                value - A string value corresponding to type.
+                
+                any - Provides a flexible mechanism allowing additional elements
+                to be provided as an alternative, or in combination with value.
+                Use of this element field is beyond the current scope of this
+                NSI specification, but may be used in the future to extend the
+                existing protocol without requiring a schema change.
+                
+                Attributes:
+                type - A string representing the name of the type.
+                
+                namespace - An optional URL to qualify the name space of the
+                capability.
+                
+                anyAttribute - Provides a flexible mechanism allowing additional
+                attributes non-specified to be provided as needed for peer-to-peer
+                NSA communications.  Use of this attribute field is beyond the
+                current scope of this NSI specification, but may be used in the
+                future to extend the existing protocol without requiring a schema
+                change.            
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="value" type="xsd:string" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="type" type="xsd:string" use="optional" />
+        <xsd:attribute name="namespace" type="xsd:anyURI" use="optional" />
+        <xsd:anyAttribute namespace="##other" processContents="lax" />
+    </xsd:complexType>
     
     <xsd:simpleType name="DirectionalityType">
         <xsd:annotation>

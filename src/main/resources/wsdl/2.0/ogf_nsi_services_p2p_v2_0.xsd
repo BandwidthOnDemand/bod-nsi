@@ -16,7 +16,6 @@
 -->
 <xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/07/services/point2point"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:ftypes="http://schemas.ogf.org/nsi/2013/07/framework/types"
     xmlns:types="http://schemas.ogf.org/nsi/2013/07/services/types"
     xmlns:tns="http://schemas.ogf.org/nsi/2013/07/services/point2point">
 
@@ -26,10 +25,6 @@
             service types.
         </xsd:documentation>
     </xsd:annotation>
-    
-    <!-- Import the common NSI framework types. -->
-    <xsd:import namespace="http://schemas.ogf.org/nsi/2013/07/framework/types"
-        schemaLocation="ogf_nsi_framework_types_v2_0.xsd"/>
 
     <!-- Import the common NSI framework types. -->
     <xsd:import namespace="http://schemas.ogf.org/nsi/2013/07/services/types"
@@ -72,7 +67,7 @@
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
                 Type defining a generic point-to-point service specification.
-                At the moment this type supports a unidirectional or symmetric
+                At the moment this type supports a unidirectional or
                 bidirectional service.
                 
                 Elements:
@@ -81,17 +76,18 @@
                 
                 directionality - The (uni or bi) directionality of the service.
                 
-                symmetricPath - An indication that both directions of a bidirectional
-                circuit must fallow the same path.  Only applicable when
-                directionality is "Bidirectional".  If not specified then value
-                is assumed to be false.
+                symmetricPath - An indication that both directions of a
+                bidirectional circuit must fallow the same path.  Only
+                applicable when directionality is "Bidirectional".  If not
+                specified then value is assumed to be false.
                 
                 sourceSTP - Source STP of the service.
                 
                 destSTP - Destination STP of the service.
                 
-                ero - Hop-by-hop ordered list of STP from sourceSTP to
-                destSTP. List does not include sourceSTP and destSTP.
+                ero - A hop-by-hop ordered list of STP from sourceSTP to
+                destSTP representing a path that the connection must follow.
+                This list does not include sourceSTP or destSTP.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
