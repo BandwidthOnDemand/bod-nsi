@@ -6,7 +6,7 @@ The OGF invites any interested party to bring to its attention any copyrights, p
 
 This document and the information contained herein is provided on an "As Is" basis and the OGF disclaims all warranties, express or implied, including but not limited to any warranty that the use of the information herein will not infringe any rights or any implied warranties of merchantability or fitness for a particular purpose.
 
-Copyright (C) Open Grid Forum (2009-2012). All Rights Reserved.
+Copyright (C) Open Grid Forum (2009-2014). All Rights Reserved.
 
 This document and translations of it may be copied and furnished to others, and derivative works that comment on or otherwise explain it or assist in its implementation may be prepared, copied, published and distributed, in whole or in part, without restriction of any kind, provided that the above copyright notice and this paragraph are included on all such copies and derivative works. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to the OGF or other organizations, except as needed for the purpose of developing Grid Recommendations in which case the procedures for copyrights defined in the OGF Document process must be followed, or as required to translate it into languages other than English.
 
@@ -16,11 +16,11 @@ Open Grid Forum NSI Connection Services Protocol v2.0
 
 Description: This is the ftypes schema for the reference web services implementation of the OGF NSI Connection Services Protocol v2.0. Comments and questions can be directed to the mailing list group mailing list (nsi-wg@ogf.org).
 -->
-<xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/07/framework/headers"
+<xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/12/framework/headers"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
     xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
-    xmlns:ftypes="http://schemas.ogf.org/nsi/2013/07/framework/types"
-    xmlns:tns="http://schemas.ogf.org/nsi/2013/07/framework/headers">
+    xmlns:ftypes="http://schemas.ogf.org/nsi/2013/12/framework/types"
+    xmlns:tns="http://schemas.ogf.org/nsi/2013/12/framework/headers">
 
     <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -34,7 +34,7 @@ Description: This is the ftypes schema for the reference web services implementa
                             schemaLocation="saml-schema-assertion-2.0.xsd"/>
     
     <!-- Import the common NSI framework ftypes. -->
-    <xsd:import namespace="http://schemas.ogf.org/nsi/2013/07/framework/types"
+    <xsd:import namespace="http://schemas.ogf.org/nsi/2013/12/framework/types"
         schemaLocation="ogf_nsi_framework_types_v2_0.xsd"/>
 
     <!-- ******************************************************************
@@ -47,7 +47,7 @@ Description: This is the ftypes schema for the reference web services implementa
             <xsd:documentation xml:lang="en">
                 Type definition for the common NSI message header that is sent
                 as part of every NSI message exchange.
-                                
+                
                 Mandatory Elements:
                 
                 protocolVersion - A string identifying the specific protocol
@@ -97,9 +97,9 @@ Description: This is the ftypes schema for the reference web services implementa
                 NSA to provide additional context not covered in the existing
                 specification, however, this is left up to specific peering
                 agreements.                
-
+                
                 Optional Attributes:
-
+                
                 anyAttribute - Provides a flexible mechanism allowing
                 additional attributes in the protocol header for exchange
                 between two peered NSA.  Use of this attribute field is beyond
@@ -112,14 +112,30 @@ Description: This is the ftypes schema for the reference web services implementa
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="protocolVersion"     type="xsd:string" />
-            <xsd:element name="correlationId"       type="ftypes:UuidType" />
-            <xsd:element name="requesterNSA"        type="ftypes:NsaIdType" />
-            <xsd:element name="providerNSA"         type="ftypes:NsaIdType" />
-            <xsd:element name="replyTo"             type="xsd:anyURI" minOccurs="0" />
-            <xsd:element name="sessionSecurityAttr" type="saml:AttributeStatementType" minOccurs="0" />
-            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="protocolVersion" type="xsd:string"/>
+            <xsd:element name="correlationId" type="ftypes:UuidType"/>
+            <xsd:element name="requesterNSA" type="ftypes:NsaIdType"/>
+            <xsd:element name="providerNSA" type="ftypes:NsaIdType"/>
+            <xsd:element name="replyTo" type="xsd:anyURI" minOccurs="0"/>
+            <xsd:element name="sessionSecurityAttr" type="tns:SessionSecurityAttrType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded"/>
         </xsd:sequence>
-        <xsd:anyAttribute namespace="##other" processContents="lax" />
+        <xsd:anyAttribute namespace="##other" processContents="lax"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="SessionSecurityAttrType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                The SessionSecurityAttrType extends the SAML AttributeStatementType
+                by adding a type and name attribute that can be used by the NSA to
+                identify specific security credentials.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="saml:AttributeStatementType">
+                <xsd:attribute name="type" type="xsd:string" use="optional"/>
+                <xsd:attribute name="name" type="xsd:string" use="optional"/>
+            </xsd:extension>
+        </xsd:complexContent>
     </xsd:complexType>
 </xsd:schema>

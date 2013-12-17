@@ -6,7 +6,7 @@ The OGF invites any interested party to bring to its attention any copyrights, p
 
 This document and the information contained herein is provided on an "As Is" basis and the OGF disclaims all warranties, express or implied, including but not limited to any warranty that the use of the information herein will not infringe any rights or any implied warranties of merchantability or fitness for a particular purpose.
 
-Copyright (C) Open Grid Forum (2009-2012). All Rights Reserved.
+Copyright (C) Open Grid Forum (2009-2014). All Rights Reserved.
 
 This document and translations of it may be copied and furnished to others, and derivative works that comment on or otherwise explain it or assist in its implementation may be prepared, copied, published and distributed, in whole or in part, without restriction of any kind, provided that the above copyright notice and this paragraph are included on all such copies and derivative works. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to the OGF or other organizations, except as needed for the purpose of developing Grid Recommendations in which case the procedures for copyrights defined in the OGF Document process must be followed, or as required to translate it into languages other than English.
 
@@ -14,9 +14,9 @@ The limited permissions granted above are perpetual and will not be revoked by t
 
 Open Grid Forum NSI Framework v2.0 - NSI framework common types schema.
 -->
-<xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/07/framework/types"
+<xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2013/12/framework/types"
     xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:tns="http://schemas.ogf.org/nsi/2013/07/framework/types">
+    xmlns:tns="http://schemas.ogf.org/nsi/2013/12/framework/types">
 
     <xsd:annotation>
         <xsd:documentation xml:lang="en">
@@ -25,7 +25,7 @@ Open Grid Forum NSI Framework v2.0 - NSI framework common types schema.
         </xsd:documentation>
     </xsd:annotation>
 
-    <!-- Element definitions for framework T-ypes. -->
+    <!-- Element definitions for framework types. -->
     <xsd:element name="serviceException" type="tns:ServiceExceptionType">
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
@@ -80,7 +80,7 @@ Open Grid Forum NSI Framework v2.0 - NSI framework common types schema.
         <xsd:annotation>
             <xsd:documentation xml:lang="en">
                 A type definition providing a set of zero or more type/value
-                variables used for modeling generic attributes.
+                variables used for modelling generic attributes.
                 
                 Elements:
                 
