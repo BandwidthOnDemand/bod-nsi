@@ -1358,8 +1358,7 @@
                 state.
                 
                 provisionState - Models the current connection provisioning
-                state.  The provisionState is created for a reservation once
-                the reservation is committed.
+                state.
                 
                 lifecycleState - Models the current connection lifecycle state.
                 
@@ -1369,7 +1368,7 @@
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="reservationState"   type="tns:ReservationStateEnumType" />
-            <xsd:element name="provisionState"     type="tns:ProvisionStateEnumType" minOccurs="0" />
+            <xsd:element name="provisionState"     type="tns:ProvisionStateEnumType" />
             <xsd:element name="lifecycleState"     type="tns:LifecycleStateEnumType" />
             <xsd:element name="dataPlaneStatus"    type="tns:DataPlaneStatusType" />
         </xsd:sequence>
@@ -1520,14 +1519,20 @@
                 services provision state machine.
                 
                 The Provision State Machine (PSM) is a simple state machine that
-                transits between the Provisioned and the Released state. An instance
-                of the PSM is created when an initial reservation is committed, and
-                at that time it remains in the Released state. The PSM transits
-                states independent of the state of the Reservation State Machine.
-                Note that staying at the Provisioned state is necessary but not
-                sufficient to activate the data plane. The data plane is active if
-                the PSM is in “Provisioned” state AND current_time is between
-                startTime and endTime.
+                transits between the Provisioned and the Released state. An
+                instance of the PSM for a reservation is created in the Released
+                state when the first reserve request is received, however, a
+                provision request cannot be processed until the first version
+                of the reservation has been successful committed.  If a
+                provision request is received before the first version of a
+                reservation has been created, then it must be rejected with an
+                error.
+                
+                The PSM transits states independent of the state of the
+                Reservation State Machine. Note that staying at the Provisioned
+                state is necessary but not sufficient to activate the data plane.
+                The data plane is active if the PSM is in “Provisioned” state
+                AND current_time is between startTime and endTime.
                 
                 Possible state values are:
                 
