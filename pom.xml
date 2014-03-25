@@ -44,7 +44,7 @@
                                 <exlude>wsdl/2.0/ogf_nsi_framework_types_v2_0.xsd</exlude>
                             </schemaExcludes>
                             <schemaIncludes>
-                                <include>wsdl/2.0/ext-topology-reachability.xsd</include>
+                                <include>wsdl/2.0/gnsbod.xsd</include>
                                 <include>wsdl/2.0/ogf_nsi_discovery_nsa_v1_0.xsd</include>
                                 <include>wsdl/2.0/ogf_nsi_services_p2p_v2_0.xsd</include>
                                 <include>wsdl/2.0/ogf_nsi_services_types_v2_0.xsd</include>
