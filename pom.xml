@@ -48,6 +48,7 @@
                                 <include>wsdl/2.0/ogf_nsi_discovery_nsa_v1_0.xsd</include>
                                 <include>wsdl/2.0/ogf_nsi_services_p2p_v2_0.xsd</include>
                                 <include>wsdl/2.0/ogf_nsi_services_types_v2_0.xsd</include>
+                                <include>wsdl/2.0/ogf_nsi_services_definition_v2_0.xsd</include>
                                 <include>xsd/nmlbase.xsd</include>
                                 <include>xsd/nsi-ext.xsd</include>
                             </schemaIncludes>
