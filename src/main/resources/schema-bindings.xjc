@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<jxb:bindings version="1.0"
+              xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:namespace="http://jaxb2-commons.dev.java.net/namespace-prefix"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd
+			  http://jaxb2-commons.dev.java.net/namespace-prefix http://java.net/projects/jaxb2-commons/sources/svn/content/namespace-prefix/trunk/src/main/resources/prefix-namespace-schema.xsd">
+
+    <jxb:bindings schemaLocation="wsdl/2.0/gnsbod.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="gnsbod" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/ogf_nsi_discovery_nsa_v1_0.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="nsi_discovery" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/ogf_nsi_services_p2p_v2_0.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="nsi_p2p" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/ogf_nsi_services_types_v2_0.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="nsi_stypes" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/ogf_nsi_services_definition_v2_0.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="nsi_definitions" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/ogf_nsi_framework_types_v2_0.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="nsi_ftypes" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="nsi_headers" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="nsi_ctypes" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/soap/soap-envelope-1.1.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="soap" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="xsd/nmlbase.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="nml" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="xsd/nsi-ext.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="nsi_topology" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/saml-schema-assertion-2.0.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="saml" />
+        </jxb:bindings>
+    </jxb:bindings>
+</jxb:bindings>
