@@ -130,6 +130,8 @@
                                 <include>wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd</include>
                                 <include>wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd</include>
                                 <include>wsdl/2.0/saml-schema-assertion-2.0.xsd</include>
+                                <include>wsdl/2.0/xenc-schema.xsd</include>
+                                <include>wsdl/2.0/xmldsig-core-schema.xsd</include>
                                 <include>wsdl/soap/soap-envelope-1.1.xsd</include>
                                 <include>xsd/nmlbase.xsd</include>
                                 <include>xsd/nsi-ext.xsd</include>

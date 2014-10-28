@@ -66,4 +66,14 @@
             <namespace:prefix name="saml" />
         </jxb:bindings>
     </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/xenc-schema.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="xmlenc" />
+        </jxb:bindings>
+    </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/xmldsig-core-schema.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="xmldsig" />
+        </jxb:bindings>
+    </jxb:bindings>
 </jxb:bindings>
