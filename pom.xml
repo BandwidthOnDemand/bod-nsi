@@ -68,18 +68,6 @@
                 </dependencies>
                 <executions>
                     <execution>
-                        <id>nsi-v1</id>
-                        <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>1.0_sc/ogf_nsi_connection_provider_v1_0.wsdl</wsdlFile>
-                                <wsdlFile>1.0_sc/ogf_nsi_connection_requester_v1_0.wsdl</wsdlFile>
-                            </wsdlFiles>
-                        </configuration>
-                    </execution>
-                    <execution>
                         <id>nsi-v2</id>
                         <goals>
                             <goal>wsimport</goal>
