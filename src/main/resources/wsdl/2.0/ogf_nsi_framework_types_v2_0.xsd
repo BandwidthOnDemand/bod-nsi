@@ -59,7 +59,8 @@ Open Grid Forum NSI Framework v2.0 - NSI framework common types schema.
                 text - User friendly message text describing the error.
                 
                 variables - An  optional collection of type/value pairs providing
-                additional information relating to the error.
+                additional information relating to the error and feedback for
+                possible resolution.
                 
                 childException - Hierarchical list of service exceptions
                 capturing failures within the request tree.
@@ -119,6 +120,9 @@ Open Grid Forum NSI Framework v2.0 - NSI framework common types schema.
                 Elements:
                 value - A string value corresponding to type.
                 
+                feedback - Provides a mechanism for a ServiceException to
+                provide type specific feedback corresponding to this variable.
+                
                 any - Provides a flexible mechanism allowing additional elements
                 to be provided as an alternative, or in combination with value.
                 Use of this element field is beyond the current scope of this
@@ -141,6 +145,7 @@ Open Grid Forum NSI Framework v2.0 - NSI framework common types schema.
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="value" type="xsd:string" nillable="true" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="feedback" type="xsd:anyType" minOccurs="0" maxOccurs="unbounded" />
             <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
         <xsd:attribute name="type" type="xsd:string" use="optional" />

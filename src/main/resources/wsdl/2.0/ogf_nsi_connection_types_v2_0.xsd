@@ -338,12 +338,22 @@
 
                 globalReservationId - Return reservations containing this
                 globalReservationId.
+                
+                ifModifiedSince - If an NSA receives a querySummary or querySummarySync
+                message containing this element, then the NSA only returns those
+                reservations matching the filter elements (connectionId,
+                globalReservationId) if the reservation has been created, modified, or
+                has undergone a change since the specified ifModifiedSince time.  This
+                includes user initiated actions such as provision and release, as well
+                as state changes caused by events such as dataPlaneStateChange
+                notifications (in dataPlaneStatus).
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
             <xsd:choice>
                 <xsd:element name="connectionId"        type="ftypes:ConnectionIdType" minOccurs="0" maxOccurs="unbounded" />
                 <xsd:element name="globalReservationId" type="tns:GlobalReservationIdType" minOccurs="0" maxOccurs="unbounded" />
+                <xsd:element name="ifModifiedSince"     type="xsd:dateTime" minOccurs="0" />
             </xsd:choice>
         </xsd:sequence>
     </xsd:complexType>
@@ -365,10 +375,19 @@
 
                 If there were no matches to the query then no reservation
                 elements will be present.
+                
+                lastModified - Includes the update time of the most recently
+                created/modified/updated reservation on the system. The lastModified
+                element is included even if the request did not include an
+                ifModifiedSince element, and if the response does not contain any
+                reservation results.  This lastModified value can be used in the next
+                query for this filter.  The lastModified element will only be absent
+                if the NSA does not support the ifModifiedSince capability.
             </xsd:documentation>
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="reservation"  type="tns:QuerySummaryResultType" minOccurs="0" maxOccurs="unbounded" />
+            <xsd:element name="lastModified" type="xsd:dateTime" minOccurs="0" />
         </xsd:sequence>
     </xsd:complexType>
 
@@ -1333,16 +1352,40 @@
 
             Elements:
 
-            startTime - Reservation start time. If not specified then immediate
-            reservation.
+            startTime - The start time of the reservation.
 
-            endTime - Reservation end time.  If endTime is not specified then
-            the schedule end is indefinite.
+            A start time of "now" is represented by a nil value in the
+            startTime element.  For backwards compatibility an absent
+            startTime element in the initial reserve message also represents
+            a start time of "now".
+
+            An absent startTime element in a modification operation indicates
+            there is no change to startTime.  A startTime element with a nil
+            value within a modify request represents a modification of
+            startTime to "now".
+
+            If a reserve request has a startTime in the past it should be
+            considered as a start time of "now".
+
+            endTime - The end time of the reservation.
+
+            An "indefinite" end time is represented by a nil value in the
+            endTime element.  For backwards compatibility an absent endTime
+            element in the inital reserve message also represents an
+            "indefinite" end time.
+
+            An absent endTime element in a modification operation indicates
+            there is no change to endTime.  An endTime element with a nil value
+            within a modify request represents a modification of endTime to
+            "indefinite".
+
+            If a reserve request has a endTime in the past it should be
+            considered as an invalid reservation request.
          </xsd:documentation>
       </xsd:annotation>
         <xsd:sequence>
-            <xsd:element name="startTime" type="ftypes:DateTimeType" minOccurs="0" />
-            <xsd:element name="endTime"   type="ftypes:DateTimeType" minOccurs="0" />
+            <xsd:element name="startTime" type="ftypes:DateTimeType" nillable="true" minOccurs="0" />
+            <xsd:element name="endTime"   type="ftypes:DateTimeType" nillable="true" minOccurs="0" />
         </xsd:sequence>
     </xsd:complexType>
     
