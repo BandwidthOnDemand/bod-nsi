@@ -30,6 +30,7 @@ import javax.xml.bind.JAXBElement;
 public interface NsiScheduleTime<T> {
     <R> NsiScheduleTime<R> map(Function<T, R> f);
     <R> R fold(Function<T, R> present, Supplier<R> absent, Supplier<R> nil);
+    NsiScheduleTime<T> orElse(Supplier<NsiScheduleTime<T>> f);
 
     static <T> NsiScheduleTime<T> ofXmlElement(JAXBElement<T> element) {
         if (element.isNil()) {
@@ -57,6 +58,11 @@ public interface NsiScheduleTime<T> {
         public <R> R fold(Function<T, R> present, Supplier<R> absent, Supplier<R> nil) {
             return present.apply(value);
         }
+
+        @Override
+        public NsiScheduleTime<T> orElse(Supplier<NsiScheduleTime<T>> f) {
+            return this;
+        }
     }
 
     class Absent<T> implements NsiScheduleTime<T> {
@@ -70,6 +76,11 @@ public interface NsiScheduleTime<T> {
         public <R> R fold(Function<T, R> present, Supplier<R> absent, Supplier<R> nil) {
             return absent.get();
         }
+
+        @Override
+        public NsiScheduleTime<T> orElse(Supplier<NsiScheduleTime<T>> f) {
+            return f.get();
+        }
     }
 
     class Nil<T> implements NsiScheduleTime<T> {
@@ -82,6 +93,11 @@ public interface NsiScheduleTime<T> {
         @Override
         public <R> R fold(Function<T, R> present, Supplier<R> absent, Supplier<R> nil) {
             return nil.get();
+        }
+
+        @Override
+        public NsiScheduleTime<T> orElse(Supplier<NsiScheduleTime<T>> f) {
+            return this;
         }
     }
 }
