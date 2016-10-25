@@ -67,4 +67,14 @@ public interface ScheduleExt {
           }
         ));
     }
+
+    default ScheduleType withStartTime(XMLGregorianCalendar startTime) {
+        ObjectFactory xmlScheduleTypes = new ObjectFactory();
+        return withXmlStartTime(xmlScheduleTypes.createScheduleTypeStartTime(startTime));
+    }
+
+    default ScheduleType withEndTime(XMLGregorianCalendar endTime) {
+        ObjectFactory xmlScheduleTypes = new ObjectFactory();
+        return withXmlStartTime(xmlScheduleTypes.createScheduleTypeEndTime(endTime));
+    }
 }
