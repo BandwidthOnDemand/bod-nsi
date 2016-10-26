@@ -32,14 +32,31 @@ public interface NsiScheduleTime<T> {
     <R> R fold(Function<T, R> present, Supplier<R> absent, Supplier<R> nil);
     NsiScheduleTime<T> orElse(Supplier<NsiScheduleTime<T>> f);
 
+    static final NsiScheduleTime<?> ABSENT = new Absent<>();
+    static final NsiScheduleTime<?> NIL = new Nil<>();
+
     static <T> NsiScheduleTime<T> ofXmlElement(JAXBElement<T> element) {
-        if (element.isNil()) {
-            return new Nil<>();
-        } else if (element.getValue() == null) {
-            return new Absent<>();
+        if (element == null) {
+            return absent();
+        } else if (element.isNil()) {
+            return nil();
         } else {
-            return new Present<>(element.getValue());
+            return present(element.getValue());
         }
+    }
+
+    static <T> NsiScheduleTime<T> present(T value) {
+        return new Present<>(value);
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T> NsiScheduleTime<T> absent() {
+        return (NsiScheduleTime<T>) ABSENT;
+    }
+
+    @SuppressWarnings("unchecked")
+    static <T> NsiScheduleTime<T> nil() {
+        return (NsiScheduleTime<T>) NIL;
     }
 
     class Present<T> implements NsiScheduleTime<T> {
