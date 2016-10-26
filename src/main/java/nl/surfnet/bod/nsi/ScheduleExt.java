@@ -46,12 +46,8 @@ public interface ScheduleExt {
         ObjectFactory xmlScheduleTypes = new ObjectFactory();
         return withXmlStartTime(startTime.fold(
           (value) -> xmlScheduleTypes.createScheduleTypeStartTime(value),
-          () -> xmlScheduleTypes.createScheduleTypeStartTime(null),
-          () -> {
-              JAXBElement<XMLGregorianCalendar> e = xmlScheduleTypes.createScheduleTypeStartTime(null);
-              e.setNil(true);
-              return e;
-          }
+          () -> null,
+          () -> xmlScheduleTypes.createScheduleTypeStartTime(null)
         ));
     }
 
@@ -59,22 +55,18 @@ public interface ScheduleExt {
         ObjectFactory xmlScheduleTypes = new ObjectFactory();
         return withXmlEndTime(endTime.fold(
           (value) -> xmlScheduleTypes.createScheduleTypeEndTime(value),
-          () -> xmlScheduleTypes.createScheduleTypeEndTime(null),
-          () -> {
-              JAXBElement<XMLGregorianCalendar> e = xmlScheduleTypes.createScheduleTypeEndTime(null);
-              e.setNil(true);
-              return e;
-          }
+          () -> null,
+          () -> xmlScheduleTypes.createScheduleTypeEndTime(null)
         ));
     }
 
     default ScheduleType withStartTime(XMLGregorianCalendar startTime) {
         ObjectFactory xmlScheduleTypes = new ObjectFactory();
-        return withXmlStartTime(xmlScheduleTypes.createScheduleTypeStartTime(startTime));
+        return withXmlStartTime(startTime != null ? xmlScheduleTypes.createScheduleTypeStartTime(startTime) : null);
     }
 
     default ScheduleType withEndTime(XMLGregorianCalendar endTime) {
         ObjectFactory xmlScheduleTypes = new ObjectFactory();
-        return withXmlStartTime(xmlScheduleTypes.createScheduleTypeEndTime(endTime));
+        return withXmlEndTime(endTime != null ? xmlScheduleTypes.createScheduleTypeEndTime(endTime) : null);
     }
 }
