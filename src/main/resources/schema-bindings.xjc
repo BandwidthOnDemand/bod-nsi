@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
 <jxb:bindings version="1.0"
               xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+              xmlns:xs="http://www.w3.org/2001/XMLSchema"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns:namespace="http://jaxb2-commons.dev.java.net/namespace-prefix"
+              xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
               xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd
 			  http://jaxb2-commons.dev.java.net/namespace-prefix http://java.net/projects/jaxb2-commons/sources/svn/content/namespace-prefix/trunk/src/main/resources/prefix-namespace-schema.xsd">
 
@@ -43,7 +45,17 @@
     </jxb:bindings>
     <jxb:bindings schemaLocation="wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd">
         <jxb:bindings>
-            <namespace:prefix name="nsi_ctypes" />
+          <namespace:prefix name="nsi_ctypes" />
+
+          <jxb:bindings node="//xs:complexType[@name='ScheduleType']">
+            <inheritance:implements>nl.surfnet.bod.nsi.ScheduleExt</inheritance:implements>
+            <jxb:bindings node="//xs:element[@name='startTime']">
+              <jxb:property name="xmlStartTime" />
+            </jxb:bindings>
+            <jxb:bindings node="//xs:element[@name='endTime']">
+              <jxb:property name="xmlEndTime" />
+            </jxb:bindings>
+          </jxb:bindings>
         </jxb:bindings>
     </jxb:bindings>
     <jxb:bindings schemaLocation="wsdl/soap/soap-envelope-1.1.xsd">
