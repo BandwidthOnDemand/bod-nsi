@@ -68,7 +68,7 @@ public interface NsiScheduleTime<T> {
 
         @Override
         public <R> NsiScheduleTime<R> map(Function<T, R> f) {
-            return new Present<>(f.apply(value));
+            return present(f.apply(value));
         }
 
         @Override
