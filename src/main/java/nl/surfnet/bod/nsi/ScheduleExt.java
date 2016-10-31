@@ -34,15 +34,15 @@ public interface ScheduleExt {
     ScheduleType withXmlStartTime(JAXBElement<XMLGregorianCalendar> value);
     ScheduleType withXmlEndTime(JAXBElement<XMLGregorianCalendar> value);
 
-    default NsiScheduleTime<XMLGregorianCalendar> getStartTime() {
-        return NsiScheduleTime.ofXmlElement(getXmlStartTime());
+    default Nillable<XMLGregorianCalendar> getStartTime() {
+        return Nillable.ofXmlElement(getXmlStartTime());
     }
 
-    default NsiScheduleTime<XMLGregorianCalendar> getEndTime() {
-        return NsiScheduleTime.ofXmlElement(getXmlEndTime());
+    default Nillable<XMLGregorianCalendar> getEndTime() {
+        return Nillable.ofXmlElement(getXmlEndTime());
     }
 
-    default ScheduleType withStartTime(NsiScheduleTime<XMLGregorianCalendar> startTime) {
+    default ScheduleType withStartTime(Nillable<XMLGregorianCalendar> startTime) {
         ObjectFactory xmlScheduleTypes = new ObjectFactory();
         return withXmlStartTime(startTime.fold(
           (value) -> xmlScheduleTypes.createScheduleTypeStartTime(value),
@@ -51,7 +51,7 @@ public interface ScheduleExt {
         ));
     }
 
-    default ScheduleType withEndTime(NsiScheduleTime<XMLGregorianCalendar> endTime) {
+    default ScheduleType withEndTime(Nillable<XMLGregorianCalendar> endTime) {
         ObjectFactory xmlScheduleTypes = new ObjectFactory();
         return withXmlEndTime(endTime.fold(
           (value) -> xmlScheduleTypes.createScheduleTypeEndTime(value),

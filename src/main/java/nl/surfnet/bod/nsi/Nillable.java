@@ -27,15 +27,15 @@ import java.util.function.Supplier;
 
 import javax.xml.bind.JAXBElement;
 
-public interface NsiScheduleTime<T> {
-    <R> NsiScheduleTime<R> map(Function<T, R> f);
+public interface Nillable<T> {
+    <R> Nillable<R> map(Function<T, R> f);
     <R> R fold(Function<T, R> present, Supplier<R> absent, Supplier<R> nil);
-    NsiScheduleTime<T> orElse(Supplier<NsiScheduleTime<T>> f);
+    Nillable<T> orElse(Supplier<Nillable<T>> f);
 
-    static final NsiScheduleTime<?> ABSENT = new Absent<>();
-    static final NsiScheduleTime<?> NIL = new Nil<>();
+    static final Nillable<?> ABSENT = new Absent<>();
+    static final Nillable<?> NIL = new Nil<>();
 
-    static <T> NsiScheduleTime<T> ofXmlElement(JAXBElement<T> element) {
+    static <T> Nillable<T> ofXmlElement(JAXBElement<T> element) {
         if (element == null) {
             return absent();
         } else if (element.isNil()) {
@@ -45,21 +45,21 @@ public interface NsiScheduleTime<T> {
         }
     }
 
-    static <T> NsiScheduleTime<T> present(T value) {
+    static <T> Nillable<T> present(T value) {
         return new Present<>(value);
     }
 
     @SuppressWarnings("unchecked")
-    static <T> NsiScheduleTime<T> absent() {
-        return (NsiScheduleTime<T>) ABSENT;
+    static <T> Nillable<T> absent() {
+        return (Nillable<T>) ABSENT;
     }
 
     @SuppressWarnings("unchecked")
-    static <T> NsiScheduleTime<T> nil() {
-        return (NsiScheduleTime<T>) NIL;
+    static <T> Nillable<T> nil() {
+        return (Nillable<T>) NIL;
     }
 
-    class Present<T> implements NsiScheduleTime<T> {
+    class Present<T> implements Nillable<T> {
         private final T value;
 
         Present(T value) {
@@ -67,7 +67,7 @@ public interface NsiScheduleTime<T> {
         }
 
         @Override
-        public <R> NsiScheduleTime<R> map(Function<T, R> f) {
+        public <R> Nillable<R> map(Function<T, R> f) {
             return present(f.apply(value));
         }
 
@@ -77,15 +77,15 @@ public interface NsiScheduleTime<T> {
         }
 
         @Override
-        public NsiScheduleTime<T> orElse(Supplier<NsiScheduleTime<T>> f) {
+        public Nillable<T> orElse(Supplier<Nillable<T>> f) {
             return this;
         }
     }
 
-    class Absent<T> implements NsiScheduleTime<T> {
+    class Absent<T> implements Nillable<T> {
         @Override
         @SuppressWarnings("unchecked")
-        public <R> NsiScheduleTime<R> map(Function<T, R> f) {
+        public <R> Nillable<R> map(Function<T, R> f) {
             return (Absent<R>) this;
         }
 
@@ -95,15 +95,15 @@ public interface NsiScheduleTime<T> {
         }
 
         @Override
-        public NsiScheduleTime<T> orElse(Supplier<NsiScheduleTime<T>> f) {
+        public Nillable<T> orElse(Supplier<Nillable<T>> f) {
             return f.get();
         }
     }
 
-    class Nil<T> implements NsiScheduleTime<T> {
+    class Nil<T> implements Nillable<T> {
         @Override
         @SuppressWarnings("unchecked")
-        public <R> NsiScheduleTime<R> map(Function<T, R> f) {
+        public <R> Nillable<R> map(Function<T, R> f) {
             return (Nil<R>) this;
         }
 
@@ -113,7 +113,7 @@ public interface NsiScheduleTime<T> {
         }
 
         @Override
-        public NsiScheduleTime<T> orElse(Supplier<NsiScheduleTime<T>> f) {
+        public Nillable<T> orElse(Supplier<Nillable<T>> f) {
             return this;
         }
     }
