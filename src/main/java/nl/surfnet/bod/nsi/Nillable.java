@@ -80,6 +80,11 @@ public interface Nillable<T> {
         public Nillable<T> orElse(Supplier<Nillable<T>> f) {
             return this;
         }
+
+        @Override
+        public String toString() {
+            return "Present " + value.toString();
+        }
     }
 
     class Absent<T> implements Nillable<T> {
@@ -98,6 +103,11 @@ public interface Nillable<T> {
         public Nillable<T> orElse(Supplier<Nillable<T>> f) {
             return f.get();
         }
+
+        @Override
+        public String toString() {
+            return "Absent";
+        }
     }
 
     class Nil<T> implements Nillable<T> {
@@ -115,6 +125,11 @@ public interface Nillable<T> {
         @Override
         public Nillable<T> orElse(Supplier<Nillable<T>> f) {
             return this;
+        }
+
+        @Override
+        public String toString() {
+            return "Nil";
         }
     }
 }
