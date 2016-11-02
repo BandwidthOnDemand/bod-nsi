@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope
+        xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+        xmlns:headers="http://schemas.ogf.org/nsi/2013/12/framework/headers"
+        xmlns:p2p="http://schemas.ogf.org/nsi/2013/12/services/point2point"
+        xmlns:nsi="http://schemas.ogf.org/nsi/2013/12/connection/types"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <soapenv:Header>
+        <headers:nsiHeader>
+            <protocolVersion>application/vnd.ogf.nsi.cs.v2.provider+soap</protocolVersion>
+            <correlationId>urn:uuid:390be79e-5b49-4688-9280-e49b139595e2</correlationId>
+            <requesterNSA>urn:ogf:network:es.net:2013:nsa:nsi-requester</requesterNSA>
+            <providerNSA>urn:ogf:network:es.net:2013:nsa:nsi-aggr-west</providerNSA>
+            <replyTo>https://nsi-aggr-west.es.net/requester/reply</replyTo>
+        </headers:nsiHeader>
+    </soapenv:Header>
+    <soapenv:Body>
+        <nsi:reserve>
+            <globalReservationId>urn:uuid:83fe4f36-5b38-41b6-bc46-a362a06a54ee</globalReservationId>
+            <description>My example reservation using NSI CS 2.1.</description>
+            <criteria version="1">
+                <schedule>
+                    <startTime>2015-08-15T09:30:10Z</startTime>
+                    <endTime>2015-08-15T10:30:10Z</endTime>
+                </schedule>
+                <serviceType>http://services.ogf.org/nsi/2013/12/descriptions/EVTS.A-GOLE</serviceType>
+                <p2p:p2ps>
+                    <capacity>10000</capacity>
+                    <directionality>Bidirectional</directionality>
+                    <symmetricPath>true</symmetricPath>
+                    <sourceSTP>urn:ogf:network:kddilabs.jp:2013:topology:bi-ps?vlan=1780-1782</sourceSTP>
+                    <destSTP>urn:ogf:network:uvalight.net:2013:topology:ps?vlan=1780-1782</destSTP>
+                    <ero>
+                        <orderedSTP order="0">
+                            <stp>urn:ogf:network:icair.org:2013:topology:netherlight?vlan=1782</stp>
+                        </orderedSTP>
+                    </ero>
+                    <parameter type="mtu">9500</parameter>
+                </p2p:p2ps>
+            </criteria>
+        </nsi:reserve>
+    </soapenv:Body>
+</soapenv:Envelope>
