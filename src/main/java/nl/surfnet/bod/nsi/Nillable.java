@@ -26,6 +26,8 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.xml.bind.JAXBElement;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public interface Nillable<T> {
     <R> Nillable<R> map(Function<T, R> f);
@@ -85,6 +87,24 @@ public interface Nillable<T> {
         public String toString() {
             return "Present " + value.toString();
         }
+
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder(23, 61)
+                .append(value)
+                .toHashCode();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null) { return false; }
+            if (o == this) { return true; }
+            if (o.getClass() != this.getClass()) { return false; }
+
+            return new EqualsBuilder()
+                .append(value, ((Present) o).value)
+                .isEquals();
+        }
     }
 
     class Absent<T> implements Nillable<T> {
@@ -108,6 +128,18 @@ public interface Nillable<T> {
         public String toString() {
             return "Absent";
         }
+
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder(29, 67).toHashCode();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null) { return false; }
+            if (o == this) { return true; }
+            return o.getClass() == this.getClass();
+        }
     }
 
     class Nil<T> implements Nillable<T> {
@@ -130,6 +162,18 @@ public interface Nillable<T> {
         @Override
         public String toString() {
             return "Nil";
+        }
+
+        @Override
+        public int hashCode() {
+            return new HashCodeBuilder(31, 71).toHashCode();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null) { return false; }
+            if (o == this) { return true; }
+            return o.getClass() == this.getClass();
         }
     }
 }
