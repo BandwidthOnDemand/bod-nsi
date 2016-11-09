@@ -24,25 +24,26 @@ package nl.surfnet.bod.nsi;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.datatype.XMLGregorianCalendar;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import org.ogf.schemas.nsi._2013._12.connection.types.ObjectFactory;
 import org.ogf.schemas.nsi._2013._12.connection.types.ScheduleType;
 
-public interface ScheduleExt {
-    JAXBElement<XMLGregorianCalendar> getXmlStartTime();
-    JAXBElement<XMLGregorianCalendar> getXmlEndTime();
-    ScheduleType withXmlStartTime(JAXBElement<XMLGregorianCalendar> value);
-    ScheduleType withXmlEndTime(JAXBElement<XMLGregorianCalendar> value);
+public abstract class ScheduleExt {
+    public abstract JAXBElement<XMLGregorianCalendar> getXmlStartTime();
+    public abstract JAXBElement<XMLGregorianCalendar> getXmlEndTime();
+    public abstract ScheduleType withXmlStartTime(JAXBElement<XMLGregorianCalendar> value);
+    public abstract ScheduleType withXmlEndTime(JAXBElement<XMLGregorianCalendar> value);
 
-    default Nillable<XMLGregorianCalendar> getStartTime() {
+    public final Nillable<XMLGregorianCalendar> getStartTime() {
         return Nillable.ofXmlElement(getXmlStartTime());
     }
 
-    default Nillable<XMLGregorianCalendar> getEndTime() {
+    public final Nillable<XMLGregorianCalendar> getEndTime() {
         return Nillable.ofXmlElement(getXmlEndTime());
     }
 
-    default ScheduleType withStartTime(Nillable<XMLGregorianCalendar> startTime) {
+    public final ScheduleType withStartTime(Nillable<XMLGregorianCalendar> startTime) {
         ObjectFactory xmlScheduleTypes = new ObjectFactory();
         return withXmlStartTime(startTime.fold(
           (value) -> xmlScheduleTypes.createScheduleTypeStartTime(value),
@@ -51,7 +52,7 @@ public interface ScheduleExt {
         ));
     }
 
-    default ScheduleType withEndTime(Nillable<XMLGregorianCalendar> endTime) {
+    public final ScheduleType withEndTime(Nillable<XMLGregorianCalendar> endTime) {
         ObjectFactory xmlScheduleTypes = new ObjectFactory();
         return withXmlEndTime(endTime.fold(
           (value) -> xmlScheduleTypes.createScheduleTypeEndTime(value),
@@ -60,13 +61,32 @@ public interface ScheduleExt {
         ));
     }
 
-    default ScheduleType withStartTime(XMLGregorianCalendar startTime) {
+    public final ScheduleType withStartTime(XMLGregorianCalendar startTime) {
         ObjectFactory xmlScheduleTypes = new ObjectFactory();
         return withXmlStartTime(startTime != null ? xmlScheduleTypes.createScheduleTypeStartTime(startTime) : null);
     }
 
-    default ScheduleType withEndTime(XMLGregorianCalendar endTime) {
+    public final ScheduleType withEndTime(XMLGregorianCalendar endTime) {
         ObjectFactory xmlScheduleTypes = new ObjectFactory();
         return withXmlEndTime(endTime != null ? xmlScheduleTypes.createScheduleTypeEndTime(endTime) : null);
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (o == null) { return false; }
+        if (o == this) { return true; }
+        if (o.getClass() != this.getClass()) { return false; }
+
+        ScheduleExt other = (ScheduleExt) o;
+        return getStartTime().equals(other.getStartTime())
+            && getEndTime().equals(other.getEndTime());
+    }
+
+    @Override
+    public final int hashCode() {
+        return new HashCodeBuilder(41, 79)
+            .append(getStartTime())
+            .append(getEndTime())
+            .toHashCode();
     }
 }

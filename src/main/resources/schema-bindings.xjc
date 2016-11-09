@@ -5,8 +5,10 @@
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xmlns:namespace="http://jaxb2-commons.dev.java.net/namespace-prefix"
               xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
+              xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"
+              xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"
               xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd
-			  http://jaxb2-commons.dev.java.net/namespace-prefix http://java.net/projects/jaxb2-commons/sources/svn/content/namespace-prefix/trunk/src/main/resources/prefix-namespace-schema.xsd">
+			          http://jaxb2-commons.dev.java.net/namespace-prefix http://java.net/projects/jaxb2-commons/sources/svn/content/namespace-prefix/trunk/src/main/resources/prefix-namespace-schema.xsd">
 
     <jxb:bindings schemaLocation="wsdl/2.0/gnsbod.xsd">
         <jxb:bindings>
@@ -48,7 +50,9 @@
           <namespace:prefix name="nsi_ctypes" />
 
           <jxb:bindings node="//xs:complexType[@name='ScheduleType']">
-            <inheritance:implements>nl.surfnet.bod.nsi.ScheduleExt</inheritance:implements>
+            <inheritance:extends>nl.surfnet.bod.nsi.ScheduleExt</inheritance:extends>
+            <equals:ignored />
+            <hashcode:ignored />
             <jxb:bindings node="//xs:element[@name='startTime']">
               <jxb:property name="xmlStartTime" />
             </jxb:bindings>
