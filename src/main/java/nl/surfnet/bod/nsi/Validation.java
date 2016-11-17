@@ -23,9 +23,9 @@
 package nl.surfnet.bod.nsi;
 
 import static java.util.Arrays.asList;
-import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.dom.DOMSource;
@@ -42,21 +42,22 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 public final class Validation {
+  public static final List<String> SCHEMAS = asList(
+      "wsdl/soap/soap-envelope-1.1.xsd",
+      "wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd",
+      "wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd",
+      "wsdl/2.0/saml-schema-assertion-2.0.xsd",
+      "wsdl/2.0/gnsbod.xsd",
+      "wsdl/2.0/ogf_nsi_path_trace_2015_04_30.xsd");
+
   private Schema schema;
 
   public Validation() throws SAXException {
-    StreamSource[] schemas = asList(
-        "wsdl/soap/soap-envelope-1.1.xsd",
-        "wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd",
-        "wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd",
-        "wsdl/2.0/saml-schema-assertion-2.0.xsd",
-        "wsdl/2.0/gnsbod.xsd",
-        "wsdl/2.0/ogf_nsi_path_trace_2015_04_30.xsd")
+    StreamSource[] schemas = SCHEMAS
             .stream()
             .map(InternalUtils::classpathResource)
             .map(StreamSource::new)
-            .collect(toList())
-            .toArray(new StreamSource[5]);
+            .toArray(StreamSource[]::new);
 
     SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
     factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
