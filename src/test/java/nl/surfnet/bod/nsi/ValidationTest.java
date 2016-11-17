@@ -28,12 +28,20 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 public class ValidationTest {
+  private Validation validation;
+
+  @Before
+  public void setup() throws SAXException {
+    this.validation = new Validation();
+  }
+
   @Test
   public void validate_initial_reserve() throws Exception {
     validate("examples/nsi_2_1_initial_reserve.xml");
@@ -51,6 +59,6 @@ public class ValidationTest {
 
     String initialReserve = InternalUtils.classpathResource(name);
     Document doc = builder.parse(initialReserve);
-    Validation.validate(doc);
+    validation.validate(doc);
   }
 }

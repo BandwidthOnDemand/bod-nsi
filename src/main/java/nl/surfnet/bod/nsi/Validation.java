@@ -26,8 +26,6 @@ import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 
 import java.io.IOException;
-import java.net.URI;
-import java.util.List;
 
 import javax.xml.XMLConstants;
 import javax.xml.transform.dom.DOMSource;
@@ -38,57 +36,66 @@ import javax.xml.validation.Validator;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.w3c.dom.Document;
 
 public final class Validation {
-    private Validation() {}
+  private Schema schema;
 
-    public static void validate(Document document) throws SAXException, SAXParseException, IOException {
-        StreamSource[] schemas = asList(
-          "wsdl/soap/soap-envelope-1.1.xsd",
-          "wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd",
-          "wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd",
-          "wsdl/2.0/saml-schema-assertion-2.0.xsd",
-          "wsdl/2.0/gnsbod.xsd"
-        ).stream()
+  public Validation() throws SAXException {
+    StreamSource[] schemas = asList(
+        "wsdl/soap/soap-envelope-1.1.xsd",
+        "wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd",
+        "wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd",
+        "wsdl/2.0/saml-schema-assertion-2.0.xsd",
+        "wsdl/2.0/gnsbod.xsd")
+            .stream()
             .map(InternalUtils::classpathResource)
             .map(StreamSource::new)
             .collect(toList())
             .toArray(new StreamSource[5]);
 
-        SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-        factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
-        Schema schema = factory.newSchema(schemas);
-        Validator validator = schema.newValidator();
-        validator.setErrorHandler(new FailingErrorHandler());
+    SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+    factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+    this.schema = factory.newSchema(schemas);
+  }
 
-        validator.validate(new DOMSource(document));
+  public void validate(Document document) throws NsiValidationException {
+    Validator validator = schema.newValidator();
+    validator.setErrorHandler(new FailingErrorHandler());
+
+    try {
+      validator.validate(new DOMSource(document));
+    } catch (SAXException | IOException e) {
+      throw new NsiValidationException(e);
+    }
+  }
+
+  private static class FailingErrorHandler implements ErrorHandler {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Validation.class);
+
+    @Override
+    public void error(SAXParseException ex) {
+      throw new NsiValidationException(ex);
     }
 
-    private static class FailingErrorHandler implements ErrorHandler {
-        private static final Logger LOGGER = LoggerFactory.getLogger(Validation.class);
-
-        @Override
-        public void error(SAXParseException ex) {
-            throw new NsiValidationException(ex);
-        }
-
-        @Override
-        public void fatalError(SAXParseException ex) {
-            throw new NsiValidationException(ex);
-        }
-
-        public void warning(SAXParseException ex) {
-            LOGGER.warn("Warning while validating NSI message", ex);
-        }
-
-        private static class NsiValidationException extends RuntimeException {
-            public NsiValidationException(Throwable cause) {
-                super("NSI message validation error", cause);
-            }
-        }
+    @Override
+    public void fatalError(SAXParseException ex) {
+      throw new NsiValidationException(ex);
     }
+
+    public void warning(SAXParseException ex) {
+      LOGGER.warn("Warning while validating NSI message", ex);
+    }
+  }
+
+  public static class NsiValidationException extends RuntimeException {
+    private static final long serialVersionUID = 1L;
+
+    public NsiValidationException(Throwable cause) {
+      super("NSI message validation error", cause);
+    }
+  }
 }
