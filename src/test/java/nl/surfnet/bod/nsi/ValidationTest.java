@@ -22,29 +22,35 @@
  */
 package nl.surfnet.bod.nsi;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import java.util.Objects;
+import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 public class ValidationTest {
-    @Test
-    public void test() throws Exception {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        factory.setNamespaceAware(true);
-        DocumentBuilder builder = factory.newDocumentBuilder();
+  @Test
+  public void validate_initial_reserve() throws Exception {
+    validate("examples/nsi_2_1_initial_reserve.xml");
+  }
 
-        String initialReserve = InternalUtils.classpathResource("examples/nsi_2_1_initial_reserve.xml");
-        Document doc = builder.parse(initialReserve);
-        Validation.validate(doc);
-    }
+  @Test
+  public void validate_data_plane_state_change() throws Exception {
+    validate("examples/nsi_data_plane_state_change.xml");
+  }
+
+  private void validate(String name) throws ParserConfigurationException, SAXException, IOException, SAXParseException {
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    factory.setNamespaceAware(true);
+    DocumentBuilder builder = factory.newDocumentBuilder();
+
+    String initialReserve = InternalUtils.classpathResource(name);
+    Document doc = builder.parse(initialReserve);
+    Validation.validate(doc);
+  }
 }

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="">
+  <soapenv:Header>
+    <nsi_headers:nsiHeader xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:nsi_stypes="http://schemas.ogf.org/nsi/2013/12/services/types" xmlns:nsi_p2p="http://schemas.ogf.org/nsi/2013/12/services/point2point" xmlns:nsi_headers="http://schemas.ogf.org/nsi/2013/12/framework/headers" xmlns:nsi_ftypes="http://schemas.ogf.org/nsi/2013/12/framework/types" xmlns:nsi_ctypes="http://schemas.ogf.org/nsi/2013/12/connection/types" xmlns:gnsbod="http://nordu.net/namespaces/2013/12/gnsbod">
+      <protocolVersion>application/vnd.ogf.nsi.cs.v2.requester+soap</protocolVersion>
+      <correlationId>urn:uuid:4e28fe8c-aac7-431e-a139-3065abd06411</correlationId>
+      <requesterNSA>urn:ogf:network:surfnet.nl:1990:nsa:bod7</requesterNSA>
+      <providerNSA>urn:ogf:network:surfnet.nl:1990:nsa:nsi-mtosi-bridge</providerNSA>
+    </nsi_headers:nsiHeader>
+  </soapenv:Header>
+  <soapenv:Body>
+    <nsi_ctypes:dataPlaneStateChange xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" xmlns:nsi_stypes="http://schemas.ogf.org/nsi/2013/12/services/types" xmlns:nsi_p2p="http://schemas.ogf.org/nsi/2013/12/services/point2point" xmlns:nsi_headers="http://schemas.ogf.org/nsi/2013/12/framework/headers" xmlns:nsi_ftypes="http://schemas.ogf.org/nsi/2013/12/framework/types" xmlns:nsi_ctypes="http://schemas.ogf.org/nsi/2013/12/connection/types" xmlns:gnsbod="http://nordu.net/namespaces/2013/12/gnsbod">
+      <connectionId>dlp-20161116193017-5dba3764-a213-479d-83b4-811a32871457</connectionId>
+      <notificationId>1</notificationId>
+      <timeStamp>2016-11-16T18:31:57.933Z</timeStamp>
+      <dataPlaneStatus>
+        <active>true</active>
+        <version>0</version>
+        <versionConsistent>true</versionConsistent>
+      </dataPlaneStatus>
+    </nsi_ctypes:dataPlaneStateChange>
+  </soapenv:Body>
+</soapenv:Envelope>
