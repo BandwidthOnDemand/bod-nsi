@@ -64,6 +64,10 @@ public final class Validation {
     this.schema = factory.newSchema(schemas);
   }
 
+  public Schema getSchema() {
+    return schema;
+  }
+
   public void validate(Document document) throws NsiValidationException {
     Validator validator = schema.newValidator();
     validator.setErrorHandler(new FailingErrorHandler());
