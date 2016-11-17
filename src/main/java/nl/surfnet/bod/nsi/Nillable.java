@@ -102,7 +102,7 @@ public interface Nillable<T> {
             if (o.getClass() != this.getClass()) { return false; }
 
             return new EqualsBuilder()
-                .append(value, ((Present) o).value)
+                .append(value, ((Present<?>) o).value)
                 .isEquals();
         }
     }

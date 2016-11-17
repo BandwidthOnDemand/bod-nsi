@@ -25,17 +25,14 @@ package nl.surfnet.bod.nsi;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.Assert.fail;
 
 import java.util.GregorianCalendar;
-import javax.xml.datatype.XMLGregorianCalendar;
-import javax.xml.datatype.DatatypeFactory;
-import org.ogf.schemas.nsi._2013._12.connection.types.ScheduleType;
 
-import org.hamcrest.Description;
-import org.hamcrest.Matcher;
-import org.hamcrest.TypeSafeMatcher;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+
 import org.junit.Test;
+import org.ogf.schemas.nsi._2013._12.connection.types.ScheduleType;
 
 public class ScheduleExtTest {
     private static final Nillable<XMLGregorianCalendar> now;
