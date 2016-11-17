@@ -50,7 +50,8 @@ public final class Validation {
         "wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd",
         "wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd",
         "wsdl/2.0/saml-schema-assertion-2.0.xsd",
-        "wsdl/2.0/gnsbod.xsd")
+        "wsdl/2.0/gnsbod.xsd",
+        "wsdl/2.0/ogf_nsi_path_trace_2015_04_30.xsd")
             .stream()
             .map(InternalUtils::classpathResource)
             .map(StreamSource::new)
