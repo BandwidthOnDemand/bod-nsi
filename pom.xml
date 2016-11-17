@@ -145,6 +145,7 @@
                                 <include>wsdl/2.0/ogf_nsi_framework_types_v2_0.xsd</include>
                                 <include>wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd</include>
                                 <include>wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd</include>
+                                <include>wsdl/2.0/ogf_nsi_path_trace_2015_04_30.xsd</include>
                                 <include>wsdl/2.0/saml-schema-assertion-2.0.xsd</include>
                                 <include>wsdl/2.0/xenc-schema.xsd</include>
                                 <include>wsdl/2.0/xmldsig-core-schema.xsd</include>

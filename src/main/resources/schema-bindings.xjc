@@ -62,6 +62,11 @@
           </jxb:bindings>
         </jxb:bindings>
     </jxb:bindings>
+    <jxb:bindings schemaLocation="wsdl/2.0/ogf_nsi_path_trace_2015_04_30.xsd">
+        <jxb:bindings>
+            <namespace:prefix name="path_trace" />
+        </jxb:bindings>
+    </jxb:bindings>
     <jxb:bindings schemaLocation="wsdl/soap/soap-envelope-1.1.xsd">
         <jxb:bindings>
             <namespace:prefix name="soap" />
