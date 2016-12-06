@@ -130,7 +130,7 @@ maxOccurs="unbounded" />
         </xsd:annotation>
         <xsd:sequence>
             <xsd:element name="connectionId"  type="ftypes:ConnectionIdType" />
-            <xsd:element name="stp"  type="tns:StpType" maxOccurs="unbounded" />
+            <xsd:element name="stp"  type="tns:StpType" minOccurs="0" maxOccurs="unbounded" />
         </xsd:sequence>
         <xsd:attribute   name="id"    type="ftypes:NsaIdType" use="required" />
         <xsd:attribute   name="order" type="xsd:int" use="required" />
