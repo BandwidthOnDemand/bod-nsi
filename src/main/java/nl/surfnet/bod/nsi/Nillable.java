@@ -48,6 +48,14 @@ public interface Nillable<T> {
         }
     }
 
+    static <T> Nillable<T> ofNullable(T maybeValue) {
+        if (maybeValue == null) {
+            return absent();
+        } else {
+            return present(maybeValue);
+        }
+    }
+
     static <T> Nillable<T> present(T value) {
         return new Present<>(value);
     }

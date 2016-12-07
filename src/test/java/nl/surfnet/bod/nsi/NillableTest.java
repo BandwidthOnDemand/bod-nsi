@@ -62,6 +62,12 @@ public class NillableTest {
         assertThat(Nillable.nil().orElse(() -> Nillable.present(2)), is(nil()));
     }
 
+    @Test
+    public void testOfNullable() {
+        assertThat(Nillable.ofNullable("present"), is(present("present")));
+        assertThat(Nillable.ofNullable(null), is(absent()));
+    }
+
     private <T> Matcher<Nillable<T>> present(T expected) {
         return new TypeSafeMatcher<Nillable<T>>() {
             protected boolean matchesSafely(Nillable<T> nillable) {
