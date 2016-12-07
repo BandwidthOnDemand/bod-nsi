@@ -31,6 +31,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public interface Nillable<T> {
     <R> Nillable<R> map(Function<T, R> f);
+    <R> Nillable<R> flatMap(Function<T, Nillable<R>> f);
     <R> R fold(Function<T, R> present, Supplier<R> absent, Supplier<R> nil);
     Nillable<T> orElse(Supplier<Nillable<T>> f);
 
@@ -71,6 +72,11 @@ public interface Nillable<T> {
         @Override
         public <R> Nillable<R> map(Function<T, R> f) {
             return present(f.apply(value));
+        }
+
+        @Override
+        public <R> Nillable<R> flatMap(Function<T, Nillable<R>> f) {
+            return f.apply(value);
         }
 
         @Override
@@ -115,6 +121,12 @@ public interface Nillable<T> {
         }
 
         @Override
+        @SuppressWarnings("unchecked")
+        public <R> Nillable<R> flatMap(Function<T, Nillable<R>> f) {
+            return (Absent<R>) this;
+        }
+
+        @Override
         public <R> R fold(Function<T, R> present, Supplier<R> absent, Supplier<R> nil) {
             return absent.get();
         }
@@ -146,6 +158,12 @@ public interface Nillable<T> {
         @Override
         @SuppressWarnings("unchecked")
         public <R> Nillable<R> map(Function<T, R> f) {
+            return (Nil<R>) this;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public <R> Nillable<R> flatMap(Function<T, Nillable<R>> f) {
             return (Nil<R>) this;
         }
 

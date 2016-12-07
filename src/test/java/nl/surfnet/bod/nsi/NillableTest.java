@@ -48,6 +48,14 @@ public class NillableTest {
     }
 
     @Test
+    public void testFlatMap() {
+        assertThat(Nillable.present("present").flatMap(Nillable::present), is(present("present")));
+        assertThat(Nillable.present("present").flatMap(x -> Nillable.absent()), is(absent()));
+        assertThat(Nillable.nil().flatMap(Nillable::present), is(nil()));
+        assertThat(Nillable.absent().flatMap(Nillable::present), is(absent()));
+    }
+
+    @Test
     public void testOrElse() {
         assertThat(Nillable.present(1).orElse(() -> Nillable.present(2)), is(present(1)));
         assertThat(Nillable.absent().orElse(() -> Nillable.present(2)), is(present(2)));
