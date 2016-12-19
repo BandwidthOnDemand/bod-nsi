@@ -152,6 +152,7 @@
                                 <include>wsdl/soap/soap-envelope-1.1.xsd</include>
                                 <include>xsd/nmlbase.xsd</include>
                                 <include>xsd/nsi-ext.xsd</include>
+                                <include>xsd/pce-messages.xsd</include>
                             </schemaIncludes>
                             <args>
                                 <arg>-Xfluent-api</arg>
