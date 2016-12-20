@@ -39,7 +39,7 @@ public class ValidationTest {
 
   @Before
   public void setup() throws SAXException {
-    this.validation = new Validation();
+    this.validation = new Validation(Validation.NSI_SCHEMAS);
   }
 
   @Test

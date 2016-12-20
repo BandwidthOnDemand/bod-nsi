@@ -42,7 +42,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
 public final class Validation {
-  public static final List<String> SCHEMAS = asList(
+  public static final List<String> NSI_SCHEMAS = asList(
       "wsdl/soap/soap-envelope-1.1.xsd",
       "wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd",
       "wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd",
@@ -50,14 +50,16 @@ public final class Validation {
       "wsdl/2.0/gnsbod.xsd",
       "wsdl/2.0/ogf_nsi_path_trace_2015_04_30.xsd");
 
-  private Schema schema;
+  public static final List<String> PCE_SCHEMAS = asList("xsd/pce-messages.xsd");
 
-  public Validation() throws SAXException {
-    StreamSource[] schemas = SCHEMAS
-            .stream()
-            .map(InternalUtils::classpathResource)
-            .map(StreamSource::new)
-            .toArray(StreamSource[]::new);
+  private final Schema schema;
+
+  public Validation(List<String> schemaSources) throws SAXException {
+    StreamSource[] schemas = schemaSources
+        .stream()
+        .map(InternalUtils::classpathResource)
+        .map(StreamSource::new)
+        .toArray(StreamSource[]::new);
 
     SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
     factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
