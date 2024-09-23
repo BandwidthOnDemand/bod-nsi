@@ -63,6 +63,7 @@ public final class Validation {
 
     SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
     factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+    factory.setProperty(XMLConstants.ACCESS_EXTERNAL_SCHEMA, "file");
     this.schema = factory.newSchema(schemas);
   }
 

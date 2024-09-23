@@ -22,12 +22,11 @@
  */
 package nl.surfnet.bod.nsi;
 
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import javax.xml.bind.JAXBElement;
-import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
+import jakarta.xml.bind.JAXBElement;
 
 public interface Nillable<T> {
     <R> Nillable<R> map(Function<T, R> f);
@@ -104,20 +103,15 @@ public interface Nillable<T> {
 
         @Override
         public int hashCode() {
-            return new HashCodeBuilder(23, 61)
-                .append(value)
-                .toHashCode();
+        	return 23 + 61 * Objects.hashCode(value);
         }
 
         @Override
         public boolean equals(Object o) {
             if (o == null) { return false; }
             if (o == this) { return true; }
-            if (o.getClass() != this.getClass()) { return false; }
 
-            return new EqualsBuilder()
-                .append(value, ((Present<?>) o).value)
-                .isEquals();
+            return o instanceof Present that && Objects.equals(value, that.value);
         }
     }
 
@@ -151,7 +145,7 @@ public interface Nillable<T> {
 
         @Override
         public int hashCode() {
-            return new HashCodeBuilder(29, 67).toHashCode();
+            return 29;
         }
 
         @Override
@@ -192,7 +186,7 @@ public interface Nillable<T> {
 
         @Override
         public int hashCode() {
-            return new HashCodeBuilder(31, 71).toHashCode();
+            return 31;
         }
 
         @Override

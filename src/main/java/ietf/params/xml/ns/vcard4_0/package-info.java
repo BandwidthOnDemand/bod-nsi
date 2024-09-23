@@ -5,5 +5,5 @@
 // Generated on: 2013.10.17 at 03:41:14 PM CEST
 //
 
-@javax.xml.bind.annotation.XmlSchema(namespace = "urn:ietf:params:xml:ns:vcard-4.0", elementFormDefault = javax.xml.bind.annotation.XmlNsForm.QUALIFIED)
+@jakarta.xml.bind.annotation.XmlSchema(namespace = "urn:ietf:params:xml:ns:vcard-4.0", elementFormDefault = jakarta.xml.bind.annotation.XmlNsForm.QUALIFIED)
 package ietf.params.xml.ns.vcard4_0;

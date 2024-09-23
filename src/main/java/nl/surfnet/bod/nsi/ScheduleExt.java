@@ -22,9 +22,11 @@
  */
 package nl.surfnet.bod.nsi;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
+
+import java.util.Objects;
+
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import org.ogf.schemas.nsi._2013._12.connection.types.ObjectFactory;
 import org.ogf.schemas.nsi._2013._12.connection.types.ScheduleType;
@@ -84,9 +86,6 @@ public abstract class ScheduleExt {
 
     @Override
     public final int hashCode() {
-        return new HashCodeBuilder(41, 79)
-            .append(getStartTime())
-            .append(getEndTime())
-            .toHashCode();
+    	return 41 + Objects.hash(getStartTime(), getEndTime());
     }
 }

@@ -16,46 +16,31 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <jaxb.generated.sources>${project.build.directory}/generated-sources/wsdl</jaxb.generated.sources>
+        <jaxb-tools.version>4.0.8</jaxb-tools.version>
     </properties>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
+        <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
         <dependency>
-            <groupId>javax.annotation</groupId>
-            <artifactId>javax.annotation-api</artifactId>
-            <version>1.3.2</version>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>3.0.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
+        <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
         <dependency>
-            <groupId>javax.xml.bind</groupId>
-            <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>4.0.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/javax.xml.ws/jaxws-api -->
+        <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
         <dependency>
-            <groupId>javax.xml.ws</groupId>
-            <artifactId>jaxws-api</artifactId>
-            <version>2.3.1</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/javax.jws/javax.jws-api -->
-        <dependency>
-            <groupId>javax.jws</groupId>
-            <artifactId>javax.jws-api</artifactId>
-            <version>1.1</version>
+            <groupId>jakarta.xml.ws</groupId>
+            <artifactId>jakarta.xml.ws-api</artifactId>
+            <version>4.0.2</version>
         </dependency>
         <dependency>
-            <groupId>org.jvnet.jaxb2_commons</groupId>
-            <artifactId>jaxb2-basics</artifactId>
-            <version>1.11.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.5</version>
-        </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <version>2.11.0</version>
+            <groupId>org.jvnet.jaxb</groupId>
+            <artifactId>jaxb-plugins-runtime</artifactId>
+            <version>${jaxb-tools.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -78,128 +63,55 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxws-maven-plugin</artifactId>
-                <version>2.6</version>
+                <groupId>org.jvnet.jaxb</groupId>
+                <artifactId>jaxb-maven-plugin</artifactId>
+                <version>${jaxb-tools.version}</version>
                 <configuration>
-                    <!-- Needed with JAXP 1.5 -->
-                    <vmArgs>
-                        <vmArg>-Djavax.xml.accessExternalSchema=all</vmArg>
-                    </vmArgs>
-                    <!-- Same as XJC below to avoid duplicate class errors -->
-                    <sourceDestDir>${jaxb.generated.sources}</sourceDestDir>
-                    <quiet>true</quiet>
-                    <verbose>false</verbose>
-                    <keep>true</keep>
-                    <xnocompile>true</xnocompile>
-                    <xadditionalHeaders>true</xadditionalHeaders>
-                    <wsdlDirectory>${basedir}/src/main/resources/wsdl</wsdlDirectory>
-                    <xjcArgs>
-                        <xjcArg>-mark-generated</xjcArg>
-                        <xjcArg>-Xfluent-api</xjcArg>
-                        <xjcArg>-Xequals</xjcArg>
-                        <xjcArg>-XhashCode</xjcArg>
-                        <xjcArg>-XtoString</xjcArg>
-                    </xjcArgs>
+                    <generateDirectory>${jaxb.generated.sources}</generateDirectory>
+                    <markGenerated>true</markGenerated>
+                    <schemaIncludes>
+                        <include>wsdl/2.0/gnsbod.xsd</include>
+                        <include>wsdl/2.0/ogf_nsi_discovery_nsa_v1_0.xsd</include>
+                        <include>wsdl/2.0/ogf_nsi_services_p2p_v2_0.xsd</include>
+                        <include>wsdl/2.0/ogf_nsi_services_types_v2_0.xsd</include>
+                        <include>wsdl/2.0/ogf_nsi_services_definition_v2_0.xsd</include>
+                        <include>wsdl/2.0/ogf_nsi_framework_types_v2_0.xsd</include>
+                        <include>wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd</include>
+                        <include>wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd</include>
+                        <include>wsdl/2.0/ogf_nsi_path_trace_2015_04_30.xsd</include>
+                        <include>wsdl/2.0/saml-schema-assertion-2.0.xsd</include>
+                        <include>wsdl/2.0/xenc-schema.xsd</include>
+                        <include>wsdl/2.0/xmldsig-core-schema.xsd</include>
+                        <include>wsdl/soap/soap-envelope-1.1.xsd</include>
+                        <include>xsd/nmlbase.xsd</include>
+                        <include>xsd/nsi-ext.xsd</include>
+                        <include>xsd/pce-messages.xsd</include>
+                    </schemaIncludes>
+                    <extension>true</extension>
+                    <args>
+                        <arg>-XtoString</arg>
+                        <arg>-Xequals</arg>
+                        <arg>-XhashCode</arg>
+                        <arg>-Xcopyable</arg>
+                        <arg>-Xfluent-api</arg>
+                        <arg>-Xnamespace-prefix</arg>
+                        <arg>-Xinheritance</arg>
+                    </args>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.jvnet.jaxb</groupId>
+                            <artifactId>jaxb-plugins</artifactId>
+                            <version>${jaxb-tools.version}</version>
+                        </plugin>
+                    </plugins>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.jvnet.jaxb2_commons</groupId>
-                        <artifactId>jaxb2-basics</artifactId>
-                        <version>1.11.1</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.jvnet.jaxb2_commons</groupId>
-                        <artifactId>jaxb2-fluent-api</artifactId>
-                        <version>3.0</version>
-                    </dependency>
-                </dependencies>
                 <executions>
                     <execution>
                         <id>nsi-v2</id>
                         <goals>
-                            <goal>wsimport</goal>
-                        </goals>
-                        <configuration>
-                            <wsdlFiles>
-                                <wsdlFile>2.0/ogf_nsi_connection_requester_v2_0.wsdl</wsdlFile>
-                                <wsdlFile>2.0/ogf_nsi_connection_provider_v2_0.wsdl</wsdlFile>
-                            </wsdlFiles>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!-- Must run *after* wsimport so that XJC applies bindings from
-                 `schema-bindings.xjc` on schemas that are also references
-                 by WSDLs.
-
-                 Because wsimport and jaxb generate to the same output folder
-                 to prevent duplicate classes, it is important that the output
-                 packages is preserved by jaxb. Because XJC may generate different
-                 output based on the given bindings, the jaxb generation is
-                 forced. -->
-            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <version>0.15.3</version>
-                <executions>
-                    <execution>
-                        <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <!-- Same as wsimport above to avoid duplicate class errors -->
-                            <generateDirectory>${jaxb.generated.sources}</generateDirectory>
-                            <cleanPackageDirectories>false</cleanPackageDirectories>
-                            <forceRegenerate>true</forceRegenerate>
-                            <bindingDirectory>src/main/resources</bindingDirectory>
-                            <bindingIncludes>
-                                <bindingInclude>schema-bindings.xjc</bindingInclude>
-                            </bindingIncludes>
-                            <schemaIncludes>
-                                <include>wsdl/2.0/gnsbod.xsd</include>
-                                <include>wsdl/2.0/ogf_nsi_discovery_nsa_v1_0.xsd</include>
-                                <include>wsdl/2.0/ogf_nsi_services_p2p_v2_0.xsd</include>
-                                <include>wsdl/2.0/ogf_nsi_services_types_v2_0.xsd</include>
-                                <include>wsdl/2.0/ogf_nsi_services_definition_v2_0.xsd</include>
-                                <include>wsdl/2.0/ogf_nsi_framework_types_v2_0.xsd</include>
-                                <include>wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd</include>
-                                <include>wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd</include>
-                                <include>wsdl/2.0/ogf_nsi_path_trace_2015_04_30.xsd</include>
-                                <include>wsdl/2.0/saml-schema-assertion-2.0.xsd</include>
-                                <include>wsdl/2.0/xenc-schema.xsd</include>
-                                <include>wsdl/2.0/xmldsig-core-schema.xsd</include>
-                                <include>wsdl/soap/soap-envelope-1.1.xsd</include>
-                                <include>xsd/nmlbase.xsd</include>
-                                <include>xsd/nsi-ext.xsd</include>
-                                <include>xsd/pce-messages.xsd</include>
-                            </schemaIncludes>
-                            <args>
-                                <arg>-Xfluent-api</arg>
-                                <arg>-Xequals</arg>
-                                <arg>-XhashCode</arg>
-                                <arg>-XtoString</arg>
-                                <arg>-Xinheritance</arg>
-                                <arg>-Xnamespace-prefix</arg>
-                            </args>
-                            <markGenerated>true</markGenerated>
-                            <plugins>
-                                <plugin>
-                                    <groupId>org.jvnet.jaxb2_commons</groupId>
-                                    <artifactId>jaxb2-basics</artifactId>
-                                    <version>1.11.1</version>
-                                </plugin>
-                                <plugin>
-                                    <groupId>org.jvnet.jaxb2_commons</groupId>
-                                    <artifactId>jaxb2-fluent-api</artifactId>
-                                    <version>3.0</version>
-                                </plugin>
-                                <plugin>
-                                    <groupId>org.jvnet.jaxb2_commons</groupId>
-                                    <artifactId>jaxb2-namespace-prefix</artifactId>
-                                    <version>1.3</version>
-                                </plugin>
-                            </plugins>
                         </configuration>
                     </execution>
                 </executions>
@@ -229,37 +141,6 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.8.0</version>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>copy</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/endorsed</outputDirectory>
-                            <silent>true</silent>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>javax.xml.bind</groupId>
-                                    <artifactId>jaxb-api</artifactId>
-                                    <version>2.3.1</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                                <artifactItem>
-                                    <groupId>javax.xml.ws</groupId>
-                                    <artifactId>jaxws-api</artifactId>
-                                    <version>2.3.1</version>
-                                    <type>jar</type>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
                     </execution>
                 </executions>
             </plugin>

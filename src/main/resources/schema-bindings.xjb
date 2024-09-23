@@ -1,14 +1,13 @@
 <?xml version="1.0"?>
-<jxb:bindings version="1.0"
-              xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+<jxb:bindings version="3.0"
+              xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
               xmlns:xs="http://www.w3.org/2001/XMLSchema"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-              xmlns:namespace="http://jaxb2-commons.dev.java.net/namespace-prefix"
-              xmlns:inheritance="http://jaxb2-commons.dev.java.net/basic/inheritance"
-              xmlns:equals="http://jaxb2-commons.dev.java.net/basic/equals"
-              xmlns:hashcode="http://jaxb2-commons.dev.java.net/basic/hashCode"
-              xsi:schemaLocation="http://java.sun.com/xml/ns/jaxb http://java.sun.com/xml/ns/jaxb/bindingschema_2_0.xsd
-          http://jaxb2-commons.dev.java.net/namespace-prefix http://java.net/projects/jaxb2-commons/sources/svn/content/namespace-prefix/trunk/src/main/resources/prefix-namespace-schema.xsd">
+              xmlns:namespace="urn:jaxb.jvnet.org:plugin:namespace-prefix"
+              xmlns:inheritance="urn:jaxb.jvnet.org:plugin:inheritance"
+              xmlns:equals="urn:jaxb.jvnet.org:plugin:equals"
+              xmlns:hashcode="urn:jaxb.jvnet.org:plugin:hashCode"
+              >
 
     <jxb:bindings schemaLocation="wsdl/2.0/gnsbod.xsd">
         <jxb:bindings>
