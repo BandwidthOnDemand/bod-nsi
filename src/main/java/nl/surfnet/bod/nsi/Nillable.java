@@ -26,12 +26,16 @@ import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import jakarta.annotation.Nonnull;
 import jakarta.xml.bind.JAXBElement;
 
-public interface Nillable<T> {
+public sealed interface Nillable<T> permits Nillable.Absent, Nillable.Nil, Nillable.Present {
     <R> Nillable<R> map(Function<T, R> f);
+
     <R> Nillable<R> flatMap(Function<T, Nillable<R>> f);
+
     <R> R fold(Function<T, R> present, Supplier<R> absent, Supplier<R> nil);
+
     Nillable<T> orElse(Supplier<Nillable<T>> f);
 
     static final Nillable<?> ABSENT = new Absent<>();
@@ -55,7 +59,7 @@ public interface Nillable<T> {
         }
     }
 
-    static <T> Nillable<T> present(T value) {
+    static <T> Nillable<T> present(@Nonnull T value) {
         return new Present<>(value);
     }
 
@@ -69,16 +73,14 @@ public interface Nillable<T> {
         return (Nillable<T>) NIL;
     }
 
-    class Present<T> implements Nillable<T> {
-        private final T value;
-
-        Present(T value) {
-            this.value = value;
+    record Present<T>(@Nonnull T value) implements Nillable<T> {
+        public Present {
+            Objects.requireNonNull(value, "value");
         }
 
         @Override
         public <R> Nillable<R> map(Function<T, R> f) {
-            return present(f.apply(value));
+            return new Present<>(f.apply(value));
         }
 
         @Override
@@ -95,27 +97,12 @@ public interface Nillable<T> {
         public Nillable<T> orElse(Supplier<Nillable<T>> f) {
             return this;
         }
-
-        @Override
-        public String toString() {
-            return "Present " + value.toString();
-        }
-
-        @Override
-        public int hashCode() {
-        	return 23 + 61 * Objects.hashCode(value);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (o == null) { return false; }
-            if (o == this) { return true; }
-
-            return o instanceof Present that && Objects.equals(value, that.value);
-        }
     }
 
-    class Absent<T> implements Nillable<T> {
+    final class Absent<T> implements Nillable<T> {
+        private Absent() {
+        }
+
         @Override
         @SuppressWarnings("unchecked")
         public <R> Nillable<R> map(Function<T, R> f) {
@@ -150,13 +137,14 @@ public interface Nillable<T> {
 
         @Override
         public boolean equals(Object o) {
-            if (o == null) { return false; }
-            if (o == this) { return true; }
-            return o.getClass() == this.getClass();
+            return this == o;
         }
     }
 
-    class Nil<T> implements Nillable<T> {
+    final class Nil<T> implements Nillable<T> {
+        private Nil() {
+        }
+
         @Override
         @SuppressWarnings("unchecked")
         public <R> Nillable<R> map(Function<T, R> f) {
@@ -191,9 +179,7 @@ public interface Nillable<T> {
 
         @Override
         public boolean equals(Object o) {
-            if (o == null) { return false; }
-            if (o == this) { return true; }
-            return o.getClass() == this.getClass();
+            return this == o;
         }
     }
 }
