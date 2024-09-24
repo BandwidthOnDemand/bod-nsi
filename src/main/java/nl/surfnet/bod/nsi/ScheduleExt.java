@@ -83,8 +83,8 @@ public abstract class ScheduleExt {
             return true;
         }
         if (o instanceof ScheduleExt that) {
-            return Objects.equals(this.getXmlStartTime(), that.getXmlStartTime())
-                    && Objects.equals(this.getXmlEndTime(), that.getXmlEndTime());
+            return Objects.equals(this.getStartTime(), that.getStartTime())
+                    && Objects.equals(this.getEndTime(), that.getEndTime());
         } else {
             return false;
         }
@@ -92,6 +92,6 @@ public abstract class ScheduleExt {
 
     @Override
     public final int hashCode() {
-        return 41 + Objects.hash(getXmlStartTime(), getXmlEndTime());
+        return 41 + Objects.hash(getStartTime(), getEndTime());
     }
 }
