@@ -19,19 +19,16 @@
         <jaxb-tools.version>4.0.8</jaxb-tools.version>
     </properties>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
         <dependency>
             <groupId>jakarta.annotation</groupId>
             <artifactId>jakarta.annotation-api</artifactId>
             <version>3.0.0</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
             <version>4.0.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/jakarta.xml.bind/jakarta.xml.bind-api -->
         <dependency>
             <groupId>jakarta.xml.ws</groupId>
             <artifactId>jakarta.xml.ws-api</artifactId>
@@ -63,55 +60,58 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.jvnet.jaxb</groupId>
-                <artifactId>jaxb-maven-plugin</artifactId>
-                <version>${jaxb-tools.version}</version>
+                <groupId>com.sun.xml.ws</groupId>
+                <artifactId>jaxws-maven-plugin</artifactId>
+                <version>4.0.3</version>
                 <configuration>
-                    <generateDirectory>${jaxb.generated.sources}</generateDirectory>
-                    <markGenerated>true</markGenerated>
-                    <schemaIncludes>
-                        <include>wsdl/2.0/gnsbod.xsd</include>
-                        <include>wsdl/2.0/ogf_nsi_discovery_nsa_v1_0.xsd</include>
-                        <include>wsdl/2.0/ogf_nsi_services_p2p_v2_0.xsd</include>
-                        <include>wsdl/2.0/ogf_nsi_services_types_v2_0.xsd</include>
-                        <include>wsdl/2.0/ogf_nsi_services_definition_v2_0.xsd</include>
-                        <include>wsdl/2.0/ogf_nsi_framework_types_v2_0.xsd</include>
-                        <include>wsdl/2.0/ogf_nsi_framework_headers_v2_0.xsd</include>
-                        <include>wsdl/2.0/ogf_nsi_connection_types_v2_0.xsd</include>
-                        <include>wsdl/2.0/ogf_nsi_path_trace_2015_04_30.xsd</include>
-                        <include>wsdl/2.0/saml-schema-assertion-2.0.xsd</include>
-                        <include>wsdl/2.0/xenc-schema.xsd</include>
-                        <include>wsdl/2.0/xmldsig-core-schema.xsd</include>
-                        <include>wsdl/soap/soap-envelope-1.1.xsd</include>
-                        <include>xsd/nmlbase.xsd</include>
-                        <include>xsd/nsi-ext.xsd</include>
-                        <include>xsd/pce-messages.xsd</include>
-                    </schemaIncludes>
-                    <extension>true</extension>
-                    <args>
-                        <arg>-XtoString</arg>
-                        <arg>-Xequals</arg>
-                        <arg>-XhashCode</arg>
-                        <arg>-Xcopyable</arg>
-                        <arg>-Xfluent-api</arg>
-                        <arg>-Xnamespace-prefix</arg>
-                        <arg>-Xinheritance</arg>
-                    </args>
-                    <plugins>
-                        <plugin>
-                            <groupId>org.jvnet.jaxb</groupId>
-                            <artifactId>jaxb-plugins</artifactId>
-                            <version>${jaxb-tools.version}</version>
-                        </plugin>
-                    </plugins>
+                    <sourceDestDir>${jaxb.generated.sources}</sourceDestDir>
+                    <quiet>true</quiet>
+                    <xadditionalHeaders>true</xadditionalHeaders>
+                    <xdebug>false</xdebug>
+                    <xnocompile>true</xnocompile>
+                    <wsdlDirectory>${basedir}/src/main/resources/wsdl</wsdlDirectory>
+                    <bindingFiles>
+                        <bindingFile>${project.basedir}/src/main/resources/schema-bindings.xjb</bindingFile>
+                        <bindingFile>${basedir}/src/main/resources/wsdl/2.0/gnsbod.xsd</bindingFile>
+                        <bindingFile>${basedir}/src/main/resources/wsdl/2.0/ogf_nsi_discovery_nsa_v1_0.xsd</bindingFile>
+                        <bindingFile>${basedir}/src/main/resources/wsdl/2.0/ogf_nsi_services_p2p_v2_0.xsd</bindingFile>
+                        <bindingFile>${basedir}/src/main/resources/wsdl/2.0/ogf_nsi_services_types_v2_0.xsd</bindingFile>
+                        <bindingFile>${basedir}/src/main/resources/wsdl/2.0/ogf_nsi_services_definition_v2_0.xsd</bindingFile>
+                        <bindingFile>${basedir}/src/main/resources/wsdl/2.0/ogf_nsi_path_trace_2015_04_30.xsd</bindingFile>
+                        <bindingFile>${basedir}/src/main/resources/wsdl/soap/soap-envelope-1.1.xsd</bindingFile>
+                        <bindingFile>${basedir}/src/main/resources/xsd/nmlbase.xsd</bindingFile>
+                        <bindingFile>${basedir}/src/main/resources/xsd/nsi-ext.xsd</bindingFile>
+                        <bindingFile>${basedir}/src/main/resources/xsd/pce-messages.xsd</bindingFile>
+                    </bindingFiles>
+                    <xjcArgs>
+                        <xjcArg>-mark-generated</xjcArg>
+                        <xjcArg>-XtoString</xjcArg>
+                        <xjcArg>-Xequals</xjcArg>
+                        <xjcArg>-XhashCode</xjcArg>
+                        <xjcArg>-Xcopyable</xjcArg>
+                        <xjcArg>-Xfluent-api</xjcArg>
+                        <xjcArg>-Xnamespace-prefix</xjcArg>
+                        <xjcArg>-Xinheritance</xjcArg>
+                    </xjcArgs>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.jvnet.jaxb</groupId>
+                        <artifactId>jaxb-plugins</artifactId>
+                        <version>${jaxb-tools.version}</version>
+                    </dependency>
+                </dependencies>
                 <executions>
                     <execution>
                         <id>nsi-v2</id>
                         <goals>
-                            <goal>generate</goal>
+                            <goal>wsimport</goal>
                         </goals>
                         <configuration>
+                            <wsdlFiles>
+                                <wsdlFile>2.0/ogf_nsi_connection_requester_v2_0.wsdl</wsdlFile>>
+                                <wsdlFile>2.0/ogf_nsi_connection_provider_v2_0.wsdl</wsdlFile>
+                            </wsdlFiles>
                         </configuration>
                     </execution>
                 </executions>
