@@ -20,45 +20,11 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
  * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package nl.surfnet.bod.nsi;
-
-import java.io.IOException;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
-public class ValidationTest {
-  private Validation validation;
-
-  @Before
-  public void setup() throws SAXException {
-    this.validation = new Validation(Validation.NSI_SCHEMAS);
-  }
-
-  @Test
-  public void validate_initial_reserve() throws Exception {
-    validate("examples/nsi_2_1_initial_reserve.xml");
-  }
-
-  @Test
-  public void validate_data_plane_state_change() throws Exception {
-    validate("examples/nsi_data_plane_state_change.xml");
-  }
-
-  private void validate(String name) throws ParserConfigurationException, SAXException, IOException, SAXParseException {
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    factory.setNamespaceAware(true);
-    DocumentBuilder builder = factory.newDocumentBuilder();
-
-    String initialReserve = InternalUtils.classpathResource(name);
-    Document doc = builder.parse(initialReserve);
-    validation.validate(doc);
-  }
+open module bod.nsi {
+	requires jakarta.annotation;
+	requires jakarta.xml.bind;
+	requires jakarta.xml.ws;
+	requires java.xml;
+	requires org.slf4j;
+	requires org.jvnet.jaxb.plugins.runtime;
 }

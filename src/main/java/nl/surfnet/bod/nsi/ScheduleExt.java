@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2012, 2013, 2014, 2015, 2016 SURFnet BV
+ * Copyright (c) 2012-2024 SURFnet BV
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification, are permitted provided that the
@@ -22,17 +22,24 @@
  */
 package nl.surfnet.bod.nsi;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
+
+import java.util.Objects;
+
 import javax.xml.datatype.XMLGregorianCalendar;
-import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 import org.ogf.schemas.nsi._2013._12.connection.types.ObjectFactory;
 import org.ogf.schemas.nsi._2013._12.connection.types.ScheduleType;
 
 public abstract class ScheduleExt {
+    private static final ObjectFactory XML_SCHEDULE_TYPES = new ObjectFactory();
+
     public abstract JAXBElement<XMLGregorianCalendar> getXmlStartTime();
+
     public abstract JAXBElement<XMLGregorianCalendar> getXmlEndTime();
+
     public abstract ScheduleType withXmlStartTime(JAXBElement<XMLGregorianCalendar> value);
+
     public abstract ScheduleType withXmlEndTime(JAXBElement<XMLGregorianCalendar> value);
 
     public final Nillable<XMLGregorianCalendar> getStartTime() {
@@ -44,49 +51,47 @@ public abstract class ScheduleExt {
     }
 
     public final ScheduleType withStartTime(Nillable<XMLGregorianCalendar> startTime) {
-        ObjectFactory xmlScheduleTypes = new ObjectFactory();
-        return withXmlStartTime(startTime.fold(
-          (value) -> xmlScheduleTypes.createScheduleTypeStartTime(value),
-          () -> null,
-          () -> xmlScheduleTypes.createScheduleTypeStartTime(null)
-        ));
+        return withXmlStartTime(switch (startTime) {
+        case Nillable.Absent<?> unused -> null;
+        case Nillable.Nil<?> unused -> XML_SCHEDULE_TYPES.createScheduleTypeStartTime(null);
+        case Nillable.Present(var value) -> XML_SCHEDULE_TYPES.createScheduleTypeStartTime(value);
+        });
     }
 
     public final ScheduleType withEndTime(Nillable<XMLGregorianCalendar> endTime) {
-        ObjectFactory xmlScheduleTypes = new ObjectFactory();
-        return withXmlEndTime(endTime.fold(
-          (value) -> xmlScheduleTypes.createScheduleTypeEndTime(value),
-          () -> null,
-          () -> xmlScheduleTypes.createScheduleTypeEndTime(null)
-        ));
+        return withXmlStartTime(switch (endTime) {
+        case Nillable.Absent<?> unused -> null;
+        case Nillable.Nil<?> unused -> XML_SCHEDULE_TYPES.createScheduleTypeEndTime(null);
+        case Nillable.Present(var value) -> XML_SCHEDULE_TYPES.createScheduleTypeEndTime(value);
+        });
     }
 
     public final ScheduleType withStartTime(XMLGregorianCalendar startTime) {
-        ObjectFactory xmlScheduleTypes = new ObjectFactory();
-        return withXmlStartTime(startTime != null ? xmlScheduleTypes.createScheduleTypeStartTime(startTime) : null);
+        return withXmlStartTime(startTime != null ? XML_SCHEDULE_TYPES.createScheduleTypeStartTime(startTime) : null);
     }
 
     public final ScheduleType withEndTime(XMLGregorianCalendar endTime) {
-        ObjectFactory xmlScheduleTypes = new ObjectFactory();
-        return withXmlEndTime(endTime != null ? xmlScheduleTypes.createScheduleTypeEndTime(endTime) : null);
+        return withXmlEndTime(endTime != null ? XML_SCHEDULE_TYPES.createScheduleTypeEndTime(endTime) : null);
     }
 
     @Override
     public final boolean equals(Object o) {
-        if (o == null) { return false; }
-        if (o == this) { return true; }
-        if (o.getClass() != this.getClass()) { return false; }
-
-        ScheduleExt other = (ScheduleExt) o;
-        return getStartTime().equals(other.getStartTime())
-            && getEndTime().equals(other.getEndTime());
+        if (o == null) {
+            return false;
+        }
+        if (o == this) {
+            return true;
+        }
+        if (o instanceof ScheduleExt that) {
+            return Objects.equals(this.getStartTime(), that.getStartTime())
+                    && Objects.equals(this.getEndTime(), that.getEndTime());
+        } else {
+            return false;
+        }
     }
 
     @Override
     public final int hashCode() {
-        return new HashCodeBuilder(41, 79)
-            .append(getStartTime())
-            .append(getEndTime())
-            .toHashCode();
+        return 41 + Objects.hash(getStartTime(), getEndTime());
     }
 }
